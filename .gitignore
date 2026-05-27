@@ -1,43 +1,60 @@
-# Python
-__pycache__/
-*.py[cod]
-*.so
-.Python
-env/
-.venv/
-ENV/
-env/
-*.egg
-*.egg-info/
-dist/
-build/
+# ======================================
+# 你的故障分析项目专属 .gitignore
+# ======================================
 
-# IDE
+# 1. 根目录下的 IDE 配置（必加，解决你当前的问题）
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# 数据集、模型、压缩包
-*.zip
-*.tar
-*.gz
-*.rar
-data/
-datasets/
+# 2. Python 虚拟环境（已经生效，保留）
+.venv/
+venv/
+env/
+ENV/
+
+# 3. Python 编译缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# 4. 模型训练专属过滤（你的项目有模型训练，必加）
 models/
 checkpoints/
+runs/
+wandb/
+mlruns/
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.pkl
+*.h5
 
-# 文档
+# 5. 数据文件（避免上传大体积数据集）
+data/
+datasets/
+*.csv
+*.xlsx
+*.xls
+*.parquet
+*.jsonl
+
+# 6. 文档、压缩包（解决你 status 里的文件）
+*.zip
+*.rar
+*.tar
+*.gz
 *.docx
 *.pdf
-*.xls
-*.xlsx
-*.csv
+*.doc
 
-# 系统
+# 7. 系统垃圾文件
 .DS_Store
 Thumbs.db
-溯因分析方案.docx溯因分析方案.pdf
-溯因分析工作交接.docx
-Algorithm.zip
