@@ -1,0 +1,100 @@
+{
+  "blocks": [
+    {
+      "name": "s_self_vel",
+      "start": 0,
+      "length": 2
+    },
+    {
+      "name": "s_self_pos",
+      "start": 2,
+      "length": 2
+    },
+    {
+      "name": "s_landmarks",
+      "start": 4,
+      "length": 10
+    },
+    {
+      "name": "s_other_agents",
+      "start": 14,
+      "length": 8
+    },
+    {
+      "name": "s_comm",
+      "start": 22,
+      "length": 8
+    },
+    {
+      "name": "a_target",
+      "start": 30,
+      "length": 5
+    }
+  ],
+  "csv_columns": [
+    "episode",
+    "global_step",
+    "episode_step",
+    "mf_0",
+    "mf_1",
+    "mf_2",
+    "mf_3",
+    "mf_4",
+    "mf_5",
+    "mf_6",
+    "mf_7",
+    "mf_8",
+    "mf_9",
+    "mf_10",
+    "mf_11",
+    "mf_12",
+    "mf_13",
+    "mf_14",
+    "mf_15",
+    "mf_16",
+    "mf_17",
+    "mf_18",
+    "mf_19",
+    "mf_20",
+    "mf_21",
+    "mf_22",
+    "mf_23",
+    "mf_24",
+    "mf_25",
+    "mf_26",
+    "mf_27",
+    "mf_28",
+    "mf_29",
+    "mf_30",
+    "mf_31",
+    "mf_32",
+    "mf_33",
+    "mf_34"
+  ],
+  "mode": "single_agent_self_obs",
+  "obs_blocks_used": {
+    "s_self_vel": [
+      0,
+      2
+    ],
+    "s_self_pos": [
+      2,
+      4
+    ],
+    "s_landmarks": [
+      4,
+      14
+    ],
+    "s_other_agents": [
+      14,
+      22
+    ],
+    "s_comm": [
+      22,
+      30
+    ]
+  },
+  "obs_dim": 30,
+  "action_dim_each": 5,
+  "target_agent": "agent_0"
+}

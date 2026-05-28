@@ -1,0 +1,622 @@
+{
+  "interpretation": "对 SCM 父变量块做乘法尺度干预后重推动作；behavior_pseudo_prob 需行为原型 JSON，仅为与战术标签对齐的启发式",
+  "scales_used": [
+    0.0,
+    1.0
+  ],
+  "blocks_prioritized": [
+    "s_other_agents",
+    "s_landmarks",
+    "s_self_vel",
+    "s_self_pos",
+    "s_comm"
+  ],
+  "rows": [
+    {
+      "row_index": 0,
+      "episode": 0.0,
+      "global_step": 0.0,
+      "true_action_y": [
+        1.0,
+        -1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "baseline_predicted_action": [
+        0.1332680583000183,
+        0.09517821669578552,
+        -0.03728719428181648,
+        -0.20976486802101135,
+        0.15323013067245483
+      ],
+      "single_block_interventions": [
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_other_agents",
+          "scale": 0.0,
+          "predicted_action": [
+            -0.037398047745227814,
+            0.12817755341529846,
+            -0.40794461965560913,
+            -0.13411922752857208,
+            0.040805164724588394
+          ],
+          "l2_pred_change": 0.4312359392642975,
+          "cosine_similarity": 0.40672850608825684,
+          "mse_counterfactual_vs_true_action": 1.30751371383667,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_other_agents",
+          "scale": 1.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0000001192092896,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_landmarks",
+          "scale": 0.0,
+          "predicted_action": [
+            0.22336521744728088,
+            0.09943456202745438,
+            -0.0720350444316864,
+            -0.09922211617231369,
+            0.026682060211896896
+          ],
+          "l2_pred_change": 0.19384823739528656,
+          "cosine_similarity": 0.785997748374939,
+          "mse_counterfactual_vs_true_action": 1.0233628749847412,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_landmarks",
+          "scale": 1.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0000001192092896,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_vel",
+          "scale": 0.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0000001192092896,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_vel",
+          "scale": 1.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0000001192092896,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_pos",
+          "scale": 0.0,
+          "predicted_action": [
+            0.18654361367225647,
+            0.07470954209566116,
+            -0.01479005441069603,
+            -0.1538701355457306,
+            0.14040237665176392
+          ],
+          "l2_pred_change": 0.08397705107927322,
+          "cosine_similarity": 0.9627955555915833,
+          "mse_counterfactual_vs_true_action": 0.9833669662475586,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_pos",
+          "scale": 1.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0000001192092896,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_comm",
+          "scale": 0.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0000001192092896,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_comm",
+          "scale": 1.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0000001192092896,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        }
+      ],
+      "joint_interventions_sample": [
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_landmarks"
+          ],
+          "predicted_action": [
+            -0.09940590709447861,
+            0.22313979268074036,
+            -0.3524162769317627,
+            -0.15142659842967987,
+            -0.08902202546596527
+          ],
+          "l2_pred_change": 0.4815673530101776,
+          "cosine_similarity": 0.27384835481643677,
+          "mse_counterfactual_vs_true_action": 1.4091092348098755,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_self_vel"
+          ],
+          "predicted_action": [
+            -0.037398047745227814,
+            0.12817755341529846,
+            -0.40794461965560913,
+            -0.13411922752857208,
+            0.040805164724588394
+          ],
+          "l2_pred_change": 0.4312359392642975,
+          "cosine_similarity": 0.40672850608825684,
+          "mse_counterfactual_vs_true_action": 1.30751371383667,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_self_pos"
+          ],
+          "predicted_action": [
+            -0.06017976254224777,
+            0.20222066342830658,
+            -0.4749763607978821,
+            -0.10329855978488922,
+            -0.06234490126371384
+          ],
+          "l2_pred_change": 0.5461314916610718,
+          "cosine_similarity": 0.24873335659503937,
+          "mse_counterfactual_vs_true_action": 1.4181429147720337,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        },
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_comm"
+          ],
+          "predicted_action": [
+            -0.037398047745227814,
+            0.12817755341529846,
+            -0.40794461965560913,
+            -0.13411922752857208,
+            0.040805164724588394
+          ],
+          "l2_pred_change": 0.4312359392642975,
+          "cosine_similarity": 0.40672850608825684,
+          "mse_counterfactual_vs_true_action": 1.30751371383667,
+          "mse_baseline_vs_true_action": 1.041430950164795
+        }
+      ],
+      "causal_chain_ranking": [
+        {
+          "rank": 1,
+          "block": "s_other_agents",
+          "l2_impact": 0.4312359392642975,
+          "intensity_level": "轻微",
+          "strongest_behavior_change": {
+            "behavior": "unknown",
+            "baseline_prob": 0.0,
+            "after_removal_prob": 0.0,
+            "delta_p": 0.0
+          },
+          "cosine_similarity": 0.40672850608825684,
+          "mse_baseline": 1.041430950164795,
+          "mse_counterfactual": 1.30751371383667
+        },
+        {
+          "rank": 2,
+          "block": "s_landmarks",
+          "l2_impact": 0.19384823739528656,
+          "intensity_level": "无关",
+          "strongest_behavior_change": {
+            "behavior": "unknown",
+            "baseline_prob": 0.0,
+            "after_removal_prob": 0.0,
+            "delta_p": 0.0
+          },
+          "cosine_similarity": 0.785997748374939,
+          "mse_baseline": 1.041430950164795,
+          "mse_counterfactual": 1.0233628749847412
+        },
+        {
+          "rank": 3,
+          "block": "s_self_pos",
+          "l2_impact": 0.08397705107927322,
+          "intensity_level": "无关",
+          "strongest_behavior_change": {
+            "behavior": "unknown",
+            "baseline_prob": 0.0,
+            "after_removal_prob": 0.0,
+            "delta_p": 0.0
+          },
+          "cosine_similarity": 0.9627955555915833,
+          "mse_baseline": 1.041430950164795,
+          "mse_counterfactual": 0.9833669662475586
+        }
+      ],
+      "mechanical_explanation": "1. 因素 s_other_agents（轻微影响）：\n   动作向量变化 0.431；方向相似度 0.407；unknown 行为概率下降 0.00%\n2. 因素 s_landmarks（无关影响）：\n   动作向量变化 0.194；方向相似度 0.786；unknown 行为概率下降 0.00%\n3. 因素 s_self_pos（无关影响）：\n   动作向量变化 0.084；方向相似度 0.963；unknown 行为概率下降 0.00%"
+    },
+    {
+      "row_index": 1,
+      "episode": 0.0,
+      "global_step": 1.0,
+      "true_action_y": [
+        1.0,
+        -1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "baseline_predicted_action": [
+        0.23970836400985718,
+        -0.11354448646306992,
+        0.15946730971336365,
+        -0.175766259431839,
+        0.3660302758216858
+      ],
+      "single_block_interventions": [
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_other_agents",
+          "scale": 0.0,
+          "predicted_action": [
+            -0.009031198918819427,
+            0.04001518338918686,
+            -0.3103492856025696,
+            -0.11926168203353882,
+            0.1393532156944275
+          ],
+          "l2_pred_change": 0.6006287336349487,
+          "cosine_similarity": 0.08513782918453217,
+          "mse_counterfactual_vs_true_action": 1.1620500087738037,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_other_agents",
+          "scale": 1.0,
+          "predicted_action": [
+            0.23970836400985718,
+            -0.11354448646306992,
+            0.15946730971336365,
+            -0.175766259431839,
+            0.3660302758216858
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0,
+          "mse_counterfactual_vs_true_action": 0.7709372043609619,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_landmarks",
+          "scale": 0.0,
+          "predicted_action": [
+            0.31369534134864807,
+            -0.08231360465288162,
+            0.10692735016345978,
+            -0.08315645158290863,
+            0.22473348677158356
+          ],
+          "l2_pred_change": 0.19429679214954376,
+          "cosine_similarity": 0.9318417310714722,
+          "mse_counterfactual_vs_true_action": 0.7770014405250549,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_landmarks",
+          "scale": 1.0,
+          "predicted_action": [
+            0.23970836400985718,
+            -0.11354448646306992,
+            0.15946730971336365,
+            -0.175766259431839,
+            0.3660302758216858
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0,
+          "mse_counterfactual_vs_true_action": 0.7709372043609619,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_vel",
+          "scale": 0.0,
+          "predicted_action": [
+            0.1332680583000183,
+            0.09517821669578552,
+            -0.03728719428181648,
+            -0.20976486802101135,
+            0.15323013067245483
+          ],
+          "l2_pred_change": 0.3742283284664154,
+          "cosine_similarity": 0.6847870349884033,
+          "mse_counterfactual_vs_true_action": 1.041430950164795,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_vel",
+          "scale": 1.0,
+          "predicted_action": [
+            0.23970836400985718,
+            -0.11354448646306992,
+            0.15946730971336365,
+            -0.175766259431839,
+            0.3660302758216858
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0,
+          "mse_counterfactual_vs_true_action": 0.7709372043609619,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_pos",
+          "scale": 0.0,
+          "predicted_action": [
+            0.2776309847831726,
+            -0.08527692407369614,
+            0.1317816823720932,
+            -0.12151132524013519,
+            0.3117031753063202
+          ],
+          "l2_pred_change": 0.09433295577764511,
+          "cosine_similarity": 0.9860941767692566,
+          "mse_counterfactual_vs_true_action": 0.7687757015228271,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_self_pos",
+          "scale": 1.0,
+          "predicted_action": [
+            0.23970836400985718,
+            -0.11354448646306992,
+            0.15946730971336365,
+            -0.175766259431839,
+            0.3660302758216858
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0,
+          "mse_counterfactual_vs_true_action": 0.7709372043609619,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_comm",
+          "scale": 0.0,
+          "predicted_action": [
+            0.23970836400985718,
+            -0.11354448646306992,
+            0.15946730971336365,
+            -0.175766259431839,
+            0.3660302758216858
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0,
+          "mse_counterfactual_vs_true_action": 0.7709372043609619,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "single_block_scale",
+          "block": "s_comm",
+          "scale": 1.0,
+          "predicted_action": [
+            0.23970836400985718,
+            -0.11354448646306992,
+            0.15946730971336365,
+            -0.175766259431839,
+            0.3660302758216858
+          ],
+          "l2_pred_change": 0.0,
+          "cosine_similarity": 1.0,
+          "mse_counterfactual_vs_true_action": 0.7709372043609619,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        }
+      ],
+      "joint_interventions_sample": [
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_landmarks"
+          ],
+          "predicted_action": [
+            -0.02818981558084488,
+            0.10407955944538116,
+            -0.23401544988155365,
+            -0.11601313948631287,
+            0.03213782608509064
+          ],
+          "l2_pred_change": 0.6237090229988098,
+          "cosine_similarity": -0.16348896920681,
+          "mse_counterfactual_vs_true_action": 1.1962405443191528,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_self_vel"
+          ],
+          "predicted_action": [
+            -0.037398047745227814,
+            0.12817755341529846,
+            -0.40794461965560913,
+            -0.13411922752857208,
+            0.040805164724588394
+          ],
+          "l2_pred_change": 0.7514516711235046,
+          "cosine_similarity": -0.21715696156024933,
+          "mse_counterfactual_vs_true_action": 1.30751371383667,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_self_pos"
+          ],
+          "predicted_action": [
+            -0.03333071619272232,
+            0.12419557571411133,
+            -0.3860628604888916,
+            -0.10421980917453766,
+            0.02036644145846367
+          ],
+          "l2_pred_change": 0.7438254356384277,
+          "cosine_similarity": -0.269591361284256,
+          "mse_counterfactual_vs_true_action": 1.2863482236862183,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        },
+        {
+          "intervention_type": "joint_zero_two_blocks",
+          "blocks": [
+            "s_other_agents",
+            "s_comm"
+          ],
+          "predicted_action": [
+            -0.009031198918819427,
+            0.04001518338918686,
+            -0.3103492856025696,
+            -0.11926168203353882,
+            0.1393532156944275
+          ],
+          "l2_pred_change": 0.6006287336349487,
+          "cosine_similarity": 0.08513782918453217,
+          "mse_counterfactual_vs_true_action": 1.1620500087738037,
+          "mse_baseline_vs_true_action": 0.7709372043609619
+        }
+      ],
+      "causal_chain_ranking": [
+        {
+          "rank": 1,
+          "block": "s_other_agents",
+          "l2_impact": 0.6006287336349487,
+          "intensity_level": "中等",
+          "strongest_behavior_change": {
+            "behavior": "unknown",
+            "baseline_prob": 0.0,
+            "after_removal_prob": 0.0,
+            "delta_p": 0.0
+          },
+          "cosine_similarity": 0.08513782918453217,
+          "mse_baseline": 0.7709372043609619,
+          "mse_counterfactual": 1.1620500087738037
+        },
+        {
+          "rank": 2,
+          "block": "s_self_vel",
+          "l2_impact": 0.3742283284664154,
+          "intensity_level": "轻微",
+          "strongest_behavior_change": {
+            "behavior": "unknown",
+            "baseline_prob": 0.0,
+            "after_removal_prob": 0.0,
+            "delta_p": 0.0
+          },
+          "cosine_similarity": 0.6847870349884033,
+          "mse_baseline": 0.7709372043609619,
+          "mse_counterfactual": 1.041430950164795
+        },
+        {
+          "rank": 3,
+          "block": "s_landmarks",
+          "l2_impact": 0.19429679214954376,
+          "intensity_level": "无关",
+          "strongest_behavior_change": {
+            "behavior": "unknown",
+            "baseline_prob": 0.0,
+            "after_removal_prob": 0.0,
+            "delta_p": 0.0
+          },
+          "cosine_similarity": 0.9318417310714722,
+          "mse_baseline": 0.7709372043609619,
+          "mse_counterfactual": 0.7770014405250549
+        }
+      ],
+      "mechanical_explanation": "1. 因素 s_other_agents（中等影响）：\n   动作向量变化 0.601；方向相似度 0.085；unknown 行为概率下降 0.00%\n2. 因素 s_self_vel（轻微影响）：\n   动作向量变化 0.374；方向相似度 0.685；unknown 行为概率下降 0.00%\n3. 因素 s_landmarks（无关影响）：\n   动作向量变化 0.194；方向相似度 0.932；unknown 行为概率下降 0.00%"
+    }
+  ]
+}

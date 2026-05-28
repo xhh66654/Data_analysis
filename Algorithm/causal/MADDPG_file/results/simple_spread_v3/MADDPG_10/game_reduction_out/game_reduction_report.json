@@ -1,0 +1,165 @@
+{
+  "final_train_loss": 0.1852949062983195,
+  "ablation_mode": "noise",
+  "q_value_stats": {
+    "q_value_range": [
+      -7.66347599029541,
+      -0.9963972568511963
+    ],
+    "q_value_mean": -2.43259334564209,
+    "q_value_std": 0.9759702086448669,
+    "q_value_median": -2.1570518016815186,
+    "q_value_percentiles": {
+      "p5": -4.4295148849487305,
+      "p25": -2.8980109691619873,
+      "p75": -1.7080930471420288,
+      "p95": -1.409201979637146
+    }
+  },
+  "neighbor_influence": [
+    {
+      "neighbor": "agent_1",
+      "mean_abs_effect": 0.18937553465366364,
+      "mean_signed_effect": 0.15647652745246887,
+      "mean_abs_effect_normalized": 0.19403823290529662
+    },
+    {
+      "neighbor": "agent_2",
+      "mean_abs_effect": 0.17834056913852692,
+      "mean_signed_effect": 0.14084208011627197,
+      "mean_abs_effect_normalized": 0.18273157065537124
+    },
+    {
+      "neighbor": "agent_3",
+      "mean_abs_effect": 0.18983343243598938,
+      "mean_signed_effect": 0.1548060029745102,
+      "mean_abs_effect_normalized": 0.1945074047901245
+    },
+    {
+      "neighbor": "agent_4",
+      "mean_abs_effect": 0.19132596254348755,
+      "mean_signed_effect": 0.1355815827846527,
+      "mean_abs_effect_normalized": 0.19603668313722747
+    }
+  ],
+  "selected_neighbor_rows": [],
+  "reduction_semantics": {
+    "kop_main_agent": "agent_0",
+    "neighbor_selection": "top_k_only K=0",
+    "min_abs_influence_enabled": false,
+    "min_abs_influence": null,
+    "top_k_hard_cap": 0,
+    "ablation_mode": "noise",
+    "use_normalized_threshold": true,
+    "threshold_applied_to": "mean_abs_effect_normalized",
+    "notes": "启用阈值时：影响度从高到低，一旦 < 阈值则该体及更弱者全部丢弃；top-k>0 时在截断结果上再的人数上限；top-k<=0 且启用阈值时不设人数上限。"
+  },
+  "reduced_kept_agents": [
+    "agent_0"
+  ],
+  "reduced_dropped_agents": [
+    "agent_1",
+    "agent_2",
+    "agent_3",
+    "agent_4"
+  ],
+  "meta": {
+    "csv": "F:\\cause_analysis\\Algorithm\\causal\\MADDPG_file\\results\\simple_spread_v3\\MADDPG_10\\training_trajectory.csv",
+    "target_agent": "agent_0",
+    "state_agents": [
+      "agent_0",
+      "agent_1",
+      "agent_2",
+      "agent_3",
+      "agent_4"
+    ],
+    "agent_order_full": [
+      "agent_0",
+      "agent_1",
+      "agent_2",
+      "agent_3",
+      "agent_4"
+    ],
+    "obs_dim_per_agent": 30,
+    "act_dim_per_agent": 5,
+    "state_dim": 150,
+    "action_dim": 25,
+    "hidden": 256,
+    "gamma": 0.95,
+    "epochs": 25,
+    "reward_mode": "target",
+    "top_k_hard_cap": 0,
+    "min_abs_influence": -1.0
+  },
+  "mode": "single_agent_decision_reduction",
+  "obs_blocks_used": {
+    "s_self_vel": [
+      0,
+      2
+    ],
+    "s_self_pos": [
+      2,
+      4
+    ],
+    "s_landmarks": [
+      4,
+      14
+    ],
+    "s_other_agents": [
+      14,
+      22
+    ],
+    "s_comm": [
+      22,
+      30
+    ]
+  },
+  "single_agent_note": "SCM 仅以自身观测分块预测 a_target，不含邻居交互统计；边强度排序可用于识别冗余观测维度，但绝对预测质量受限",
+  "mean_field": {
+    "literature_approx": "Q_i(s_i,a_i,a_1..a_N) ~ Q_i(s_i,a_i, {avg group states},{avg group actions}); 实现为拼接 [s_target,a_target] 与各群体 [s_mean_G,a_mean_G,(std_G)]",
+    "features_csv": "F:\\cause_analysis\\Algorithm\\causal\\MADDPG_file\\results\\simple_spread_v3\\MADDPG_10\\game_reduction_out\\mean_field_features.csv",
+    "schema_json": "F:\\cause_analysis\\Algorithm\\causal\\MADDPG_file\\results\\simple_spread_v3\\MADDPG_10\\game_reduction_out\\mean_field_schema.json",
+    "mf_feature_columns_n": 35,
+    "group_map_used": "(empty -> all kept neighbors -> single pool)"
+  },
+  "scm": {
+    "structural_equation": "a_target ≈ NN( concat(parents_without_a_target), env_pad )",
+    "checkpoint": "F:\\cause_analysis\\Algorithm\\causal\\MADDPG_file\\results\\simple_spread_v3\\MADDPG_10\\game_reduction_out\\scm_model.pt",
+    "edges_json": "F:\\cause_analysis\\Algorithm\\causal\\MADDPG_file\\results\\simple_spread_v3\\MADDPG_10\\game_reduction_out\\scm_causal_edges.json",
+    "train_mse": 0.3594406545162201,
+    "val_mse": 0.3500346541404724,
+    "parent_blocks": [
+      "s_self_vel",
+      "s_self_pos",
+      "s_landmarks",
+      "s_other_agents",
+      "s_comm"
+    ]
+  },
+  "counterfactual_abduction": {
+    "artifact": "F:\\cause_analysis\\Algorithm\\causal\\MADDPG_file\\results\\simple_spread_v3\\MADDPG_10\\game_reduction_out\\counterfactual_abduction.json",
+    "rows_used": [
+      0,
+      1
+    ],
+    "scales": [
+      0.0,
+      1.0
+    ]
+  },
+  "q_network_validation": {
+    "q_value_range": [
+      -7.66347599029541,
+      -0.9963972568511963
+    ],
+    "q_value_mean": -2.43259334564209,
+    "q_value_std": 0.9759702086448669,
+    "q_value_median": -2.1570518016815186,
+    "q_value_percentiles": {
+      "p5": -4.4295148849487305,
+      "p25": -2.8980109691619873,
+      "p75": -1.7080930471420288,
+      "p95": -1.409201979637146
+    }
+  }
+}
