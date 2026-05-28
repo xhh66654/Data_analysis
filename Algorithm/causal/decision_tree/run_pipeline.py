@@ -69,7 +69,7 @@ RUN_CONFIG = {
     # 输出：fqe_out/q_hat.pt；下游 l_hat / weights / VIPER 均依赖此 Q 估计
     # -------------------------------------------------------------------------
     # 训练轮数；loss 仍下降时可加大（大表可试 50～100）
-    "fqe_epochs": 50,
+    "fqe_epochs": 15,
     # 训练设备："cuda" | "cpu"（百万行建议 GPU）
     "fqe_device": "cuda",
     # Bootstrap 目标："sarsa"=用轨迹真实下一步动作 a'（默认，贴近行为策略）
@@ -117,7 +117,7 @@ RUN_CONFIG = {
     #   depth=12 leaf=50 → acc≈72%  规则≈1400
     #   depth=16 leaf=1  → acc≈75.5% 规则≈12000  ← 75%+ 且比 depth=18 少一半
     #   depth=18 leaf=1  → acc≈77.5% 规则≈25000
-    "cart_max_depth": 16,
+    "cart_max_depth": 6,
     # 叶节点最少样本；增大可减规则，但 acc_full 会明显下降（leaf≥5 时 VIPER 难超 75%）
     "cart_min_samples_leaf": 1,
     # sklearn 默认 2；勿设 50（会压低 acc_full）
