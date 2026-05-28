@@ -1,0 +1,162 @@
+# 场景配置模板
+# 本文件作为编写新场景的基础模板
+# 
+# 使用说明：
+# 1. 复制本文件，重命名为 scenario_<env_name>.yaml
+# 2. 根据目标环境修改各字段
+# 3. 参考 scenario_simple_spread.yaml 查看完整示例
+
+scenario_name: "【请修改】场景名称"
+description: "【请修改】环境和任务的简短描述"
+
+# ========== 块语义映射 ==========
+# 关键：将 SCM 父变量块映射到战术概念
+# 块名来源：scm_causal_edges.json 的 parent_block
+blocks_meaning:
+  
+  s_target:
+    zh_name: "【请修改】己方状态"
+    zh_description: "【请修改】目标自身的内部状态含义"
+    interpretation_hint: "【请修改】在战术推理中的角色"
+  
+  s_mean__pooled_neighbors:
+    zh_name: "【请修改】邻居群体态势"
+    zh_description: "【请修改】周边个体平均状态的含义"
+    interpretation_hint: "【请修改】对决策的影响方向"
+  
+  # 根据需要添加更多块
+  # a_mean__pooled_neighbors:
+  #   zh_name: "..."
+  #   zh_description: "..."
+  #   interpretation_hint: "..."
+
+# ========== 行为标签语义 ==========
+# 关键：将行为原型标签映射到战术标签
+# 标签名来源：behavior_prototypes.json 的键
+behavior_semantics:
+  
+  escape-ish:
+    zh_label: "【请修改】逃逸/退缩"
+    zh_description: "【请修改】具体的行为含义"
+    intensity_order: 1  # 0=被动, 1=低强度, 2=中等, 3=高强度
+  
+  press-forward:
+    zh_label: "【请修改】进攻/前进"
+    zh_description: "【请修改】具体的行为含义"
+    intensity_order: 3
+  
+  maneuver:
+    zh_label: "【请修改】规避/机动"
+    zh_description: "【请修改】具体的行为含义"
+    intensity_order: 2
+  
+  hold-neutral:
+    zh_label: "【请修改】保持/观望"
+    zh_description: "【请修改】具体的行为含义"
+    intensity_order: 0
+  
+  # 根据需要添加更多行为
+  # other_behavior:
+  #   zh_label: "..."
+  #   zh_description: "..."
+  #   intensity_order: 1
+
+# ========== 强度等级描述词库 ==========
+# L2 变化量 → 强度等级 → 描述词
+# 默认使用这些阈值，可自定义
+intensity_descriptions:
+  l2_thresholds: [0.0, 0.3, 0.6, 1.0]
+  levels:
+    0:
+      name: "无关"
+      zh_phrase: ["无关", "不重要", "可忽略"]
+      emphasis: "该因素在此时刻影响微弱"
+    1:
+      name: "轻微"
+      zh_phrase: ["轻微", "略微", "一定程度"]
+      emphasis: "该因素有所影响但不决定性"
+    2:
+      name: "中等"
+      zh_phrase: ["显著", "明显", "相当"]
+      emphasis: "该因素对决策有重要推动作用"
+    3:
+      name: "强烈"
+      zh_phrase: ["决定性", "主要", "关键"]
+      emphasis: "该因素是决策的主要驱动力"
+
+# ========== 强度等级翻译映射 ==========
+# 用于在生成文本时随机选择合适的描述词
+intensity_phrases:
+  "无关": ["无关", "无明显影响", "可忽略"]
+  "轻微": ["轻微", "略有", "一定程度"]
+  "中等": ["明显", "显著", "相当"]
+  "强烈": ["决定性", "主要", "关键", "重要"]
+
+# ========== 模板库 ==========
+# 使用这些模板填充战术级解释
+# 支持的变量：
+#   {block_zh}           - 块的中文名
+#   {behavior_zh}        - 行为的中文标签
+#   {intensity_zh}       - 强度等级描述词
+#   {delta_p}            - 行为概率变化
+#   {l2_change}          - L2 向量变化
+#   {factor1_zh}         - 第一个因素
+#   {factor2_zh}         - 第二个因素
+#   {factors_list}       - 因素列表
+templates:
+  
+  # 单因子因果解释模板
+  single_factor:
+    # 当行为概率上升时
+    strong_positive:
+      - "{behavior_zh}倾向强烈，主要原因是{block_zh}；"
+      - "由于{block_zh}，目标选择{behavior_zh}；"
+    
+    # 当行为概率下降时
+    strong_negative:
+      - "目标放弃{behavior_zh}，因为{block_zh}；"
+      - "{block_zh}的变化导致{behavior_zh}倾向下降；"
+    
+    # 中等影响
+    moderate:
+      - "{block_zh}促进了{behavior_zh}选择（影响程度 {intensity_zh}）；"
+  
+  # 多因子组合模板
+  multi_factor:
+    # 两个因素同向影响
+    two_factors_coordinated:
+      - "目标决策受{factor1_zh}和{factor2_zh}的共同推动；"
+      - "{factor1_zh}与{factor2_zh}形成合力，促使{behavior_zh}；"
+    
+    # 两个因素反向影响
+    two_factors_conflicting:
+      - "尽管{factor1_zh}，但{factor2_zh}的影响更强，最终导致{behavior_zh}；"
+    
+    # 三个或更多因素
+    three_plus_factors:
+      - "多重因素共同作用（{factors_list}），导致目标采取{behavior_zh}；"
+  
+  # 综合解释模板
+  comprehensive:
+    default:
+      - "目标智能体的{behavior_zh}决策由以下因素共同驱动：{factors_narrative}；"
+      - "综合分析表明，{factors_narrative}导致目标选择{behavior_zh}。"
+
+# ========== 行为组合规则 ==========
+# 当多个行为同时出现明显变化时的特殊解释
+# （可选，高级功能）
+behavior_combinations:
+  escape_and_maneuver:
+    zh_interpretation: "采取机动规避和撤退结合的策略"
+  
+  press_forward_and_maneuver:
+    zh_interpretation: "采取积极进攻且灵活机动的战术"
+
+# ========== 编写检查清单 ==========
+# 使用本文件前，请确保完成以下项目：
+# [ ] 修改 scenario_name 和 description
+# [ ] 至少映射 3 个块（s_target, s_mean__pooled_neighbors, ...）
+# [ ] 至少映射 4 个行为标签
+# [ ] 检查 intensity_descriptions 的 l2_thresholds 是否合理
+# [ ] 添加至少 2-3 个单因子和多因子模板
+# [ ] 手工测试：用该配置生成 2-3 个解释，检查语义是否恰当

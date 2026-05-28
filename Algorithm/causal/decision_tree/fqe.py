@@ -103,6 +103,12 @@ def train_q_hat(data: TransitionBatch, cfg: FQETrainConfig) -> FQETrainResult:
 
     opt = torch.optim.Adam(q_net.parameters(), lr=cfg.lr)
     loss_fn = nn.MSELoss()
+    
+    # 添加学习率调度器（余弦退火）
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=cfg.epochs)
+    
+    # 梯度裁剪阈值
+    grad_clip_norm = 1.0
 
     ds = TensorDataset(
         torch.from_numpy(data.s),
@@ -148,7 +154,12 @@ def train_q_hat(data: TransitionBatch, cfg: FQETrainConfig) -> FQETrainResult:
             loss = loss_fn(q_pred, tgt)
             opt.zero_grad()
             loss.backward()
+            
+            # 添加梯度裁剪
+            torch.nn.utils.clip_grad_norm_(q_net.parameters(), grad_clip_norm)
+            
             opt.step()
+            scheduler.step()  # 每步更新学习率
 
             if cfg.use_target_network:
                 with torch.no_grad():

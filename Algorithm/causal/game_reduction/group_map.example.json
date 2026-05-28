@@ -1,0 +1,6 @@
+{
+  "agent_1": "enemy_attack",
+  "agent_2": "enemy_scout",
+  "agent_3": "ally_support",
+  "agent_4": "ally_coop"
+}

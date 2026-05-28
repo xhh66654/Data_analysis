@@ -44,7 +44,7 @@ import pandas as pd
 
 from causal.decision_tree.fqe import FQETrainConfig, load_q_hat, save_q_hat, train_q_hat
 from causal.decision_tree.l_hat import compute_l_hat, l_hat_dataframe, save_l_hat_csv
-from causal.decision_tree.trajectory_io import ACTION_COL, STATE_COLS, build_transitions, load_trajectory_csv
+from causal.decision_tree.trajectory_io import ACTION_COL, STATE_COLS, build_transitions, load_trajectory_csv, normalize_rewards, RewardNormConfig
 from causal.decision_tree.viper_cart import ViperConfig, run_viper_from_files
 from causal.decision_tree.weights import run_weights_from_l_hat_csv
 
@@ -69,7 +69,7 @@ RUN_CONFIG = {
     # 输出：fqe_out/q_hat.pt；下游 l_hat / weights / VIPER 均依赖此 Q 估计
     # -------------------------------------------------------------------------
     # 训练轮数；loss 仍下降时可加大（大表可试 50～100）
-    "fqe_epochs": 50,
+    "fqe_epochs": 6,
     # 训练设备："cuda" | "cpu"（百万行建议 GPU）
     "fqe_device": "cuda",
     # Bootstrap 目标："sarsa"=用轨迹真实下一步动作 a'（默认，贴近行为策略）
@@ -108,7 +108,7 @@ RUN_CONFIG = {
     #       再用最优一组写入 viper_out/（见 tune_viper.py 第 42～59 行）
     "run_viper_tune_grid": False,
     # VIPER 外循环轮数；多轮选 acc_full 最优
-    "viper_n_round": 30,
+    "viper_n_round": 15,
     # True：导出 acc_full 最高的那一轮；False：只用最后一轮
     "viper_pick_best_round": True,
     # acc_full 与规则条数不可兼得（S0_5 实测 VIPER 均匀抽样）：
@@ -117,7 +117,7 @@ RUN_CONFIG = {
     #   depth=12 leaf=50 → acc≈72%  规则≈1400
     #   depth=16 leaf=1  → acc≈75.5% 规则≈12000  ← 75%+ 且比 depth=18 少一半
     #   depth=18 leaf=1  → acc≈77.5% 规则≈25000
-    "cart_max_depth": 16,
+    "cart_max_depth": 6,
     # 叶节点最少样本；增大可减规则，但 acc_full 会明显下降（leaf≥5 时 VIPER 难超 75%）
     "cart_min_samples_leaf": 1,
     # sklearn 默认 2；勿设 50（会压低 acc_full）
@@ -126,6 +126,17 @@ RUN_CONFIG = {
     "resample_size": 0,
     # 略增随机性，配合多轮选 acc_full 最优
     "weight_noise": 0.02,
+    # -------------------------------------------------------------------------
+    # 奖励归一化（提升 FQE 训练稳定性）
+    # -------------------------------------------------------------------------
+    # 是否启用奖励归一化
+    "enable_reward_norm": True,
+    # 奖励裁剪范围
+    "reward_clip_min": -10.0,
+    "reward_clip_max": 10.0,
+    # 是否按 episode 分别归一化（保留相对奖励结构）
+    "reward_norm_per_episode": False,
+    # -------------------------------------------------------------------------
     # 是否导出 tree.json、tree_nodes.csv、policy_tree_debug.dot
     "export_tree": True,
     # 是否用 Graphviz 渲染 PDF 流程图（需 pip install graphviz + 系统 Graphviz）
@@ -204,6 +215,18 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
     logger.info("读取轨迹: %s", csv_path)
     df = load_trajectory_csv(str(csv_path))
     n = len(df)
+
+    # --- 奖励归一化（提升 FQE 训练稳定性）---
+    if bool(cfg.get("enable_reward_norm", False)):
+        reward_norm_cfg = RewardNormConfig(
+            clip_range=(
+                float(cfg.get("reward_clip_min", -10.0)),
+                float(cfg.get("reward_clip_max", 10.0)),
+            ),
+            standardize=True,
+            per_episode=bool(cfg.get("reward_norm_per_episode", False)),
+        )
+        df = normalize_rewards(df, reward_norm_cfg)
 
     # --- 阶段 1: FQE ---
     logger.info("阶段 1/4: FQE 训练 Q_hat (%d epochs, device=%s)", cfg.get("fqe_epochs", 30), device)
