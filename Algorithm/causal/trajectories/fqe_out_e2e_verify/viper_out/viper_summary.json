@@ -1,0 +1,35 @@
+{
+  "feature_names": [
+    "s_0",
+    "s_1",
+    "s_2",
+    "s_3",
+    "s_4",
+    "s_5",
+    "s_6",
+    "s_7"
+  ],
+  "n_rules": 40,
+  "rounds": [
+    {
+      "round": 1,
+      "train_accuracy_resampled": 0.582046332046332,
+      "full_data_accuracy": 0.29922779922779924,
+      "n_resampled": 2072
+    },
+    {
+      "round": 2,
+      "train_accuracy_resampled": 0.5815637065637066,
+      "full_data_accuracy": 0.3064671814671815,
+      "n_resampled": 2072
+    }
+  ],
+  "tree": {
+    "n_nodes": 79,
+    "n_leaves": 40,
+    "tree_json": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out_e2e_verify\\viper_out\\tree.json",
+    "tree_nodes_csv": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out_e2e_verify\\viper_out\\tree_nodes.csv",
+    "tree_dot": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out_e2e_verify\\viper_out\\policy_tree.dot",
+    "tree_pdf": ""
+  }
+}

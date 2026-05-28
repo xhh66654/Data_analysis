@@ -1,0 +1,79 @@
+{
+  "feature_names": [
+    "s_0",
+    "s_1",
+    "s_2",
+    "s_3",
+    "s_4",
+    "s_5",
+    "s_6",
+    "s_7"
+  ],
+  "n_rules": 124,
+  "selected_round": 5,
+  "selected_acc_full": 0.6780975721650107,
+  "selected_acc_resampled": 0.6963838015557783,
+  "cart": {
+    "max_depth": 7,
+    "n_leaves": 124
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "train_accuracy_resampled": 0.6934279838868701,
+      "full_data_accuracy": 0.6722784947664522,
+      "n_resampled": 496986
+    },
+    {
+      "round": 2,
+      "train_accuracy_resampled": 0.6950356750491966,
+      "full_data_accuracy": 0.6731899892552305,
+      "n_resampled": 496986
+    },
+    {
+      "round": 3,
+      "train_accuracy_resampled": 0.694945129239053,
+      "full_data_accuracy": 0.6719303964296781,
+      "n_resampled": 496986
+    },
+    {
+      "round": 4,
+      "train_accuracy_resampled": 0.6953213973834274,
+      "full_data_accuracy": 0.6741195929060376,
+      "n_resampled": 496986
+    },
+    {
+      "round": 5,
+      "train_accuracy_resampled": 0.6963838015557783,
+      "full_data_accuracy": 0.6780975721650107,
+      "n_resampled": 496986
+    },
+    {
+      "round": 6,
+      "train_accuracy_resampled": 0.6961041156088904,
+      "full_data_accuracy": 0.6777434374408937,
+      "n_resampled": 496986
+    },
+    {
+      "round": 7,
+      "train_accuracy_resampled": 0.6946070915478505,
+      "full_data_accuracy": 0.6742383085237813,
+      "n_resampled": 496986
+    },
+    {
+      "round": 8,
+      "train_accuracy_resampled": 0.6951382936340259,
+      "full_data_accuracy": 0.6743952545946968,
+      "n_resampled": 496986
+    }
+  ],
+  "tree": {
+    "n_nodes": 247,
+    "n_leaves": 124,
+    "tree_json": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out\\viper_tune\\viper_out_best\\tree.json",
+    "tree_nodes_csv": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out\\viper_tune\\viper_out_best\\tree_nodes.csv",
+    "tree_dot": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out\\viper_tune\\viper_out_best\\policy_tree_debug.dot",
+    "tree_pdf": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out\\viper_tune\\viper_out_best\\policy_tree.pdf",
+    "tree_png": ""
+  }
+}

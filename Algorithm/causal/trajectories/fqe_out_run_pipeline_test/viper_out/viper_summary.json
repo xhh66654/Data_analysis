@@ -1,0 +1,27 @@
+{
+  "feature_names": [
+    "s_0",
+    "s_1",
+    "s_2",
+    "s_3",
+    "s_4",
+    "s_5",
+    "s_6",
+    "s_7"
+  ],
+  "n_rules": 47,
+  "rounds": [
+    {
+      "round": 1,
+      "train_accuracy_resampled": 0.5926640926640927,
+      "full_data_accuracy": 0.2997104247104247,
+      "n_resampled": 2072
+    },
+    {
+      "round": 2,
+      "train_accuracy_resampled": 0.5801158301158301,
+      "full_data_accuracy": 0.30743243243243246,
+      "n_resampled": 2072
+    }
+  ]
+}
