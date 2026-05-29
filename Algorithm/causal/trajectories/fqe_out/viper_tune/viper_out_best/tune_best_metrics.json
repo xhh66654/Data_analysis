@@ -1,7 +1,7 @@
 {
-  "grid_index": 8,
-  "selected_round": 5,
-  "acc_full": 0.6780975721650107,
-  "acc_resampled": 0.6963838015557783,
-  "n_rules": 124
+  "grid_index": 13,
+  "selected_round": 2,
+  "acc_full": 0.7238272305457296,
+  "acc_resampled": 0.7370066762444013,
+  "n_rules": 2785
 }

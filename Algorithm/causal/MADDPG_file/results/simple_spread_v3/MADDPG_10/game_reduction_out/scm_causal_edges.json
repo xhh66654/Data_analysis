@@ -1,36 +1,24 @@
 {
   "outcome": "a_target",
-  "baseline_mse_on_all_rows": 0.3580297529697418,
+  "baseline_mse_on_all_rows": 0.24186423420906067,
   "edges_sorted_by_delta_mse": [
     {
-      "parent_block": "s_other_agents",
-      "mse_full_dataset": 0.7213553190231323,
-      "delta_mse_vs_baseline": 0.3633255660533905,
+      "parent_block": "s_target",
+      "mse_full_dataset": 0.7530665993690491,
+      "delta_mse_vs_baseline": 0.5112023651599884,
       "relative_strength": 1.0
     },
     {
-      "parent_block": "s_landmarks",
-      "mse_full_dataset": 0.6134602427482605,
-      "delta_mse_vs_baseline": 0.2554304897785187,
-      "relative_strength": 0.7030347259982891
+      "parent_block": "a_mean__pooled_neighbors",
+      "mse_full_dataset": 0.4103529155254364,
+      "delta_mse_vs_baseline": 0.16848868131637573,
+      "relative_strength": 0.32959292209777763
     },
     {
-      "parent_block": "s_self_vel",
-      "mse_full_dataset": 0.46303150057792664,
-      "delta_mse_vs_baseline": 0.10500174760818481,
-      "relative_strength": 0.28900181385186324
-    },
-    {
-      "parent_block": "s_self_pos",
-      "mse_full_dataset": 0.39855077862739563,
-      "delta_mse_vs_baseline": 0.04052102565765381,
-      "relative_strength": 0.11152814292099462
-    },
-    {
-      "parent_block": "s_comm",
-      "mse_full_dataset": 0.3580297529697418,
-      "delta_mse_vs_baseline": 0.0,
-      "relative_strength": 0.0
+      "parent_block": "s_mean__pooled_neighbors",
+      "mse_full_dataset": 0.4084247946739197,
+      "delta_mse_vs_baseline": 0.166560560464859,
+      "relative_strength": 0.3258211851440308
     }
   ],
   "notes": "置零消融得到 parent_block→Y 的强度启发式；非等价于Pearl意义下ATE；时间先后由逐步轨迹隐含"

@@ -44,6 +44,7 @@ import pandas as pd
 
 from causal.decision_tree.fqe import FQETrainConfig, load_q_hat, save_q_hat, train_q_hat
 from causal.decision_tree.l_hat import compute_l_hat, l_hat_dataframe, save_l_hat_csv
+from causal.decision_tree.rule_ensemble import RuleEnsemble, ensemble_rules_from_rounds, save_ensemble_rules, rules_to_if_then_strings
 from causal.decision_tree.trajectory_io import ACTION_COL, STATE_COLS, build_transitions, load_trajectory_csv, normalize_rewards, RewardNormConfig
 from causal.decision_tree.viper_cart import ViperConfig, run_viper_from_files
 from causal.decision_tree.weights import run_weights_from_l_hat_csv
@@ -69,7 +70,7 @@ RUN_CONFIG = {
     # 输出：fqe_out/q_hat.pt；下游 l_hat / weights / VIPER 均依赖此 Q 估计
     # -------------------------------------------------------------------------
     # 训练轮数；loss 仍下降时可加大（大表可试 50～100）
-    "fqe_epochs": 6,
+    "fqe_epochs": 5,
     # 训练设备："cuda" | "cpu"（百万行建议 GPU）
     "fqe_device": "cuda",
     # Bootstrap 目标："sarsa"=用轨迹真实下一步动作 a'（默认，贴近行为策略）
@@ -103,29 +104,29 @@ RUN_CONFIG = {
     # 阶段 4～6：VIPER + CART + 规则/树导出
     # 输出：fqe_out/viper_out/rules.txt、tree.json、policy_tree.pdf 等
     # -------------------------------------------------------------------------
-    # False：只用下面 cart_* 训练 1 组 → viper_out/
-    # True：读取 tune_viper.py 的 TUNE_GRID，每组都训一遍 → fqe_out/viper_tune/，
-    #       再用最优一组写入 viper_out/（见 tune_viper.py 第 42～59 行）
+    # -------------------------------------------------------------------------
+    # 【策略：100轮浅树 + 规则集成提纯Top100】
+    #        单轮: depth=5 → 32条规则
+    #        100轮: 100 × 32 = 3200 规则实例
+    #        集成后: 仅保留跨轮最稳定的前100条
+    # -------------------------------------------------------------------------
     "run_viper_tune_grid": False,
-    # VIPER 外循环轮数；多轮选 acc_full 最优
-    "viper_n_round": 15,
-    # True：导出 acc_full 最高的那一轮；False：只用最后一轮
-    "viper_pick_best_round": True,
-    # acc_full 与规则条数不可兼得（S0_5 实测 VIPER 均匀抽样）：
-    #   depth=5  leaf=1  → acc≈67%  规则≈30
-    #   depth=10 leaf=1  → acc≈71%  规则≈900
-    #   depth=12 leaf=50 → acc≈72%  规则≈1400
-    #   depth=16 leaf=1  → acc≈75.5% 规则≈12000  ← 75%+ 且比 depth=18 少一半
-    #   depth=18 leaf=1  → acc≈77.5% 规则≈25000
-    "cart_max_depth": 6,
-    # 叶节点最少样本；增大可减规则，但 acc_full 会明显下降（leaf≥5 时 VIPER 难超 75%）
+    "viper_n_round": 100,
+    "viper_pick_best_round": False,
+    "cart_max_depth": 5,
     "cart_min_samples_leaf": 1,
-    # sklearn 默认 2；勿设 50（会压低 acc_full）
     "cart_min_samples_split": 2,
-    # 每轮重采样条数 M；0 表示 M=轨迹行数 N（有放回）
     "resample_size": 0,
-    # 略增随机性，配合多轮选 acc_full 最优
-    "weight_noise": 0.02,
+    "weight_noise": 0.05,
+    # -------------------------------------------------------------------------
+    # 动态权重更新（自适应重采样）
+    # -------------------------------------------------------------------------
+    # 是否启用动态权重更新（根据预测误差调整权重）
+    "viper_adaptive_resample": False,
+    # 错误样本权重增加比例
+    "viper_adaptation_rate": 0.1,
+    # 每多少轮进行一次权重更新
+    "viper_adapt_interval": 3,
     # -------------------------------------------------------------------------
     # 奖励归一化（提升 FQE 训练稳定性）
     # -------------------------------------------------------------------------
@@ -139,6 +140,14 @@ RUN_CONFIG = {
     # -------------------------------------------------------------------------
     # 是否导出 tree.json、tree_nodes.csv、policy_tree_debug.dot
     "export_tree": True,
+    # -------------------------------------------------------------------------
+    # 规则集成：100轮投票 → 按置信度排序 → 取前100条
+    # -------------------------------------------------------------------------
+    "run_rule_ensemble": True,
+    "ensemble_max_rules": 100,
+    "ensemble_confidence_threshold": 0.0,
+    "ensemble_min_support_rounds": 2,
+    "ensemble_feature_pattern": True,
     # 是否用 Graphviz 渲染 PDF 流程图（需 pip install graphviz + 系统 Graphviz）
     "render_tree_pdf": True,
     # 是否再从同一 .dot 导出 PNG（与 PDF 同风格）
@@ -327,12 +336,48 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
             tree_image_dpi=int(cfg.get("tree_image_dpi", 150)),
             open_tree_pdf=bool(cfg.get("open_tree_pdf", False) or cfg.get("show_tree_image", False)),
             show_tree_image=bool(cfg.get("show_tree_image", False)),
+            # 动态权重更新参数
+            adaptive_resample=bool(cfg.get("viper_adaptive_resample", False)),
+            adaptation_rate=float(cfg.get("viper_adaptation_rate", 0.1)),
+            adapt_interval=int(cfg.get("viper_adapt_interval", 3)),
         )
         viper_result = run_viper_from_files(csv_path, weights_path, viper_out_dir, viper_cfg)
 
     sel_round = viper_result.selected_round
     sel_full = viper_result.selected_acc_full
     sel_resampled = viper_result.selected_acc_resampled
+
+    # --- 规则集成（可选）---
+    final_rules = viper_result.rules.copy()
+    if bool(cfg.get("run_rule_ensemble", False)):
+        logger.info("阶段 5/5: 规则集成（从 %d 轮规则中集成）", n_round)
+        
+        # 收集所有轮次的规则
+        rules_per_round = []
+        for round_result in viper_result.round_results:
+            rules_per_round.append({
+                'rules': round_result.rules,
+                'acc_full': round_result.acc_full,
+            })
+        
+        # 执行规则集成
+        ensemble_rules = ensemble_rules_from_rounds(
+            rules_per_round,
+            max_rules=int(cfg.get("ensemble_max_rules", 100)),
+            confidence_threshold=float(cfg.get("ensemble_confidence_threshold", 0.75)),
+            min_support_rounds=int(cfg.get("ensemble_min_support_rounds", 2)),
+            use_feature_pattern=bool(cfg.get("ensemble_feature_pattern", True)),
+        )
+        
+        # 转换为 IF-THEN 格式
+        final_rules = rules_to_if_then_strings(ensemble_rules)
+        
+        # 保存集成规则
+        ensemble_rules_path = viper_out_dir / "ensemble_rules"
+        save_ensemble_rules(ensemble_rules, ensemble_rules_path)
+        
+        logger.info("规则集成完成: 原始规则数=%d 集成后规则数=%d", 
+                    sum(len(r['rules']) for r in rules_per_round), len(final_rules))
 
     rules_txt = viper_out_dir / "rules.txt"
     rules_json = viper_out_dir / "rules.json"
@@ -342,8 +387,23 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
     tree_dot = viper_out_dir / "policy_tree_debug.dot"
     tree_pdf = viper_out_dir / "policy_tree.pdf"
     tree_png = viper_out_dir / "policy_tree.png"
-    preview = viper_result.rules[:10]
+    preview = final_rules[:10]
 
+    # 保存集成后的规则到 rules.txt 和 rules.json（覆盖原始规则）
+    if bool(cfg.get("run_rule_ensemble", False)) and final_rules:
+        rules_txt.write_text("\n".join(final_rules) + "\n", encoding="utf-8")
+        rules_json.write_text(
+            json.dumps(final_rules, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        # 更新 summary.json 中的 n_rules
+        if summary_json.exists():
+            with open(summary_json, "r", encoding="utf-8") as f:
+                summary_data = json.load(f)
+            summary_data["n_rules"] = len(final_rules)
+            with open(summary_json, "w", encoding="utf-8") as f:
+                json.dump(summary_data, f, ensure_ascii=False, indent=2)
+    
     result = PipelineResult(
         success=True,
         trajectory_csv=str(csv_path),
@@ -359,7 +419,7 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
         fqe_final_loss=float(fqe_result.final_loss),
         viper_last_acc_full=float(sel_full),
         viper_last_acc_resampled=float(sel_resampled),
-        n_rules=len(viper_result.rules),
+        n_rules=len(final_rules),  # 使用集成后的规则数
         rules_preview=preview,
         tree_json=str(tree_json) if tree_json.is_file() else "",
         tree_nodes_csv=str(tree_nodes_csv) if tree_nodes_csv.is_file() else "",

@@ -52,13 +52,19 @@ logger = logging.getLogger(__name__)
 # 网格：depth × min_samples_leaf（可按需增删）
 TUNE_GRID: list[dict] = [
     {"max_depth": 4, "min_samples_leaf": 1},
-    {"max_depth": 4, "min_samples_leaf": 50},
+    {"max_depth": 4, "min_samples_leaf": 10},
     {"max_depth": 5, "min_samples_leaf": 1},
-    {"max_depth": 5, "min_samples_leaf": 50},
+    {"max_depth": 5, "min_samples_leaf": 10},
     {"max_depth": 6, "min_samples_leaf": 1},
-    {"max_depth": 6, "min_samples_leaf": 50},
+    {"max_depth": 6, "min_samples_leaf": 10},
     {"max_depth": 7, "min_samples_leaf": 1},
-    {"max_depth": 7, "min_samples_leaf": 50}
+    {"max_depth": 7, "min_samples_leaf": 10},
+    {"max_depth": 8, "min_samples_leaf": 1},
+    {"max_depth": 8, "min_samples_leaf": 10},
+    {"max_depth": 10, "min_samples_leaf": 1},
+    {"max_depth": 10, "min_samples_leaf": 5},
+    {"max_depth": 12, "min_samples_leaf": 1},
+    {"max_depth": 12, "min_samples_leaf": 5},
 ]
 
 DEFAULT_CSV = _ALGORITHM_ROOT / "causal/trajectories/trajectory_LLdV3_S0_5.csv"

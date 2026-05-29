@@ -1,0 +1,852 @@
+[
+  {
+    "conditions": [
+      "s_1<= -0.0049",
+      "s_3<= 0.0137",
+      "s_3> -0.0474",
+      "s_4<= 0.0525",
+      "s_4> -0.0698"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6739,
+    "support_count": 20,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.273",
+      "s_3<= -0.0759",
+      "s_4<= 0.0542"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.273",
+      "s_3<= -0.0759",
+      "s_4<= 0.2344",
+      "s_4> -0.1348"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.273",
+      "s_3<= -0.2728",
+      "s_4> 0.2344",
+      "s_5<= -0.1164"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.273",
+      "s_3<= -0.0474",
+      "s_3> -0.4964",
+      "s_4> 0.2344",
+      "s_5<= -0.1164"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.273",
+      "s_3<= -0.0474",
+      "s_4<= 0.4148",
+      "s_4> 0.2344",
+      "s_5> -0.1164"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.273",
+      "s_3<= -0.0474",
+      "s_4> 0.314",
+      "s_5> -0.1164"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.273",
+      "s_2> 0.3614",
+      "s_3<= -0.0474",
+      "s_4<= 0.1708",
+      "s_4> 0.0636"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= -0.0049",
+      "s_3<= -0.0002",
+      "s_3> -0.0474",
+      "s_4<= -0.0698"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_0<= 0.1205",
+      "s_1<= -0.0049",
+      "s_3> -0.0212",
+      "s_4<= 0.0307"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_0> 0.1205",
+      "s_1<= -0.0049",
+      "s_3> -0.0212",
+      "s_4<= 0.0307"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= -0.0049",
+      "s_3> -0.0474",
+      "s_4> 0.0525",
+      "s_5<= 0.0005"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> -0.0049",
+      "s_2<= -0.0707",
+      "s_3> -0.0474",
+      "s_7<= 0.5"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> -0.0049",
+      "s_2<= 0.0735",
+      "s_2> -0.2059",
+      "s_3> -0.0474",
+      "s_7<= 0.5"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.4048",
+      "s_1> -0.0049",
+      "s_2> 0.0735",
+      "s_3> -0.0474",
+      "s_7<= 0.5"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 0.6983",
+      "s_2> 0.0735",
+      "s_3> -0.0474",
+      "s_7<= 0.5"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> -0.0049",
+      "s_3<= 0.0267",
+      "s_3> -0.0474",
+      "s_4<= 0.065",
+      "s_7> 0.5"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> -0.0049",
+      "s_3<= 0.0267",
+      "s_3> -0.0474",
+      "s_4> 0.065",
+      "s_7> 0.5"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6739,
+    "support_count": 10,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= -0.0049",
+      "s_3> -0.0466",
+      "s_4> 0.0525",
+      "s_5> 0.0005"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6739,
+    "support_count": 9,
+    "source_rounds": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> -0.0049",
+      "s_3> -0.0089",
+      "s_5<= -0.0045",
+      "s_7> 0.5"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6738,
+    "support_count": 9,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> -0.0049",
+      "s_3> -0.0089",
+      "s_5> -0.0045",
+      "s_7> 0.5"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6738,
+    "support_count": 9,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 0.6318",
+      "s_3<= -0.0474",
+      "s_3> -0.114",
+      "s_4<= 0.2344"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6741,
+    "support_count": 8,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.2778",
+      "s_1> -0.0018",
+      "s_3<= -0.0474",
+      "s_3> -0.114",
+      "s_4<= 0.2344"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6741,
+    "support_count": 8,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      7,
+      8,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2669",
+      "s_2> 0.3615",
+      "s_3<= -0.0482",
+      "s_4<= 0.0693"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6735,
+    "support_count": 7,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6,
+      8
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2664",
+      "s_3<= -0.0474",
+      "s_4<= 0.5288",
+      "s_4> 0.2068"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6732,
+    "support_count": 6,
+    "source_rounds": [
+      0,
+      2,
+      3,
+      4,
+      6,
+      8
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= -0.0048",
+      "s_3> -0.0092",
+      "s_4<= 0.0843",
+      "s_4> 0.0267"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6742,
+    "support_count": 5,
+    "source_rounds": [
+      0,
+      1,
+      2,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= -0.0049",
+      "s_3> -0.0074",
+      "s_4<= 0.0848",
+      "s_4> 0.0311"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6737,
+    "support_count": 5,
+    "source_rounds": [
+      3,
+      4,
+      5,
+      6,
+      8
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.266",
+      "s_3<= -0.0466",
+      "s_4> 0.3218"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6734,
+    "support_count": 5,
+    "source_rounds": [
+      2,
+      3,
+      4,
+      6,
+      8
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_0<= -0.1731",
+      "s_1> 1.2795",
+      "s_2<= 0.3558",
+      "s_3<= -0.0485",
+      "s_4<= -0.0342"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.675,
+    "support_count": 4,
+    "source_rounds": [
+      1,
+      5,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_0> -0.1731",
+      "s_1> 1.2795",
+      "s_2<= 0.3558",
+      "s_3<= -0.0485",
+      "s_4<= -0.0342"
+    ],
+    "action": "爬升1",
+    "confidence": 0.675,
+    "support_count": 4,
+    "source_rounds": [
+      1,
+      5,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2795",
+      "s_2<= 0.0561",
+      "s_3<= -0.0485",
+      "s_4> -0.0342"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.675,
+    "support_count": 4,
+    "source_rounds": [
+      1,
+      5,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2795",
+      "s_2<= 0.3558",
+      "s_2> -0.2509",
+      "s_3<= -0.0485",
+      "s_4> -0.0342"
+    ],
+    "action": "爬升1",
+    "confidence": 0.675,
+    "support_count": 4,
+    "source_rounds": [
+      1,
+      5,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2795",
+      "s_2> 0.3558",
+      "s_3<= -0.0485",
+      "s_4> 0.1397"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.675,
+    "support_count": 4,
+    "source_rounds": [
+      1,
+      5,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2681",
+      "s_2<= 0.3564",
+      "s_3<= -0.0474",
+      "s_4<= 0.0684"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6736,
+    "support_count": 4,
+    "source_rounds": [
+      0,
+      2,
+      3,
+      4
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2681",
+      "s_2<= 0.3564",
+      "s_3<= -0.0474",
+      "s_4<= 0.1684",
+      "s_4> -0.0404"
+    ],
+    "action": "稳定跟踪",
+    "confidence": 0.6736,
+    "support_count": 4,
+    "source_rounds": [
+      0,
+      2,
+      3,
+      4
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.3153",
+      "s_1> 1.2791",
+      "s_2> 0.3613",
+      "s_3<= -0.0466",
+      "s_4<= 0.0784"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6751,
+    "support_count": 3,
+    "source_rounds": [
+      5,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.2966",
+      "s_2> 0.3613",
+      "s_3<= -0.0466",
+      "s_4<= 0.0784"
+    ],
+    "action": "爬升2",
+    "confidence": 0.6751,
+    "support_count": 3,
+    "source_rounds": [
+      5,
+      7,
+      9
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1<= 1.3585",
+      "s_1> 1.266",
+      "s_3<= -0.0462",
+      "s_4<= 0.2657",
+      "s_4> 0.1672"
+    ],
+    "action": "斜切切线机动",
+    "confidence": 0.6732,
+    "support_count": 3,
+    "source_rounds": [
+      2,
+      4,
+      6
+    ],
+    "coverage": 0.0
+  },
+  {
+    "conditions": [
+      "s_1> 1.3174",
+      "s_3<= -0.0462",
+      "s_4<= 0.2657",
+      "s_4> 0.1672"
+    ],
+    "action": "爬升1",
+    "confidence": 0.6732,
+    "support_count": 3,
+    "source_rounds": [
+      2,
+      4,
+      6
+    ],
+    "coverage": 0.0
+  }
+]

@@ -98,6 +98,64 @@ def compute_uniform_weights(l_hat: np.ndarray) -> WeightsBatch:
     return WeightsBatch(l_hat=l, w_raw=w_raw, weights=weights)
 
 
+def compute_mixed_weights(l_hat: np.ndarray, alpha: float = 0.5, eps: float = DEFAULT_EPS) -> WeightsBatch:
+    """
+    混合策略权重：平衡 softmax 加权与均匀抽样。
+    
+    weights = alpha * softmax(l_hat) + (1 - alpha) * uniform
+    
+    参数：
+        alpha: 混合系数，0=完全均匀，1=完全 softmax
+        eps: 平滑项
+    
+    特点：
+        - alpha=0.7 时：70% softmax + 30% 均匀，既利用高 l_hat 样本，又保持多样性
+        - 使用 softmax 而非简单归一化，权重分布更平滑
+    """
+    if eps <= 0:
+        raise ValueError(f"eps 须为正，得到 {eps}")
+    if not (0 <= alpha <= 1):
+        raise ValueError(f"alpha 须在 [0,1] 范围内，得到 {alpha}")
+    
+    l = np.asarray(l_hat, dtype=np.float64).reshape(-1)
+    if l.size == 0:
+        raise ValueError("l_hat 为空")
+    
+    n = l.size
+    
+    # Softmax 加权（使用非负部分）
+    pos_lhat = np.maximum(l, 0.0)
+    lhat_std = pos_lhat.std() + 1e-8
+    
+    if pos_lhat.max() > 0:
+        # 用标准差归一化后再 softmax，避免极端值主导
+        exp_lhat = np.exp(pos_lhat / lhat_std)
+        softmax_weights = exp_lhat / exp_lhat.sum()
+    else:
+        softmax_weights = np.ones(n) / n
+    
+    # 均匀权重
+    uniform_weights = np.ones(n) / n
+    
+    # 混合
+    weights = alpha * softmax_weights + (1 - alpha) * uniform_weights
+    
+    # 添加平滑项并重新归一化
+    weights = weights + eps
+    weights = weights / weights.sum()
+    
+    w_raw = weights * n  # 伪 raw 权重（用于保持接口一致）
+    
+    logger.info(
+        "混合权重完成 n=%d alpha=%.2f weights_min=%.6e weights_max=%.6e",
+        n,
+        alpha,
+        float(weights.min()),
+        float(weights.max()),
+    )
+    return WeightsBatch(l_hat=l, w_raw=w_raw, weights=weights)
+
+
 def load_l_hat_csv(path: str | Path) -> pd.DataFrame:
     path = Path(path)
     if not path.is_file():
@@ -137,16 +195,20 @@ def run_weights_from_l_hat_csv(
     output_path: str | Path | None = None,
     eps: float = DEFAULT_EPS,
     weighted_sampling: bool = True,
+    mixed_alpha: float = 0.7,  # 混合策略系数
 ) -> tuple[WeightsBatch, pd.DataFrame, Path]:
     l_hat_path = Path(l_hat_path)
     df = load_l_hat_csv(l_hat_path)
     l_hat = pd.to_numeric(df[LHAT_COL], errors="coerce").values
     if np.isnan(l_hat).any():
         raise ValueError("l_hat 列含 NaN")
+    
     if weighted_sampling:
-        batch = compute_weights(l_hat, eps=eps)
+        # 使用混合策略
+        batch = compute_mixed_weights(l_hat, alpha=mixed_alpha, eps=eps)
     else:
         batch = compute_uniform_weights(l_hat)
+    
     df_out = weights_dataframe(df, batch)
     if output_path is None:
         output_path = l_hat_path.parent / "weights.csv"

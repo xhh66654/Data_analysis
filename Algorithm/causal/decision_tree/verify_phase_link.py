@@ -31,7 +31,7 @@ import torch
 from .fqe import load_q_hat
 from .l_hat import compute_l_hat, l_hat_dataframe
 from .trajectory_io import ACTION_COL, EPISODE_COL, STATE_COLS, build_transitions, load_trajectory_csv
-from .weights import DEFAULT_EPS, compute_uniform_weights, compute_weights, load_l_hat_csv
+from .weights import DEFAULT_EPS, compute_uniform_weights, compute_weights, compute_mixed_weights, load_l_hat_csv
 
 
 def verify_toy_weights(eps: float = DEFAULT_EPS) -> list[str]:
@@ -68,6 +68,7 @@ def verify_weights_csv(
     eps: float = DEFAULT_EPS,
     *,
     weighted_sampling: bool = True,
+    mixed_alpha: float = 0.7,
 ) -> list[str]:
     errors: list[str] = []
     df = pd.read_csv(weights_path, encoding="utf-8-sig")
@@ -79,13 +80,13 @@ def verify_weights_csv(
     w_raw = df["w_raw"].values.astype(np.float64)
     weights = df["weights"].values.astype(np.float64)
     if weighted_sampling:
-        expect = compute_weights(l_hat, eps=eps)
+        expect = compute_mixed_weights(l_hat, alpha=mixed_alpha, eps=eps)
     else:
         expect = compute_uniform_weights(l_hat)
     if not np.allclose(w_raw, expect.w_raw, rtol=1e-5, atol=1e-8):
-        errors.append("w_raw 与 max(l_hat,0)+eps 不一致")
+        errors.append("w_raw 与 mixed_weights 不一致")
     if not np.allclose(weights, expect.weights, rtol=1e-5, atol=1e-8):
-        errors.append("weights 与归一化结果不一致")
+        errors.append("weights 与 mixed_weights 不一致")
     if not np.isclose(weights.sum(), 1.0, rtol=1e-6, atol=1e-8):
         errors.append(f"weights 之和={weights.sum()} != 1")
     if (weights < 0).any():
@@ -285,11 +286,13 @@ def verify_e2e(
         return 1
 
     final_json = out_dir / "final_result.json"
+    mixed_alpha = 0.7
     if final_json.is_file():
         try:
             saved_cfg = json.loads(final_json.read_text(encoding="utf-8")).get("config", {})
             if "viper_weighted_sampling" in saved_cfg:
                 weighted_sampling = bool(saved_cfg["viper_weighted_sampling"])
+            mixed_alpha = float(saved_cfg.get("mixed_alpha", 0.7))
         except (json.JSONDecodeError, OSError):
             pass
 
@@ -297,7 +300,7 @@ def verify_e2e(
     if rc != 0:
         return rc
 
-    w_err = verify_weights_csv(weights_csv, eps=eps, weighted_sampling=weighted_sampling)
+    w_err = verify_weights_csv(weights_csv, eps=eps, weighted_sampling=weighted_sampling, mixed_alpha=mixed_alpha)
     for e in w_err:
         print(f"FAIL weights: {e}")
     if w_err:

@@ -113,6 +113,67 @@ def resample_xy(
     return x[idx], y[idx], idx
 
 
+def adaptive_resample_xy(
+    x: np.ndarray,
+    y: np.ndarray,
+    weights: np.ndarray,
+    *,
+    n_samples: int | None = None,
+    rng: np.random.Generator | None = None,
+    adaptation_rate: float = 0.1,
+    adapt_interval: int = 3,
+    round_idx: int = 0,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    自适应重采样：根据前一轮预测误差动态调整权重。
+    
+    参数：
+        adaptation_rate: 错误样本权重增加比例
+        adapt_interval: 每多少轮进行一次权重更新
+        round_idx: 当前轮次索引（从0开始）
+    
+    返回：
+        (X', y', idx, new_weights)
+    """
+    n = x.shape[0]
+    m = n if n_samples is None else int(n_samples)
+    gen = rng if rng is not None else np.random.default_rng()
+    
+    # 基础重采样
+    idx = sample_row_indices(weights, m, rng=gen, replace=True)
+    xp, yp = x[idx], y[idx]
+    
+    # 每隔 adapt_interval 轮进行一次权重自适应
+    new_weights = weights.copy()
+    if round_idx > 0 and round_idx % adapt_interval == 0:
+        # 训练一个临时模型来评估误差
+        temp_model = DecisionTreeClassifier(
+            max_depth=6,
+            random_state=gen.integers(0, 1000),
+            min_samples_leaf=1,
+        )
+        temp_model.fit(xp, yp)
+        
+        # 计算全量数据上的预测误差
+        pred = temp_model.predict(x)
+        error_mask = pred != y
+        
+        # 对错误样本增加权重
+        new_weights[error_mask] *= (1 + adaptation_rate)
+        new_weights = new_weights / new_weights.sum()
+        
+        error_rate = float(error_mask.mean())
+        logger.debug(
+            "自适应权重更新: 轮次=%d 误差率=%.4f 调整后权重范围=[%.6e, %.6e]",
+            round_idx,
+            error_rate,
+            float(new_weights.min()),
+            float(new_weights.max()),
+        )
+    
+    return xp, yp, idx, new_weights
+
+
 def train_cart(
     x_prime: np.ndarray,
     y_prime: np.ndarray,
@@ -142,6 +203,16 @@ class ViperRoundResult:
 
 
 @dataclass
+class ViperRoundFullResult:
+    """每轮的完整结果（用于规则集成）"""
+    round_index: int
+    model: DecisionTreeClassifier
+    acc_resampled: float
+    acc_full: float
+    rules: list[str]
+
+
+@dataclass
 class ViperRunResult:
     model: DecisionTreeClassifier
     rounds: list[ViperRoundResult] = field(default_factory=list)
@@ -150,6 +221,8 @@ class ViperRunResult:
     selected_round: int = 1
     selected_acc_full: float = 0.0
     selected_acc_resampled: float = 0.0
+    # 每轮完整结果（用于规则集成）
+    round_results: list[ViperRoundFullResult] = field(default_factory=list)
 
 
 @dataclass
@@ -173,6 +246,10 @@ class ViperConfig:
     # 对应 dt 的 --open-pdf：渲染成功后用系统默认程序打开 PDF（无 PDF 则尝试 PNG）
     open_tree_pdf: bool = False
     show_tree_image: bool = False  # 同 open_tree_pdf，保留兼容
+    # 动态权重更新参数
+    adaptive_resample: bool = False  # 是否启用自适应重采样
+    adaptation_rate: float = 0.1  # 错误样本权重增加比例
+    adapt_interval: int = 3  # 每多少轮进行一次权重更新
 
 
 def run_viper_loop(
@@ -184,6 +261,8 @@ def run_viper_loop(
     """
     步骤 5：固定 weights，多轮「重采样 → CART」。
     默认按全量准确率 acc_full 选取最优轮（pick_best_by_full_acc=True）。
+    
+    支持动态权重更新：每隔 adapt_interval 轮，根据前一轮预测误差调整权重。
     """
     if cfg.n_round < 1:
         raise ValueError(f"n_round 须 >= 1，得到 {cfg.n_round}")
@@ -194,15 +273,32 @@ def run_viper_loop(
     rng = np.random.default_rng(cfg.random_state)
     m = cfg.resample_size if cfg.resample_size is not None else n
     rounds: list[ViperRoundResult] = []
+    round_results: list[ViperRoundFullResult] = []  # 用于规则集成
     best_model: DecisionTreeClassifier | None = None
     best_round = 1
     best_full = -1.0
     best_resampled = 0.0
     last_model: DecisionTreeClassifier | None = None
+    
+    # 当前权重（支持动态更新）
+    current_weights = weights.copy()
 
     for r in range(1, cfg.n_round + 1):
-        w_round = perturb_weights(weights, cfg.weight_noise_std, rng)
-        xp, yp, _idx = resample_xy(x, y, w_round, n_samples=m, rng=rng)
+        w_round = perturb_weights(current_weights, cfg.weight_noise_std, rng)
+        
+        # 根据配置选择重采样方式
+        if cfg.adaptive_resample:
+            xp, yp, _idx, current_weights = adaptive_resample_xy(
+                x, y, w_round, 
+                n_samples=m, 
+                rng=rng,
+                adaptation_rate=cfg.adaptation_rate,
+                adapt_interval=cfg.adapt_interval,
+                round_idx=r,
+            )
+        else:
+            xp, yp, _idx = resample_xy(x, y, w_round, n_samples=m, rng=rng)
+        
         model = train_cart(
             xp,
             yp,
@@ -213,6 +309,10 @@ def run_viper_loop(
         )
         acc_resampled = float(accuracy_score(yp, model.predict(xp)))
         acc_full = float(accuracy_score(y, model.predict(x)))
+        
+        # 提取当前轮的规则（用于规则集成）
+        round_rules = extract_rules(model, list(STATE_COLS), cfg.class_mapping)
+        
         rounds.append(
             ViperRoundResult(
                 round_index=r,
@@ -221,6 +321,18 @@ def run_viper_loop(
                 n_resampled=m,
             )
         )
+        
+        # 保存每轮完整结果
+        round_results.append(
+            ViperRoundFullResult(
+                round_index=r,
+                model=copy.deepcopy(model),
+                acc_resampled=acc_resampled,
+                acc_full=acc_full,
+                rules=round_rules,
+            )
+        )
+        
         logger.info(
             "VIPER round %d/%d acc_resampled=%.4f acc_full=%.4f",
             r,
@@ -266,6 +378,7 @@ def run_viper_loop(
         selected_round=best_round,
         selected_acc_full=best_full,
         selected_acc_resampled=best_resampled,
+        round_results=round_results,
     )
 
 

@@ -2,15 +2,15 @@
   "description": "由 tune_viper.py 自动生成，可复制到 run_pipeline.py 的 RUN_CONFIG",
   "viper_n_round": 8,
   "viper_pick_best_round": true,
-  "cart_max_depth": 7,
-  "cart_min_samples_leaf": 50,
+  "cart_max_depth": 12,
+  "cart_min_samples_leaf": 1,
   "cart_min_samples_split": 2,
   "weight_noise": 0.02,
   "resample_size": 0,
   "metrics": {
-    "acc_full": 0.6780975721650107,
-    "acc_resampled": 0.6963838015557783,
-    "n_rules": 124,
-    "n_leaves": 124
+    "acc_full": 0.7238272305457296,
+    "acc_resampled": 0.7370066762444013,
+    "n_rules": 2785,
+    "n_leaves": 2785
   }
 }

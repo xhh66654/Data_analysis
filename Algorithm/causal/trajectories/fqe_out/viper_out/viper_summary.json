@@ -9,109 +9,79 @@
     "s_6",
     "s_7"
   ],
-  "n_rules": 64,
+  "n_rules": 39,
   "selected_round": 10,
-  "selected_acc_full": 0.6843653543560583,
-  "selected_acc_resampled": 0.685500195176524,
+  "selected_acc_full": 0.6752966884379037,
+  "selected_acc_resampled": 0.6767635305622292,
   "cart": {
-    "max_depth": 6,
-    "n_leaves": 64
+    "max_depth": 5,
+    "n_leaves": 32
   },
   "rounds": [
     {
       "round": 1,
-      "train_accuracy_resampled": 0.6836228787128813,
-      "full_data_accuracy": 0.6813773426213213,
+      "train_accuracy_resampled": 0.6747332922858994,
+      "full_data_accuracy": 0.6725501321968828,
       "n_resampled": 496986
     },
     {
       "round": 2,
-      "train_accuracy_resampled": 0.6850353933511205,
-      "full_data_accuracy": 0.6836993396192247,
+      "train_accuracy_resampled": 0.676188061635539,
+      "full_data_accuracy": 0.6748258502251573,
       "n_resampled": 496986
     },
     {
       "round": 3,
-      "train_accuracy_resampled": 0.6813230151352352,
-      "full_data_accuracy": 0.6810694868668332,
+      "train_accuracy_resampled": 0.6737272277287489,
+      "full_data_accuracy": 0.6733569959717175,
       "n_resampled": 496986
     },
     {
       "round": 4,
-      "train_accuracy_resampled": 0.6837677520091109,
-      "full_data_accuracy": 0.6823451767253002,
+      "train_accuracy_resampled": 0.6764295171292551,
+      "full_data_accuracy": 0.6750512086859589,
       "n_resampled": 496986
     },
     {
       "round": 5,
-      "train_accuracy_resampled": 0.6818662899960964,
-      "full_data_accuracy": 0.6811700933225483,
+      "train_accuracy_resampled": 0.6739465498022077,
+      "full_data_accuracy": 0.6734857722350328,
       "n_resampled": 496986
     },
     {
       "round": 6,
-      "train_accuracy_resampled": 0.6841601171863996,
-      "full_data_accuracy": 0.6834357507052512,
+      "train_accuracy_resampled": 0.6755985078050488,
+      "full_data_accuracy": 0.6750793784935591,
       "n_resampled": 496986
     },
     {
       "round": 7,
-      "train_accuracy_resampled": 0.6820956727151268,
-      "full_data_accuracy": 0.6815845919200944,
+      "train_accuracy_resampled": 0.6728700607260567,
+      "full_data_accuracy": 0.6728600000804852,
       "n_resampled": 496986
     },
     {
       "round": 8,
-      "train_accuracy_resampled": 0.6822948734974426,
-      "full_data_accuracy": 0.6822164004619848,
+      "train_accuracy_resampled": 0.6745864068605554,
+      "full_data_accuracy": 0.6749324930682152,
       "n_resampled": 496986
     },
     {
       "round": 9,
-      "train_accuracy_resampled": 0.6814115488162644,
-      "full_data_accuracy": 0.6806187699452299,
+      "train_accuracy_resampled": 0.6726084839411975,
+      "full_data_accuracy": 0.6720370392727361,
       "n_resampled": 496986
     },
     {
       "round": 10,
-      "train_accuracy_resampled": 0.685500195176524,
-      "full_data_accuracy": 0.6843653543560583,
-      "n_resampled": 496986
-    },
-    {
-      "round": 11,
-      "train_accuracy_resampled": 0.681461852044122,
-      "full_data_accuracy": 0.6808521769224888,
-      "n_resampled": 496986
-    },
-    {
-      "round": 12,
-      "train_accuracy_resampled": 0.6816650770846664,
-      "full_data_accuracy": 0.6809729046693468,
-      "n_resampled": 496986
-    },
-    {
-      "round": 13,
-      "train_accuracy_resampled": 0.6835826361305952,
-      "full_data_accuracy": 0.6825484017658445,
-      "n_resampled": 496986
-    },
-    {
-      "round": 14,
-      "train_accuracy_resampled": 0.681648980051752,
-      "full_data_accuracy": 0.6813511849428354,
-      "n_resampled": 496986
-    },
-    {
-      "round": 15,
-      "train_accuracy_resampled": 0.6811580205478626,
-      "full_data_accuracy": 0.680218356251484,
+      "train_accuracy_resampled": 0.6767635305622292,
+      "full_data_accuracy": 0.6752966884379037,
       "n_resampled": 496986
     }
   ],
   "tree": {
-    "n_nodes": 127,
-    "n_leaves": 64,
+    "n_nodes": 63,
+    "n_leaves": 32,
     "tree_json": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out\\viper_out\\tree.json",
     "tree_nodes_csv": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out\\viper_out\\tree_nodes.csv",
     "tree_dot": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\fqe_out\\viper_out\\policy_tree_debug.dot",
