@@ -1,0 +1,106 @@
+scenario_name: "简单分散任务（Simple Spread v3）"
+description: "多智能体目标分散任务环境。多个智能体需要协作覆盖多个静态地标。目标智能体需要在与邻居协作、躲避碰撞、覆盖目标之间取得平衡。"
+
+# ========== 块语义映射 ==========
+blocks_meaning:
+  s_target: 
+    zh_name: "己方智能体当前状态"
+    zh_description: "目标智能体自身的位置、速度、朝向等内部信息"
+    interpretation_hint: "反映己方当前的处境与能力状态"
+  
+  s_mean__pooled_neighbors:
+    zh_name: "邻居群体平均态势"
+    zh_description: "保留邻居们的平均位置、平均速度等几何特性"
+    interpretation_hint: "代表周边伙伴或潜在碰撞体的群体态势；接近则威胁，远离则孤立"
+  
+  a_mean__pooled_neighbors:
+    zh_name: "邻居群体平均行为倾向"
+    zh_description: "保留邻居们的平均动作向量与行为倾向"
+    interpretation_hint: "反映周边智能体的集体运动方向；与己方协调度高则支援，反向则冲突"
+
+# ========== 行为标签语义 ==========
+behavior_semantics:
+  escape-ish:
+    zh_label: "撤退规避"
+    zh_description: "倾向于远离当前位置，躲避邻居或目标地点"
+    intensity_order: 1
+  
+  press-forward:
+    zh_label: "主动前进"
+    zh_description: "倾向于向某方向积极移动，覆盖目标或追赶邻居"
+    intensity_order: 3
+  
+  maneuver:
+    zh_label: "灵活机动"
+    zh_description: "进行侧向移动或绕过，避免直线碰撞"
+    intensity_order: 2
+  
+  hold-neutral:
+    zh_label: "保持观望"
+    zh_description: "倾向于保持原位或低速移动，等待环境变化"
+    intensity_order: 0
+
+# ========== 强度等级描述词库 ==========
+intensity_descriptions:
+  l2_thresholds: [0.0, 0.3, 0.6, 1.0]
+  levels:
+    0:
+      name: "无关"
+      zh_phrase: ["无关", "无影响", "可忽略"]
+      emphasis: "该因素在此时刻的影响可以忽略"
+    1:
+      name: "轻微"
+      zh_phrase: ["轻微", "有限", "初步"]
+      emphasis: "该因素有所影响但不决定性"
+    2:
+      name: "中等"
+      zh_phrase: ["显著", "明显", "相当"]
+      emphasis: "该因素对决策有重要推动作用"
+    3:
+      name: "强烈"
+      zh_phrase: ["决定性", "主导", "关键"]
+      emphasis: "该因素是决策的主要驱动力"
+
+intensity_phrases:
+  "无关": ["无关", "无影响", "可忽略"]
+  "轻微": ["轻微", "有限", "初步影响"]
+  "中等": ["显著", "明显", "相当影响"]
+  "强烈": ["决定性", "主导", "关键因素"]
+
+# ========== 模板库 ==========
+templates:
+  
+  single_factor:
+    strong_positive:
+      - "{behavior_zh}倾向明显，主要受{block_zh}驱动；"
+      - "由于{block_zh}强烈，目标采取{behavior_zh}；"
+    
+    strong_negative:
+      - "目标避免{behavior_zh}，因为{block_zh}并不支持；"
+      - "{block_zh}变化使{behavior_zh}倾向下降；"
+    
+    moderate:
+      - "{block_zh}促进了{behavior_zh}（{intensity_zh}程度）；"
+  
+  multi_factor:
+    two_factors_coordinated:
+      - "目标决策同时受{factor1_zh}和{factor2_zh}的推动；"
+      - "{factor1_zh}与{factor2_zh}一致性高，共同支持{behavior_zh}；"
+    
+    two_factors_conflicting:
+      - "虽有{factor1_zh}的影响，但{factor2_zh}更强，最终导致{behavior_zh}；"
+    
+    three_plus_factors:
+      - "多个因素共同作用（{factors_list}），促成{behavior_zh}决策；"
+  
+  comprehensive:
+    default:
+      - "目标的{behavior_zh}选择由以下因素驱动：{factors_narrative}"
+
+# ========== 行为组合规则 ==========
+behavior_combinations:
+  escape_and_hold:
+    zh_interpretation: "采取保留姿态，准备躲避"
+  
+  forward_and_maneuver:
+    zh_interpretation: "采取灵活前进，寻求最优覆盖路线"

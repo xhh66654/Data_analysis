@@ -25,7 +25,7 @@ class JointQTrainConfig:
     device: str = "cpu"
     use_target_network: bool = True
     target_tau: float = 0.005
-    seed: int = 0
+    seed: int = 42
 
 
 @dataclass

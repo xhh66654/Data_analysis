@@ -49,7 +49,79 @@ class TransitionBatch:
         return int(self.s.shape[0])
 
 
+@dataclass
+class RewardNormConfig:
+    clip_range: tuple[float, float] = (-10.0, 10.0)
+    standardize: bool = True
+    per_episode: bool = False
+
+
+def normalize_rewards(
+    df: pd.DataFrame,
+    cfg: RewardNormConfig | None = None,
+) -> tuple[pd.DataFrame, dict]:
+    """
+    奖励归一化：提升 FQE 训练稳定性。
+    
+    处理策略：
+    1. 裁剪极端奖励值到 [clip_min, clip_max]
+    2. 可选：标准化为均值=0，标准差=1
+    3. 可选：按 episode 分别归一化（保留相对奖励结构）
+    """
+    if cfg is None:
+        cfg = RewardNormConfig()
+    
+    df = df.copy()
+    rewards = df[REWARD_COL].values.astype(np.float64)
+    
+    clip_min, clip_max = cfg.clip_range
+    original_min, original_max = rewards.min(), rewards.max()
+    rewards = np.clip(rewards, clip_min, clip_max)
+    
+    clipped_count = np.sum((rewards == clip_min) | (rewards == clip_max))
+    if clipped_count > 0:
+        logger.info("奖励裁剪：%d 个值被裁剪 (范围 [%.2f, %.2f] → [%.2f, %.2f])",
+                    clipped_count, original_min, original_max, clip_min, clip_max)
+    
+    if cfg.standardize:
+        if cfg.per_episode:
+            eps = df[EPISODE_COL].values
+            normalized = np.zeros_like(rewards)
+            for ep_id in np.unique(eps):
+                mask = eps == ep_id
+                ep_rewards = rewards[mask]
+                mean = ep_rewards.mean()
+                std = ep_rewards.std()
+                if std > 1e-8:
+                    normalized[mask] = (ep_rewards - mean) / std
+                else:
+                    normalized[mask] = ep_rewards - mean
+            rewards = normalized
+        else:
+            mean = rewards.mean()
+            std = rewards.std()
+            if std > 1e-8:
+                rewards = (rewards - mean) / std
+            else:
+                rewards = rewards - mean
+    
+    df[REWARD_COL] = rewards.astype(np.float32)
+    
+    final_mean = float(rewards.mean())
+    final_std = float(rewards.std())
+    logger.info("奖励归一化完成：均值=%.6f 标准差=%.6f", final_mean, final_std)
+
+    stats = {
+        "clipped_count": int(clipped_count),
+        "clip_range": [float(clip_min), float(clip_max)],
+        "standardize": cfg.standardize,
+        "per_episode": cfg.per_episode,
+    }
+    return df, stats
+
+
 def load_trajectory_csv(path: str) -> pd.DataFrame:
+    """[DATA-CROP-00] 读入全量轨迹，不删行（行数 = CSV 数据行数）。"""
     need = STATE_COLS + NEXT_STATE_COLS + [ACTION_COL, REWARD_COL, EPISODE_COL, DW_COL, TRUNC_COL]
     df = pd.read_csv(path, encoding="utf-8-sig")
     missing = [c for c in need if c not in df.columns]

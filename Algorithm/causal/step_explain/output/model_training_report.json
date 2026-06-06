@@ -1,0 +1,44 @@
+{
+  "q_hat_path": "F:\\cause_analysis\\Algorithm\\causal\\step_explain\\output\\q_hat.pt",
+  "trained_by": "step_explain",
+  "fqe": {
+    "train_trajectory_csv": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\trajectory_LLdV3_S0_2.csv",
+    "final_loss": 0.643396,
+    "loss_trend_zh": "明显下降（拟合正常）",
+    "quality_grade": "优",
+    "gamma": 0.99,
+    "target": "sarsa",
+    "state_dim": 8,
+    "n_actions": 4,
+    "hidden": 256,
+    "epochs": [
+      {
+        "epoch": 1,
+        "loss": 0.89075
+      },
+      {
+        "epoch": 2,
+        "loss": 0.746961
+      },
+      {
+        "epoch": 3,
+        "loss": 0.696899
+      },
+      {
+        "epoch": 4,
+        "loss": 0.659825
+      },
+      {
+        "epoch": 5,
+        "loss": 0.643396
+      }
+    ],
+    "n_epochs": 5,
+    "n_samples": 13792
+  },
+  "trajectory_match": {
+    "explain_csv": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\trajectory_LLdV3_S0_2.csv",
+    "same_as_training": true,
+    "warning_zh": null
+  }
+}

@@ -104,6 +104,14 @@ def train_q_hat(data: TransitionBatch, cfg: FQETrainConfig) -> FQETrainResult:
     opt = torch.optim.Adam(q_net.parameters(), lr=cfg.lr)
     loss_fn = nn.MSELoss()
 
+    # 学习率调度器（余弦退火）：按 epoch 步进，T_max=总 epoch 数。
+    # 注意：scheduler.step() 必须每个 epoch 调用一次，而不是每个 batch；
+    # 否则余弦周期 = 2*T_max 个 batch，会导致 lr 在一个 epoch 内反复震荡。
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=cfg.epochs)
+
+    # 梯度裁剪阈值
+    grad_clip_norm = 1.0
+
     ds = TensorDataset(
         torch.from_numpy(data.s),
         torch.from_numpy(data.a),
@@ -148,6 +156,10 @@ def train_q_hat(data: TransitionBatch, cfg: FQETrainConfig) -> FQETrainResult:
             loss = loss_fn(q_pred, tgt)
             opt.zero_grad()
             loss.backward()
+            
+            # 添加梯度裁剪
+            torch.nn.utils.clip_grad_norm_(q_net.parameters(), grad_clip_norm)
+            
             opt.step()
 
             if cfg.use_target_network:
@@ -158,9 +170,16 @@ def train_q_hat(data: TransitionBatch, cfg: FQETrainConfig) -> FQETrainResult:
 
             epoch_losses.append(float(loss.item()))
 
+        scheduler.step()  # 每个 epoch 结束后更新学习率
         mean_loss = float(np.mean(epoch_losses)) if epoch_losses else float("nan")
         history.append(mean_loss)
-        logger.info("FQE epoch %d/%d loss=%.6f", epoch, cfg.epochs, mean_loss)
+        logger.info(
+            "FQE epoch %d/%d loss=%.6f lr=%.2e",
+            epoch,
+            cfg.epochs,
+            mean_loss,
+            float(opt.param_groups[0]["lr"]),
+        )
 
     return FQETrainResult(q_net=q_net, final_loss=history[-1] if history else float("nan"), history=history)
 

@@ -1,36 +1,49 @@
 {
+  "interpretation": "目标体 + 分群体平均观测/平均动作 (+ 可选观测标准差)，用于均值场近似",
+  "target_agent": "agent_0",
+  "kept_neighbors_for_mf": [
+    "agent_4",
+    "agent_1"
+  ],
+  "group_order": [
+    "pooled_neighbors"
+  ],
+  "group_buckets": {
+    "pooled_neighbors": [
+      "agent_4",
+      "agent_1"
+    ]
+  },
+  "default_pool_if_unmapped": "pooled_neighbors",
+  "obs_dim": 30,
+  "action_dim_each": 5,
+  "include_obs_std": false,
   "blocks": [
     {
-      "name": "s_self_vel",
-      "start": 0,
-      "length": 2
-    },
-    {
-      "name": "s_self_pos",
-      "start": 2,
-      "length": 2
-    },
-    {
-      "name": "s_landmarks",
-      "start": 4,
-      "length": 10
-    },
-    {
-      "name": "s_other_agents",
-      "start": 14,
-      "length": 8
-    },
-    {
-      "name": "s_comm",
-      "start": 22,
-      "length": 8
+      "name": "s_target",
+      "length": 30,
+      "start": 0
     },
     {
       "name": "a_target",
-      "start": 30,
-      "length": 5
+      "length": 5,
+      "start": 30
+    },
+    {
+      "name": "s_mean__pooled_neighbors",
+      "length": 30,
+      "start": 35
+    },
+    {
+      "name": "a_mean__pooled_neighbors",
+      "length": 5,
+      "start": 65
     }
   ],
+  "aggregate_formulas": {
+    "s_mean_group": "(1/N) sum s_j",
+    "a_mean_group": "(1/N) sum a_j"
+  },
   "csv_columns": [
     "episode",
     "global_step",
@@ -69,32 +82,43 @@
     "mf_31",
     "mf_32",
     "mf_33",
-    "mf_34"
-  ],
-  "mode": "single_agent_self_obs",
-  "obs_blocks_used": {
-    "s_self_vel": [
-      0,
-      2
-    ],
-    "s_self_pos": [
-      2,
-      4
-    ],
-    "s_landmarks": [
-      4,
-      14
-    ],
-    "s_other_agents": [
-      14,
-      22
-    ],
-    "s_comm": [
-      22,
-      30
-    ]
-  },
-  "obs_dim": 30,
-  "action_dim_each": 5,
-  "target_agent": "agent_0"
+    "mf_34",
+    "mf_35",
+    "mf_36",
+    "mf_37",
+    "mf_38",
+    "mf_39",
+    "mf_40",
+    "mf_41",
+    "mf_42",
+    "mf_43",
+    "mf_44",
+    "mf_45",
+    "mf_46",
+    "mf_47",
+    "mf_48",
+    "mf_49",
+    "mf_50",
+    "mf_51",
+    "mf_52",
+    "mf_53",
+    "mf_54",
+    "mf_55",
+    "mf_56",
+    "mf_57",
+    "mf_58",
+    "mf_59",
+    "mf_60",
+    "mf_61",
+    "mf_62",
+    "mf_63",
+    "mf_64",
+    "mf_65",
+    "mf_66",
+    "mf_67",
+    "mf_68",
+    "mf_69",
+    "reward_target",
+    "done_any_agent"
+  ]
 }

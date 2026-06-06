@@ -104,9 +104,22 @@ def compute_l_hat(
 
 
 def l_hat_dataframe(df: pd.DataFrame, batch: LHatBatch) -> pd.DataFrame:
-    """在轨迹行上附加 Q 与 l_hat 列（与 CSV 行一一对齐）。"""
+    """在轨迹行上附加 Q 与 l_hat 列（与 CSV 行一一对齐）。
+
+    额外列：
+      a_star — oracle 动作 argmax_a Q_hat(s,a)，供 VIPER oracle 重标注使用
+      margin — 决策间隔 = top1(Q) - top2(Q)，供真正的 VIPER 加权（决策重要性）使用
+    """
     if len(df) != batch.n:
         raise ValueError(f"DataFrame 行数 {len(df)} 与 l_hat 行数 {batch.n} 不一致")
+
+    a_star = batch.q_all.argmax(axis=1).astype(np.int64)
+    if batch.q_all.shape[1] >= 2:
+        # top1 - top2：对每行取最大与次大的 Q 差值
+        part = np.partition(batch.q_all, -2, axis=1)
+        margin = (part[:, -1] - part[:, -2]).astype(np.float32)
+    else:
+        margin = np.zeros(batch.n, dtype=np.float32)
 
     out = pd.DataFrame(
         {
@@ -115,6 +128,8 @@ def l_hat_dataframe(df: pd.DataFrame, batch: LHatBatch) -> pd.DataFrame:
             "V_hat": batch.V_hat,
             "Q_sa": batch.Q_sa,
             "l_hat": batch.l_hat,
+            "a_star": a_star,
+            "margin": margin,
         }
     )
     for j in range(batch.q_all.shape[1]):

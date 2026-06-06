@@ -1,0 +1,183 @@
+{
+  "query": {
+    "episode": 0,
+    "global_step": 5,
+    "row_index": 5
+  },
+  "chosen_action": {
+    "id": 2,
+    "label": "动作2（转向左）",
+    "plain_label": "向左转向",
+    "q_value": -0.034204,
+    "rank": 1
+  },
+  "best_action": {
+    "id": 2,
+    "label": "动作2（转向左）",
+    "plain_label": "向左转向",
+    "q_value": -0.034204
+  },
+  "is_optimal": true,
+  "margin": 0.0,
+  "reward": 1.681845,
+  "all_actions": [
+    {
+      "id": 2,
+      "label": "动作2（转向左）",
+      "plain_label": "向左转向",
+      "q_value": -0.034204,
+      "rank": 1
+    },
+    {
+      "id": 1,
+      "label": "动作1（前进）",
+      "plain_label": "向前推进",
+      "q_value": -0.093573,
+      "rank": 2
+    },
+    {
+      "id": 0,
+      "label": "动作0（保持）",
+      "plain_label": "保持当前航向",
+      "q_value": -0.126544,
+      "rank": 3
+    },
+    {
+      "id": 3,
+      "label": "动作3（转向右）",
+      "plain_label": "向右转向",
+      "q_value": -0.172911,
+      "rank": 4
+    }
+  ],
+  "block_importances": [
+    {
+      "block_name": "本机姿态",
+      "block_desc": "自身姿态角与角度偏差 (s_2, s_3)",
+      "dims": [
+        2,
+        3
+      ],
+      "delta_q": 0.022605,
+      "abs_delta": 0.022605,
+      "baseline": "zero"
+    },
+    {
+      "block_name": "本机位置",
+      "block_desc": "自身位置坐标 (s_0, s_1)",
+      "dims": [
+        0,
+        1
+      ],
+      "delta_q": -0.019397,
+      "abs_delta": 0.019397,
+      "baseline": "zero"
+    }
+  ],
+  "narrative_zh": "在第 0 局 第 5 步，系统选择了「向左转向」。这一步获得了较好的即时回报。根据离线策略评估，在所考虑的几种操作里，这是相对最合适的一步，其它选择的综合评分都更低。从态势信息看，主要是因为「本机姿态」有一定影响（自身姿态角与角度偏差 (s_2, s_3)；该信息存在时，反而略微拉低了对当前选择的支撑（可能存在交互））；「本机位置」也有一定影响（对当前选择有一定参考价值）。相比之下：若改为「向前推进」，综合评分会明显低于当前选择；若改为「保持当前航向」，综合评分会明显低于当前选择。（说明：上述「综合评分」由离线轨迹训练的价值模型估计，反映长期收益倾向，不是单步即时奖励。）",
+  "narrative_technical": "第 0 局 第 5 步，智能体选择了「动作2（转向左）」（动作编号 2），当前奖励为 1.6818。 该动作 Q 估值为 -0.034，是当前状态下 Q 值最高的选择（最优动作）。 决策主要受以下状态因素影响：「本机姿态」（自身姿态角与角度偏差 (s_2, s_3)，影响程度 较低，ΔQ=+0.023）、「本机位置」（自身位置坐标 (s_0, s_1)，影响程度 较低，ΔQ=-0.019）。 备选动作参考：「动作1（前进）」Q 值 -0.094（比当前选择低 0.059）；「动作0（保持）」Q 值 -0.127（比当前选择低 0.092）。",
+  "validation": {
+    "overall_score": 0.6558,
+    "overall_percent": 65.6,
+    "grade": "良",
+    "summary_zh": "整体可用，但有个别指标偏弱，建议结合业务语境阅读。",
+    "n_pass": 3,
+    "n_warn": 2,
+    "n_fail": 1,
+    "checks": [
+      {
+        "name": "action_consistency",
+        "status": "pass",
+        "score": 1.0,
+        "message_zh": "模型认为当前动作是几种选择里最合适的一步。",
+        "detail": {
+          "is_optimal": true,
+          "margin": 0.0,
+          "chosen_rank": 1,
+          "n_actions": 4
+        }
+      },
+      {
+        "name": "action_discrimination",
+        "status": "pass",
+        "score": 1.0,
+        "message_zh": "各动作评分有一定差距（极差 0.139），备选对比较有意义。",
+        "detail": {
+          "q_spread": 0.138707,
+          "q_std": 0.050511
+        }
+      },
+      {
+        "name": "attribution_strength",
+        "status": "warn",
+        "score": 0.4521,
+        "message_zh": "首要因素「本机姿态」影响偏弱（|Δ|=0.023），归因结论可能不够稳定。",
+        "detail": {
+          "top_block": "本机姿态",
+          "top_abs_delta": 0.022605
+        }
+      },
+      {
+        "name": "attribution_separability",
+        "status": "fail",
+        "score": 0.0827,
+        "message_zh": "前两个因素的影响几乎一样大，难以明确区分「最关键」的因素。",
+        "detail": {
+          "top1_abs": 0.022605,
+          "top2_abs": 0.019397,
+          "ratio": 1.1654
+        }
+      },
+      {
+        "name": "reward_alignment",
+        "status": "pass",
+        "score": 1.0,
+        "message_zh": "即时奖励与模型判断方向一致。",
+        "detail": {
+          "reward": 1.681845
+        }
+      },
+      {
+        "name": "q_model_fit",
+        "status": "warn",
+        "score": 0.4,
+        "message_zh": "价值模型离线拟合损失为 139.3527，估计误差偏大，解释仅供参考。",
+        "detail": {
+          "fqe_final_loss": 139.35265477498373
+        }
+      }
+    ]
+  },
+  "model_training": {
+    "q_hat_path": "F:\\cause_analysis\\Algorithm\\causal\\step_explain\\output_test\\q_hat.pt",
+    "trained_by": "step_explain",
+    "fqe": {
+      "train_trajectory_csv": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\trajectory_LLdV3_S0_1.csv",
+      "final_loss": 139.352655,
+      "loss_trend_zh": "基本持平（可增加 epoch）",
+      "quality_grade": "差",
+      "gamma": 0.99,
+      "target": "sarsa",
+      "state_dim": 8,
+      "n_actions": 4,
+      "hidden": 64,
+      "epochs": [
+        {
+          "epoch": 1,
+          "loss": 140.477291
+        },
+        {
+          "epoch": 2,
+          "loss": 139.352655
+        }
+      ],
+      "n_epochs": 2,
+      "n_samples": 2072
+    },
+    "trajectory_match": {
+      "explain_csv": "F:\\cause_analysis\\Algorithm\\causal\\trajectories\\trajectory_LLdV3_S0_1.csv",
+      "same_as_training": true,
+      "warning_zh": null
+    }
+  }
+}
