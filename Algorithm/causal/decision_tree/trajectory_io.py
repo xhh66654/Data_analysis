@@ -56,7 +56,10 @@ class RewardNormConfig:
     per_episode: bool = False
 
 
-def normalize_rewards(df: pd.DataFrame, cfg: RewardNormConfig | None = None) -> pd.DataFrame:
+def normalize_rewards(
+    df: pd.DataFrame,
+    cfg: RewardNormConfig | None = None,
+) -> tuple[pd.DataFrame, dict]:
     """
     奖励归一化：提升 FQE 训练稳定性。
     
@@ -107,11 +110,18 @@ def normalize_rewards(df: pd.DataFrame, cfg: RewardNormConfig | None = None) -> 
     final_mean = float(rewards.mean())
     final_std = float(rewards.std())
     logger.info("奖励归一化完成：均值=%.6f 标准差=%.6f", final_mean, final_std)
-    
-    return df
+
+    stats = {
+        "clipped_count": int(clipped_count),
+        "clip_range": [float(clip_min), float(clip_max)],
+        "standardize": cfg.standardize,
+        "per_episode": cfg.per_episode,
+    }
+    return df, stats
 
 
 def load_trajectory_csv(path: str) -> pd.DataFrame:
+    """[DATA-CROP-00] 读入全量轨迹，不删行（行数 = CSV 数据行数）。"""
     need = STATE_COLS + NEXT_STATE_COLS + [ACTION_COL, REWARD_COL, EPISODE_COL, DW_COL, TRUNC_COL]
     df = pd.read_csv(path, encoding="utf-8-sig")
     missing = [c for c in need if c not in df.columns]

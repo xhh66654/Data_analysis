@@ -1,20 +1,19 @@
 """
-VIPER 决策树离线全流程一键入口（推荐日常使用）。
+VIPER 决策树离线全流程 —— 把大量轨迹提炼成可读的 IF-THEN 规则（主用途）。
 
-本脚本是 decision_tree 包的主入口：读取轨迹 CSV，按顺序执行
-  阶段1 FQE → 阶段2 l_hat → 阶段3 weights → 阶段4 VIPER+CART，
-并在 output_dir 下写出 q_hat.pt、l_hat.csv、weights.csv、viper_out/ 规则与树图，
-最后汇总为 final_result.json。可选调用 verify_phase_link 做端到端衔接校验。
+本模块的定位是**规则展示 / 策略归纳**：
+  · 读入轨迹 CSV
+  · FQE → l_hat → weights：为每步打「决策重要性」
+  · VIPER + CART：从（全表或指定一局）里抽出一条条决策规则 + 树图
 
-配置方式：修改下方 RUN_CONFIG 字典（至少填写 trajectory_csv）。
-也可设置 run_viper_tune_grid=True，自动调用 tune_viper 做 CART 网格搜索。
+默认 pipeline_mode="rules"：VIPER 用**全部行**建树，不 holdout 30% 做测试。
+若需要论文式 train/val/test 指标，可设 pipeline_mode="eval"。
 
-主要输出（默认 {轨迹目录}/fqe_out/）：
-  q_hat.pt          — FQE 训练的 Q 网络 checkpoint
-  l_hat.csv         — 逐行价值差距
-  weights.csv       — VIPER 抽样权重
-  viper_out/        — rules.txt、tree.json、policy_tree.pdf 等
-  final_result.json — 全流程指标与路径汇总
+配置：修改下方 RUN_CONFIG（至少 trajectory_csv；只看某一局则设 only_episode）。
+
+主要输出（{轨迹目录}/fqe_out/）：
+  viper_out/rules.txt、policy_tree.pdf — 给人看的规则
+  q_hat.pt、l_hat.csv、weights.csv     — 中间产物，供 step_explain 等复用
 
 用法：
   1. 修改下方 RUN_CONFIG（至少填写 trajectory_csv）
@@ -23,7 +22,7 @@ VIPER 决策树离线全流程一键入口（推荐日常使用）。
      或：
        python -m causal.decision_tree.run_pipeline
 
-与 cli.py 的关系：本文件用 RUN_CONFIG 字典配置；cli.py 提供等价的命令行参数版本。
+入口：本文件 RUN_CONFIG + `python causal/decision_tree/run_pipeline.py`（或 `python -m causal.decision_tree.run_pipeline`）。
 """
 from __future__ import annotations
 
@@ -42,10 +41,23 @@ if str(_ALGORITHM_ROOT) not in sys.path:
 import numpy as np
 import pandas as pd
 
+from causal.decision_tree.data_flow import DataFlowTracker, record_reward_norm, record_rule_ensemble
 from causal.decision_tree.fqe import FQETrainConfig, load_q_hat, save_q_hat, train_q_hat
 from causal.decision_tree.l_hat import compute_l_hat, l_hat_dataframe, save_l_hat_csv
-from causal.decision_tree.rule_ensemble import RuleEnsemble, ensemble_rules_from_rounds, save_ensemble_rules, rules_to_if_then_strings
-from causal.decision_tree.trajectory_io import ACTION_COL, STATE_COLS, build_transitions, load_trajectory_csv, normalize_rewards, RewardNormConfig
+from causal.decision_tree.rule_ensemble import (
+    ensemble_rules_from_rounds,
+    save_ensemble_rules,
+    rules_to_if_then_strings,
+)
+from causal.decision_tree.trajectory_io import (
+    ACTION_COL,
+    EPISODE_COL,
+    STATE_COLS,
+    build_transitions,
+    load_trajectory_csv,
+    normalize_rewards,
+    RewardNormConfig,
+)
 from causal.decision_tree.viper_cart import ViperConfig, run_viper_from_files
 from causal.decision_tree.weights import run_weights_from_l_hat_csv
 
@@ -61,7 +73,7 @@ RUN_CONFIG = {
     # -------------------------------------------------------------------------
     # 【必填】离线轨迹 CSV（通常由 causal/main.py 导出）
     # 必需列：s_0…s_7, s_next_0…s_next_7, action, reward, episode, dw, truncated
-    "trajectory_csv": r"F:\cause_analysis\Algorithm\causal\trajectories\trajectory_LLdV3_S0_5.csv",
+    "trajectory_csv": r"F:\cause_analysis\Algorithm\causal\trajectories\trajectory_LLdV3_S0_4.csv",
     # 全流程产物目录；留空 "" → 自动设为 {trajectory_csv 所在目录}/fqe_out/
     # 其中 viper_out/ 存放规则与决策树图
     "output_dir": "",
@@ -69,7 +81,7 @@ RUN_CONFIG = {
     # 阶段 1：FQE —— 训练 Q_hat 神经网络（影响最大，见 调参文档.md）
     # 输出：fqe_out/q_hat.pt；下游 l_hat / weights / VIPER 均依赖此 Q 估计
     # -------------------------------------------------------------------------
-    # 训练轮数；loss 仍下降时可加大（大表可试 50～100）
+    # 训练轮数；loss 仍下降时可加大（大表可试 30～50）
     "fqe_epochs": 5,
     # 训练设备："cuda" | "cpu"（百万行建议 GPU）
     "fqe_device": "cuda",
@@ -93,13 +105,15 @@ RUN_CONFIG = {
     # 前向分块大小；只影响速度与显存，不影响 l_hat 结果
     "l_hat_batch_size": 256,
     # -------------------------------------------------------------------------
-    # 阶段 3：weights —— w_raw=max(l_hat,0)+eps，再归一化为抽样概率
-    # 输出：fqe_out/weights.csv（VIPER 多轮共用，不再重算）
+    # 阶段 3：weights —— 抽样权重（VIPER 多轮共用）
+    # 输出：fqe_out/weights.csv
     # -------------------------------------------------------------------------
-    # 平滑项 ε；仅 viper_weighted_sampling=True 时生效
-    "weights_eps": 0.1,
-    # acc_full 优先：S0_5 上均匀抽样优于加权（~67% vs ~66% @ depth=5）
-    "viper_weighted_sampling": False,
+    # weight_mode: uniform | advantage | margin（推荐 margin：按决策重要性 top1-top2 加权）
+    "weight_mode": "margin",
+    # 兼容旧配置；若设置则覆盖 weight_mode（True→margin，False→uniform）
+    "viper_weighted_sampling": None,
+    # 平滑项 ε；margin/advantage 模式生效
+    "weights_eps": 1e-6,
     # -------------------------------------------------------------------------
     # 阶段 4～6：VIPER + CART + 规则/树导出
     # 输出：fqe_out/viper_out/rules.txt、tree.json、policy_tree.pdf 等
@@ -110,23 +124,36 @@ RUN_CONFIG = {
     #        100轮: 100 × 32 = 3200 规则实例
     #        集成后: 仅保留跨轮最稳定的前100条
     # -------------------------------------------------------------------------
-    "run_viper_tune_grid": False,
-    "viper_n_round": 100,
-    "viper_pick_best_round": False,
-    "cart_max_depth": 5,
-    "cart_min_samples_leaf": 1,
-    "cart_min_samples_split": 2,
+    "viper_n_round": 20,
+    # 在验证集上选最优轮（需 val_frac>0）
+    "viper_pick_best_round": True,
+    "cart_max_depth": 6,
+    "cart_min_samples_leaf": 50,
+    "cart_min_samples_split": 100,
+    # 代价复杂度剪枝；>0 时自动剪枝（可试 1e-4～1e-3），0=仅用 max_depth
+    "cart_ccp_alpha": 0.0,
+    # 训练：不均衡时用 "balanced" 加权分裂；PDF/节点表展示真实类别分布（非加权计数）
+    "cart_class_weight": "balanced",
+    # 选轮指标：acc | macro_f1（不均衡数据推荐 macro_f1）
+    "viper_selection_metric": "macro_f1",
+    # oracle 重标注：y ← argmax_a Q(s,a)，消除探索噪声标签
+    "oracle_relabel": True,
+    # -------------------------------------------------------------------------
+    # 规则提炼模式（主用途：大量数据 → 规则展示，不是泛化评估）
+    # -------------------------------------------------------------------------
+    # "rules"：全表参与 VIPER 建树（默认，符合「整库轨迹→规则」）
+    # "eval" ：按 episode 划分 train/val/test，用于看泛化指标（旧实验用法）
+    "pipeline_mode": "rules",
+    # 只提炼某一局：填 episode 编号（如 3）；None=用下面 VIPER 所需的全部行（rules 模式下=全表）
+    "only_episode": None,
+    # 仅 pipeline_mode="eval" 时生效：
+    "val_frac": 0.15,
+    "test_frac": 0.15,
+    "refit_final_tree_on_full_data": False,
+    # 每轮 bootstrap 样本数；0=与 train 池同规模有放回抽样（不缩小 m，但可重复同一条）
+    # 若设为 120000 等，则每轮 CART.fit 仅用该数量的有放回样本（显式裁到 12 万）
     "resample_size": 0,
-    "weight_noise": 0.05,
-    # -------------------------------------------------------------------------
-    # 动态权重更新（自适应重采样）
-    # -------------------------------------------------------------------------
-    # 是否启用动态权重更新（根据预测误差调整权重）
-    "viper_adaptive_resample": False,
-    # 错误样本权重增加比例
-    "viper_adaptation_rate": 0.1,
-    # 每多少轮进行一次权重更新
-    "viper_adapt_interval": 3,
+    "weight_noise": 0.02,
     # -------------------------------------------------------------------------
     # 奖励归一化（提升 FQE 训练稳定性）
     # -------------------------------------------------------------------------
@@ -144,9 +171,9 @@ RUN_CONFIG = {
     # 规则集成：100轮投票 → 按置信度排序 → 取前100条
     # -------------------------------------------------------------------------
     "run_rule_ensemble": True,
-    "ensemble_max_rules": 100,
+    "ensemble_max_rules": 200,
     "ensemble_confidence_threshold": 0.0,
-    "ensemble_min_support_rounds": 2,
+    "ensemble_min_support_rounds": 0,
     "ensemble_feature_pattern": True,
     # 是否用 Graphviz 渲染 PDF 流程图（需 pip install graphviz + 系统 Graphviz）
     "render_tree_pdf": True,
@@ -163,8 +190,6 @@ RUN_CONFIG = {
     # -------------------------------------------------------------------------
     # 随机种子（FQE 训练、VIPER 抽样、CART random_state=seed+轮次）
     "seed": 45,
-    # 流程结束后是否运行 verify_e2e 衔接校验
-    "run_verify": True,
     # 是否打印 INFO 日志
     "verbose": True,
 }
@@ -195,6 +220,21 @@ class PipelineResult:
     tree_png: str
 
 
+def _resolve_pipeline_mode(cfg: dict) -> tuple[str, float, float, bool]:
+    """返回 (mode, val_frac, test_frac, refit_on_full_data)。"""
+    mode = str(cfg.get("pipeline_mode", "rules")).strip().lower()
+    if mode == "rules":
+        return mode, 0.0, 0.0, False
+    if mode == "eval":
+        return (
+            mode,
+            float(cfg.get("val_frac", 0.15)),
+            float(cfg.get("test_frac", 0.15)),
+            bool(cfg.get("refit_final_tree_on_full_data", True)),
+        )
+    raise ValueError(f"pipeline_mode 须为 rules 或 eval，得到 {mode!r}")
+
+
 def _setup_logging(verbose: bool) -> None:
     level = logging.INFO if verbose else logging.WARNING
     logging.basicConfig(
@@ -221,11 +261,24 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
     seed = int(cfg.get("seed", 42))
     device = str(cfg.get("fqe_device", "cuda"))
 
+    mode, val_frac, test_frac, refit_on_full = _resolve_pipeline_mode(cfg)
+    only_ep = cfg.get("only_episode")
+    only_ep_int: int | None = int(only_ep) if only_ep is not None else None
+
     logger.info("读取轨迹: %s", csv_path)
+    logger.info(
+        "流水线模式: %s（%s） only_episode=%s",
+        mode,
+        "全表→规则展示，不 holdout" if mode == "rules" else "train/val/test 评估",
+        only_ep_int if only_ep_int is not None else "全部",
+    )
     df = load_trajectory_csv(str(csv_path))
     n = len(df)
 
-    # --- 奖励归一化（提升 FQE 训练稳定性）---
+    flow = DataFlowTracker()
+    flow.set_origin(n, source=str(csv_path))
+
+    # --- [DATA-CROP-01] 奖励归一化：裁剪 reward 数值，不删行 ---
     if bool(cfg.get("enable_reward_norm", False)):
         reward_norm_cfg = RewardNormConfig(
             clip_range=(
@@ -235,7 +288,34 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
             standardize=True,
             per_episode=bool(cfg.get("reward_norm_per_episode", False)),
         )
-        df = normalize_rewards(df, reward_norm_cfg)
+        df, rstats = normalize_rewards(df, reward_norm_cfg)
+        record_reward_norm(
+            flow,
+            n,
+            clipped_count=int(rstats.get("clipped_count", 0)),
+            clip_range=tuple(rstats.get("clip_range", (-10.0, 10.0))),
+        )
+    else:
+        flow.record(
+            "01",
+            "跳过奖励归一化",
+            n_in=n,
+            n_out=n,
+            reduces_rows=False,
+            module="run_pipeline",
+            note="enable_reward_norm=False",
+        )
+
+    # --- [DATA-CROP-02~05] FQE / l_hat / weights：全程保持全表 n 行 ---
+    flow.record(
+        "02",
+        "FQE 训练 Q_hat",
+        n_in=n,
+        n_out=n,
+        reduces_rows=False,
+        module="fqe.train_q_hat",
+        note="全表转移样本；不删行",
+    )
 
     # --- 阶段 1: FQE ---
     logger.info("阶段 1/4: FQE 训练 Q_hat (%d epochs, device=%s)", cfg.get("fqe_epochs", 30), device)
@@ -279,69 +359,123 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
         device=device,
         batch_size=int(cfg.get("l_hat_batch_size", 4096)),
     )
-    save_l_hat_csv(l_hat_path, l_hat_dataframe(df, lh))
+    lh_df = l_hat_dataframe(df, lh)
+    save_l_hat_csv(l_hat_path, lh_df)
+    flow.record(
+        "03",
+        "计算 l_hat / a_star",
+        n_in=n,
+        n_out=n,
+        reduces_rows=False,
+        module="l_hat",
+        note="逐行推理；行数与 CSV 一致",
+    )
+
+    if bool(cfg.get("oracle_relabel", True)) and "a_star" in lh_df.columns:
+        n_star = int(lh_df["a_star"].nunique())
+        if n_star < 2:
+            dominant = int(lh_df["a_star"].mode().iloc[0])
+            logger.warning(
+                "oracle 标签仅 %d 类（全部为 action=%d）。"
+                "小样本下 Q 网络易塌缩为常数策略 → 决策树仅 1 叶、指标虚高 1.0、规则极少。"
+                "建议：增大轨迹（更多 episode）、或设 oracle_relabel=False 用行为动作 action 作标签。",
+                n_star,
+                dominant,
+            )
 
     # --- 阶段 3: weights ---
-    weighted_sampling = bool(cfg.get("viper_weighted_sampling", True))
-    sampling_label = "VIPER 加权" if weighted_sampling else "均匀"
-    logger.info("阶段 3/4: 计算 weights（%s抽样）", sampling_label)
+    weight_mode = str(cfg.get("weight_mode", "margin"))
+    legacy_ws = cfg.get("viper_weighted_sampling")
+    ws_kw: dict = {}
+    if legacy_ws is not None:
+        ws_kw["weighted_sampling"] = bool(legacy_ws)
+    logger.info("阶段 3/4: 计算 weights（mode=%s）", weight_mode)
     run_weights_from_l_hat_csv(
         l_hat_path,
         output_path=weights_path,
         eps=float(cfg.get("weights_eps", 1e-6)),
-        weighted_sampling=weighted_sampling,
+        weight_mode=weight_mode,
+        **ws_kw,
     )
+    flow.record(
+        "04",
+        "计算 VIPER 抽样权重",
+        n_in=n,
+        n_out=n,
+        reduces_rows=False,
+        module="weights",
+        note=f"weight_mode={weight_mode}；weights.csv 行数=全表",
+    )
+    n_viper = n
+    if only_ep_int is not None:
+        n_viper = int((pd.to_numeric(df[EPISODE_COL], errors="coerce") == only_ep_int).sum())
+        if n_viper == 0:
+            raise ValueError(f"only_episode={only_ep_int} 在 CSV 中无数据行")
+        flow.record(
+            "05a",
+            f"仅第 {only_ep_int} 局用于规则/树",
+            n_in=n,
+            n_out=n_viper,
+            reduces_rows=True,
+            module="run_pipeline",
+            note="FQE/l_hat/weights 仍用全表；VIPER 只提炼该局 IF-THEN 规则",
+        )
+    flow.record(
+        "05",
+        "VIPER 规则提炼输入",
+        n_in=n_viper if only_ep_int is not None else n,
+        n_out=n_viper,
+        reduces_rows=only_ep_int is not None,
+        module="viper_cart.run_viper_from_files",
+        note=(
+            "rules 模式: 不划分 val/test，全表建树"
+            if mode == "rules"
+            else f"eval 模式: val_frac={val_frac} test_frac={test_frac}"
+        ),
+    )
+    sampling_label = weight_mode
 
     # --- 阶段 4～6: VIPER + CART + 规则 ---
     m = int(cfg.get("resample_size", 0))
     n_round = int(cfg.get("viper_n_round", 8))
     weight_noise = float(cfg.get("weight_noise", 0.02))
-    tune_best: dict | None = None
-    viper_tune_dir = out_dir / "viper_tune"
-
-    if bool(cfg.get("run_viper_tune_grid", False)):
-        from causal.decision_tree.tune_viper import TUNE_GRID, run_viper_tune_grid
-
-        logger.info("阶段 4/4: %s 抽样 + TUNE_GRID 网格调参 (%d 组) → viper_tune/", sampling_label, len(TUNE_GRID))
-        tune_best, tune_paths, viper_result = run_viper_tune_grid(
-            csv_path,
-            weights_path,
-            viper_tune_dir,
-            n_round=n_round,
-            weight_noise=weight_noise,
-            seed=seed,
-            export_best_to=viper_out_dir,
-            render_tree_pdf=bool(cfg.get("render_tree_pdf", True)),
-            render_tree_png=bool(cfg.get("render_tree_png", False)),
-            tree_image_dpi=int(cfg.get("tree_image_dpi", 150)),
-            open_tree_pdf=bool(cfg.get("open_tree_pdf", False) or cfg.get("show_tree_image", False)),
-            export_tree=bool(cfg.get("export_tree", True)),
-            resample_size=m if m > 0 else None,
-        )
-        logger.info("16 组对比表: %s", tune_paths.get("tune_results.csv", tune_paths.get("tune_results.json")))
-    else:
-        logger.info("阶段 4/4: VIPER 单组参数 (RUN_CONFIG cart_*) → viper_out/")
-        viper_cfg = ViperConfig(
-            n_round=n_round,
-            max_depth=int(cfg.get("cart_max_depth", 5)),
-            min_samples_leaf=int(cfg.get("cart_min_samples_leaf", 1)),
-            min_samples_split=int(cfg.get("cart_min_samples_split", 2)),
-            random_state=seed,
-            resample_size=m if m > 0 else None,
-            weight_noise_std=weight_noise,
-            pick_best_by_full_acc=bool(cfg.get("viper_pick_best_round", True)),
-            export_tree=bool(cfg.get("export_tree", True)),
-            render_tree_pdf=bool(cfg.get("render_tree_pdf", True)),
-            render_tree_png=bool(cfg.get("render_tree_png", False)),
-            tree_image_dpi=int(cfg.get("tree_image_dpi", 150)),
-            open_tree_pdf=bool(cfg.get("open_tree_pdf", False) or cfg.get("show_tree_image", False)),
-            show_tree_image=bool(cfg.get("show_tree_image", False)),
-            # 动态权重更新参数
-            adaptive_resample=bool(cfg.get("viper_adaptive_resample", False)),
-            adaptation_rate=float(cfg.get("viper_adaptation_rate", 0.1)),
-            adapt_interval=int(cfg.get("viper_adapt_interval", 3)),
-        )
-        viper_result = run_viper_from_files(csv_path, weights_path, viper_out_dir, viper_cfg)
+    logger.info("阶段 4/4: VIPER (RUN_CONFIG cart_*) → viper_out/")
+    cw = cfg.get("cart_class_weight")
+    class_weight = None if cw in (None, "", "none", False) else cw
+    viper_cfg = ViperConfig(
+        n_round=n_round,
+        max_depth=int(cfg.get("cart_max_depth", 5)),
+        min_samples_leaf=int(cfg.get("cart_min_samples_leaf", 1)),
+        min_samples_split=int(cfg.get("cart_min_samples_split", 2)),
+        random_state=seed,
+        resample_size=m if m > 0 else None,
+        weight_noise_std=weight_noise,
+        weighted_sampling=weight_mode != "uniform",
+        pick_best_by_full_acc=bool(cfg.get("viper_pick_best_round", True)),
+        class_weight=class_weight,
+        ccp_alpha=float(cfg.get("cart_ccp_alpha", 0.0)),
+        selection_metric=str(cfg.get("viper_selection_metric", "macro_f1")),
+        export_tree=bool(cfg.get("export_tree", True)),
+        render_tree_pdf=bool(cfg.get("render_tree_pdf", True)),
+        render_tree_png=bool(cfg.get("render_tree_png", False)),
+        tree_image_dpi=int(cfg.get("tree_image_dpi", 150)),
+        open_tree_pdf=bool(cfg.get("open_tree_pdf", False) or cfg.get("show_tree_image", False)),
+        show_tree_image=bool(cfg.get("show_tree_image", False)),
+    )
+    viper_result = run_viper_from_files(
+        csv_path,
+        weights_path,
+        viper_out_dir,
+        viper_cfg,
+        val_frac=val_frac,
+        test_frac=test_frac,
+        oracle_relabel=bool(cfg.get("oracle_relabel", True)),
+        l_hat_path=l_hat_path,
+        data_flow=flow,
+        refit_on_full_data=refit_on_full,
+        only_episode=only_ep_int,
+        pipeline_mode=mode,
+    )
 
     sel_round = viper_result.selected_round
     sel_full = viper_result.selected_acc_full
@@ -370,14 +504,32 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
         )
         
         # 转换为 IF-THEN 格式
-        final_rules = rules_to_if_then_strings(ensemble_rules)
-        
+        ensemble_if_then = rules_to_if_then_strings(ensemble_rules)
+        if ensemble_if_then:
+            final_rules = ensemble_if_then
+        else:
+            logger.warning(
+                "规则集成为空，保留 VIPER 选用树的 %d 条规则（勿将 n_rules 记为 0）",
+                len(viper_result.rules),
+            )
+            final_rules = viper_result.rules.copy()
+
         # 保存集成规则
         ensemble_rules_path = viper_out_dir / "ensemble_rules"
         save_ensemble_rules(ensemble_rules, ensemble_rules_path)
-        
-        logger.info("规则集成完成: 原始规则数=%d 集成后规则数=%d", 
-                    sum(len(r['rules']) for r in rules_per_round), len(final_rules))
+
+        n_rules_raw = sum(len(r["rules"]) for r in rules_per_round)
+        record_rule_ensemble(
+            flow,
+            n_rules_raw,
+            len(final_rules),
+            max_rules=int(cfg.get("ensemble_max_rules", 100)),
+        )
+        logger.info(
+            "规则集成完成: 原始规则数=%d 集成后规则数=%d",
+            n_rules_raw,
+            len(final_rules),
+        )
 
     rules_txt = viper_out_dir / "rules.txt"
     rules_json = viper_out_dir / "rules.json"
@@ -404,6 +556,9 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
             with open(summary_json, "w", encoding="utf-8") as f:
                 json.dump(summary_data, f, ensure_ascii=False, indent=2)
     
+    flow.log_table()
+    data_flow_path = flow.save(out_dir / "data_flow_report.json")
+
     result = PipelineResult(
         success=True,
         trajectory_csv=str(csv_path),
@@ -419,7 +574,7 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
         fqe_final_loss=float(fqe_result.final_loss),
         viper_last_acc_full=float(sel_full),
         viper_last_acc_resampled=float(sel_resampled),
-        n_rules=len(final_rules),  # 使用集成后的规则数
+        n_rules=len(final_rules) if final_rules else len(viper_result.rules),
         rules_preview=preview,
         tree_json=str(tree_json) if tree_json.is_file() else "",
         tree_nodes_csv=str(tree_nodes_csv) if tree_nodes_csv.is_file() else "",
@@ -428,14 +583,21 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
         tree_png=str(tree_png) if tree_png.is_file() else "",
     )
 
+    test_metrics = (getattr(viper_result, "metrics", None) or {}).get("test", {})
     payload = {
         "success": True,
         "finished_at": datetime.now(timezone.utc).isoformat(),
         "config": {k: v for k, v in cfg.items() if k != "verbose"},
+        "data_flow_report": str(data_flow_path),
+        "data_flow_summary_zh": flow.build_report()["summary_zh"],
         **asdict(result),
         "viper_selected_round": sel_round,
-        "viper_tune_best": tune_best,
-        "viper_tune_dir": str(viper_tune_dir) if tune_best else "",
+        "eval_val_metric": float(sel_full),
+        "eval_selection_metric": str(cfg.get("viper_selection_metric", "macro_f1")),
+        "test_accuracy": test_metrics.get("accuracy"),
+        "test_balanced_accuracy": test_metrics.get("balanced_accuracy"),
+        "test_macro_f1": test_metrics.get("macro_f1"),
+        "metrics_json": str(viper_out_dir / "metrics.json"),
         "rules": viper_result.rules,
     }
     final_json_path.write_text(
@@ -443,15 +605,6 @@ def run_full_pipeline(cfg: dict) -> PipelineResult:
         encoding="utf-8",
     )
     logger.info("已写入汇总结果: %s", final_json_path)
-
-    if cfg.get("run_verify", True):
-        from causal.decision_tree.verify_phase_link import verify_e2e
-
-        logger.info("自动校验全流程衔接…")
-        rc = verify_e2e(csv_path, out_dir, device=device, eps=float(cfg.get("weights_eps", 1e-6)))
-        if rc != 0:
-            raise RuntimeError("全流程校验未通过，请查看上方 FAIL 信息")
-
     return result
 
 
@@ -461,10 +614,38 @@ def _print_summary(r: PipelineResult) -> None:
     print("VIPER 决策树流水线 · 运行完成")
     print(sep)
     print(f"轨迹 CSV     : {r.trajectory_csv}")
-    print(f"样本行数 N   : {r.n_samples}")
+    print(f"样本行数 N   : {r.n_samples}  （CSV 全量，FQE/l_hat/weights 均用此规模）")
+    try:
+        dfr = json.loads(
+            (Path(r.output_dir) / "data_flow_report.json").read_text(encoding="utf-8")
+        )
+        print(f"数据流转     : {dfr.get('summary_zh', '')}")
+        for st in dfr.get("stages") or []:
+            if st.get("reduces_rows"):
+                print(
+                    f"  [裁剪] {st['id']} {st['name_zh']}: "
+                    f"{st['n_in']} → {st['n_out']} ({100*st['crop_ratio_from_origin']:.1f}% 全量)"
+                )
+    except (OSError, json.JSONDecodeError, KeyError):
+        pass
     print(f"输出目录     : {r.output_dir}")
     print(f"FQE loss     : {r.fqe_final_loss:.6f}")
-    print(f"VIPER 准确率 : 全量={r.viper_last_acc_full:.4f}  重采样集={r.viper_last_acc_resampled:.4f}")
+    print(
+        f"VIPER 指标   : 验证集选轮={r.viper_last_acc_full:.4f}  "
+        f"重采样集={r.viper_last_acc_resampled:.4f}"
+    )
+    metrics_path = Path(r.output_dir) / "viper_out" / "metrics.json"
+    if metrics_path.is_file():
+        try:
+            te = json.loads(metrics_path.read_text(encoding="utf-8")).get("test", {})
+            if te.get("n", 0) > 0:
+                print(
+                    f"测试集       : acc={te['accuracy']:.4f}  "
+                    f"balanced_acc={te['balanced_accuracy']:.4f}  "
+                    f"macro_f1={te['macro_f1']:.4f}  (n={te['n']})"
+                )
+        except (json.JSONDecodeError, OSError, KeyError):
+            pass
     print(f"规则条数     : {r.n_rules}")
     print(f"规则文件     : {r.rules_txt}")
     print(f"决策树 JSON  : {r.tree_json or '(未导出)'}")

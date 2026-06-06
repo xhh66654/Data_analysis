@@ -2,665 +2,1526 @@
   "root": {
     "type": "split",
     "node_id": 0,
-    "feature": "s_3",
-    "threshold": -0.046642130240797997,
-    "n_samples": 496986,
+    "feature": "s_6",
+    "threshold": 0.5,
+    "n_samples": 475176,
+    "class_counts": {
+      "爬升1": 126691,
+      "爬升2": 51728,
+      "斜切切线机动": 257108,
+      "稳定跟踪": 39649
+    },
     "left": {
       "type": "split",
       "node_id": 1,
-      "feature": "s_1",
-      "threshold": 1.2790876030921936,
-      "n_samples": 321246,
+      "feature": "s_4",
+      "threshold": 0.0007691295759286731,
+      "n_samples": 393801,
+      "class_counts": {
+        "爬升1": 5715,
+        "爬升2": 48031,
+        "斜切切线机动": 256821,
+        "稳定跟踪": 27788
+      },
       "left": {
         "type": "split",
         "node_id": 2,
-        "feature": "s_4",
-        "threshold": 0.23334981501102448,
-        "n_samples": 284234,
+        "feature": "s_2",
+        "threshold": -0.028732133097946644,
+        "n_samples": 202849,
+        "class_counts": {
+          "爬升1": 3054,
+          "爬升2": 42872,
+          "斜切切线机动": 113865,
+          "稳定跟踪": 3150
+        },
         "left": {
           "type": "split",
           "node_id": 3,
           "feature": "s_3",
-          "threshold": -0.11319150030612946,
-          "n_samples": 262054,
+          "threshold": -0.10887395963072777,
+          "n_samples": 132655,
+          "class_counts": {
+            "爬升1": 1330,
+            "爬升2": 4875,
+            "斜切切线机动": 78896,
+            "稳定跟踪": 1858
+          },
           "left": {
             "type": "split",
             "node_id": 4,
             "feature": "s_4",
-            "threshold": -0.12192831188440323,
-            "n_samples": 246501,
+            "threshold": -0.4479818344116211,
+            "n_samples": 119797,
+            "class_counts": {
+              "爬升1": 102,
+              "爬升2": 3311,
+              "斜切切线机动": 75547,
+              "稳定跟踪": 621
+            },
             "left": {
-              "type": "leaf",
+              "type": "split",
               "node_id": 5,
-              "prediction": "斜切切线机动",
+              "feature": "s_1",
+              "threshold": 1.011380136013031,
+              "n_samples": 2156,
               "class_counts": {
                 "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
+                "爬升2": 666,
+                "斜切切线机动": 1369,
                 "稳定跟踪": 0
               },
-              "n_samples": 51018
+              "left": {
+                "type": "leaf",
+                "node_id": 6,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 618,
+                  "斜切切线机动": 477,
+                  "稳定跟踪": 0
+                },
+                "n_samples": 785
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 7,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 48,
+                  "斜切切线机动": 892,
+                  "稳定跟踪": 0
+                },
+                "n_samples": 1371
+              },
+              "left_branch": "s_1 <= 1.011380136013031",
+              "right_branch": "s_1 > 1.011380136013031"
             },
             "right": {
-              "type": "leaf",
-              "node_id": 6,
-              "prediction": "斜切切线机动",
+              "type": "split",
+              "node_id": 8,
+              "feature": "s_5",
+              "threshold": 0.0604669414460659,
+              "n_samples": 117641,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 102,
+                "爬升2": 2645,
+                "斜切切线机动": 74178,
+                "稳定跟踪": 621
               },
-              "n_samples": 195483
+              "left": {
+                "type": "leaf",
+                "node_id": 9,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 102,
+                  "爬升2": 1119,
+                  "斜切切线机动": 68741,
+                  "稳定跟踪": 586
+                },
+                "n_samples": 113248
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 10,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 1526,
+                  "斜切切线机动": 5437,
+                  "稳定跟踪": 35
+                },
+                "n_samples": 4393
+              },
+              "left_branch": "s_5 <= 0.0604669414460659",
+              "right_branch": "s_5 > 0.0604669414460659"
             },
-            "left_branch": "s_4 <= -0.12192831188440323",
-            "right_branch": "s_4 > -0.12192831188440323"
+            "left_branch": "s_4 <= -0.4479818344116211",
+            "right_branch": "s_4 > -0.4479818344116211"
           },
           "right": {
             "type": "split",
-            "node_id": 7,
+            "node_id": 11,
             "feature": "s_1",
-            "threshold": -0.001606830337550491,
-            "n_samples": 15553,
+            "threshold": 0.8841553926467896,
+            "n_samples": 12858,
+            "class_counts": {
+              "爬升1": 1228,
+              "爬升2": 1564,
+              "斜切切线机动": 3349,
+              "稳定跟踪": 1237
+            },
             "left": {
-              "type": "leaf",
-              "node_id": 8,
-              "prediction": "爬升1",
+              "type": "split",
+              "node_id": 12,
+              "feature": "s_4",
+              "threshold": -0.06357564777135849,
+              "n_samples": 2203,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 1162,
+                "爬升2": 1397,
+                "斜切切线机动": 384,
+                "稳定跟踪": 891
               },
-              "n_samples": 3900
+              "left": {
+                "type": "leaf",
+                "node_id": 13,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 909,
+                  "爬升2": 1084,
+                  "斜切切线机动": 333,
+                  "稳定跟踪": 188
+                },
+                "n_samples": 1607
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 14,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 253,
+                  "爬升2": 313,
+                  "斜切切线机动": 51,
+                  "稳定跟踪": 703
+                },
+                "n_samples": 596
+              },
+              "left_branch": "s_4 <= -0.06357564777135849",
+              "right_branch": "s_4 > -0.06357564777135849"
             },
             "right": {
-              "type": "leaf",
-              "node_id": 9,
-              "prediction": "斜切切线机动",
+              "type": "split",
+              "node_id": 15,
+              "feature": "s_3",
+              "threshold": 0.0774080865085125,
+              "n_samples": 10655,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 66,
+                "爬升2": 167,
+                "斜切切线机动": 2965,
+                "稳定跟踪": 346
               },
-              "n_samples": 11653
+              "left": {
+                "type": "leaf",
+                "node_id": 16,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 115,
+                  "斜切切线机动": 2808,
+                  "稳定跟踪": 19
+                },
+                "n_samples": 10187
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 17,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 66,
+                  "爬升2": 52,
+                  "斜切切线机动": 157,
+                  "稳定跟踪": 327
+                },
+                "n_samples": 468
+              },
+              "left_branch": "s_3 <= 0.0774080865085125",
+              "right_branch": "s_3 > 0.0774080865085125"
             },
-            "left_branch": "s_1 <= -0.001606830337550491",
-            "right_branch": "s_1 > -0.001606830337550491"
+            "left_branch": "s_1 <= 0.8841553926467896",
+            "right_branch": "s_1 > 0.8841553926467896"
           },
-          "left_branch": "s_3 <= -0.11319150030612946",
-          "right_branch": "s_3 > -0.11319150030612946"
+          "left_branch": "s_3 <= -0.10887395963072777",
+          "right_branch": "s_3 > -0.10887395963072777"
         },
         "right": {
           "type": "split",
-          "node_id": 10,
-          "feature": "s_5",
-          "threshold": -0.11279984563589096,
-          "n_samples": 22180,
-          "left": {
-            "type": "split",
-            "node_id": 11,
-            "feature": "s_3",
-            "threshold": -0.49635548889636993,
-            "n_samples": 8629,
-            "left": {
-              "type": "leaf",
-              "node_id": 12,
-              "prediction": "斜切切线机动",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 4322
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 13,
-              "prediction": "斜切切线机动",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 4307
-            },
-            "left_branch": "s_3 <= -0.49635548889636993",
-            "right_branch": "s_3 > -0.49635548889636993"
-          },
-          "right": {
-            "type": "split",
-            "node_id": 14,
-            "feature": "s_4",
-            "threshold": 0.40158307552337646,
-            "n_samples": 13551,
-            "left": {
-              "type": "leaf",
-              "node_id": 15,
-              "prediction": "斜切切线机动",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 8885
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 16,
-              "prediction": "稳定跟踪",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 4666
-            },
-            "left_branch": "s_4 <= 0.40158307552337646",
-            "right_branch": "s_4 > 0.40158307552337646"
-          },
-          "left_branch": "s_5 <= -0.11279984563589096",
-          "right_branch": "s_5 > -0.11279984563589096"
-        },
-        "left_branch": "s_4 <= 0.23334981501102448",
-        "right_branch": "s_4 > 0.23334981501102448"
-      },
-      "right": {
-        "type": "split",
-        "node_id": 17,
-        "feature": "s_2",
-        "threshold": 0.3612758219242096,
-        "n_samples": 37012,
-        "left": {
-          "type": "split",
           "node_id": 18,
-          "feature": "s_4",
-          "threshold": -0.03112626262009144,
-          "n_samples": 28375,
+          "feature": "s_0",
+          "threshold": -0.0481296069920063,
+          "n_samples": 70194,
+          "class_counts": {
+            "爬升1": 1724,
+            "爬升2": 37997,
+            "斜切切线机动": 34969,
+            "稳定跟踪": 1292
+          },
           "left": {
             "type": "split",
             "node_id": 19,
-            "feature": "s_0",
-            "threshold": -0.17284312099218369,
-            "n_samples": 9351,
+            "feature": "s_4",
+            "threshold": -0.04807210899889469,
+            "n_samples": 30167,
+            "class_counts": {
+              "爬升1": 792,
+              "爬升2": 30645,
+              "斜切切线机动": 13947,
+              "稳定跟踪": 254
+            },
             "left": {
-              "type": "leaf",
+              "type": "split",
               "node_id": 20,
-              "prediction": "斜切切线机动",
+              "feature": "s_1",
+              "threshold": 1.0184130668640137,
+              "n_samples": 25000,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 426,
+                "爬升2": 26166,
+                "斜切切线机动": 7549,
+                "稳定跟踪": 1
               },
-              "n_samples": 1745
+              "left": {
+                "type": "leaf",
+                "node_id": 21,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 426,
+                  "爬升2": 25602,
+                  "斜切切线机动": 6433,
+                  "稳定跟踪": 1
+                },
+                "n_samples": 23298
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 22,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 564,
+                  "斜切切线机动": 1116,
+                  "稳定跟踪": 0
+                },
+                "n_samples": 1702
+              },
+              "left_branch": "s_1 <= 1.0184130668640137",
+              "right_branch": "s_1 > 1.0184130668640137"
             },
             "right": {
-              "type": "leaf",
-              "node_id": 21,
-              "prediction": "爬升1",
+              "type": "split",
+              "node_id": 23,
+              "feature": "s_1",
+              "threshold": 0.014537189155817032,
+              "n_samples": 5167,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 366,
+                "爬升2": 4479,
+                "斜切切线机动": 6398,
+                "稳定跟踪": 253
               },
-              "n_samples": 7606
+              "left": {
+                "type": "leaf",
+                "node_id": 24,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 50,
+                  "爬升2": 1961,
+                  "斜切切线机动": 70,
+                  "稳定跟踪": 236
+                },
+                "n_samples": 1048
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 25,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 316,
+                  "爬升2": 2518,
+                  "斜切切线机动": 6328,
+                  "稳定跟踪": 17
+                },
+                "n_samples": 4119
+              },
+              "left_branch": "s_1 <= 0.014537189155817032",
+              "right_branch": "s_1 > 0.014537189155817032"
             },
-            "left_branch": "s_0 <= -0.17284312099218369",
-            "right_branch": "s_0 > -0.17284312099218369"
+            "left_branch": "s_4 <= -0.04807210899889469",
+            "right_branch": "s_4 > -0.04807210899889469"
           },
           "right": {
-            "type": "split",
-            "node_id": 22,
-            "feature": "s_2",
-            "threshold": -0.2381165623664856,
-            "n_samples": 19024,
-            "left": {
-              "type": "leaf",
-              "node_id": 23,
-              "prediction": "稳定跟踪",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 5041
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 24,
-              "prediction": "爬升1",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 13983
-            },
-            "left_branch": "s_2 <= -0.2381165623664856",
-            "right_branch": "s_2 > -0.2381165623664856"
-          },
-          "left_branch": "s_4 <= -0.03112626262009144",
-          "right_branch": "s_4 > -0.03112626262009144"
-        },
-        "right": {
-          "type": "split",
-          "node_id": 25,
-          "feature": "s_4",
-          "threshold": 0.07844700664281845,
-          "n_samples": 8637,
-          "left": {
             "type": "split",
             "node_id": 26,
-            "feature": "s_1",
-            "threshold": 1.311097502708435,
-            "n_samples": 4082,
-            "left": {
-              "type": "leaf",
-              "node_id": 27,
-              "prediction": "爬升2",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 367
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 28,
-              "prediction": "爬升2",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 3715
-            },
-            "left_branch": "s_1 <= 1.311097502708435",
-            "right_branch": "s_1 > 1.311097502708435"
-          },
-          "right": {
-            "type": "split",
-            "node_id": 29,
-            "feature": "s_4",
-            "threshold": 0.19565580040216446,
-            "n_samples": 4555,
-            "left": {
-              "type": "leaf",
-              "node_id": 30,
-              "prediction": "爬升1",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 1811
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 31,
-              "prediction": "斜切切线机动",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 2744
-            },
-            "left_branch": "s_4 <= 0.19565580040216446",
-            "right_branch": "s_4 > 0.19565580040216446"
-          },
-          "left_branch": "s_4 <= 0.07844700664281845",
-          "right_branch": "s_4 > 0.07844700664281845"
-        },
-        "left_branch": "s_2 <= 0.3612758219242096",
-        "right_branch": "s_2 > 0.3612758219242096"
-      },
-      "left_branch": "s_1 <= 1.2790876030921936",
-      "right_branch": "s_1 > 1.2790876030921936"
-    },
-    "right": {
-      "type": "split",
-      "node_id": 32,
-      "feature": "s_1",
-      "threshold": -0.004752846900373697,
-      "n_samples": 175740,
-      "left": {
-        "type": "split",
-        "node_id": 33,
-        "feature": "s_4",
-        "threshold": 0.033376069739460945,
-        "n_samples": 50188,
-        "left": {
-          "type": "split",
-          "node_id": 34,
-          "feature": "s_3",
-          "threshold": -0.00017747405217960477,
-          "n_samples": 27287,
-          "left": {
-            "type": "split",
-            "node_id": 35,
-            "feature": "s_4",
-            "threshold": -0.2418183609843254,
-            "n_samples": 9243,
-            "left": {
-              "type": "leaf",
-              "node_id": 36,
-              "prediction": "爬升2",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 616
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 37,
-              "prediction": "爬升1",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 8627
-            },
-            "left_branch": "s_4 <= -0.2418183609843254",
-            "right_branch": "s_4 > -0.2418183609843254"
-          },
-          "right": {
-            "type": "split",
-            "node_id": 38,
-            "feature": "s_0",
-            "threshold": 0.12688684463500977,
-            "n_samples": 18044,
-            "left": {
-              "type": "leaf",
-              "node_id": 39,
-              "prediction": "爬升1",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 5010
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 40,
-              "prediction": "爬升2",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 13034
-            },
-            "left_branch": "s_0 <= 0.12688684463500977",
-            "right_branch": "s_0 > 0.12688684463500977"
-          },
-          "left_branch": "s_3 <= -0.00017747405217960477",
-          "right_branch": "s_3 > -0.00017747405217960477"
-        },
-        "right": {
-          "type": "split",
-          "node_id": 41,
-          "feature": "s_4",
-          "threshold": 0.07163144648075104,
-          "n_samples": 22901,
-          "left": {
-            "type": "split",
-            "node_id": 42,
             "feature": "s_3",
-            "threshold": 0.028052639216184616,
-            "n_samples": 9710,
+            "threshold": -0.11666451767086983,
+            "n_samples": 40027,
+            "class_counts": {
+              "爬升1": 932,
+              "爬升2": 7352,
+              "斜切切线机动": 21022,
+              "稳定跟踪": 1038
+            },
             "left": {
-              "type": "leaf",
-              "node_id": 43,
-              "prediction": "爬升1",
+              "type": "split",
+              "node_id": 27,
+              "feature": "s_4",
+              "threshold": -0.11767202615737915,
+              "n_samples": 32217,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 7,
+                "爬升2": 1518,
+                "斜切切线机动": 19644,
+                "稳定跟踪": 1
               },
-              "n_samples": 8309
+              "left": {
+                "type": "leaf",
+                "node_id": 28,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 6,
+                  "爬升2": 723,
+                  "斜切切线机动": 947,
+                  "稳定跟踪": 0
+                },
+                "n_samples": 1015
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 29,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 1,
+                  "爬升2": 795,
+                  "斜切切线机动": 18697,
+                  "稳定跟踪": 1
+                },
+                "n_samples": 31202
+              },
+              "left_branch": "s_4 <= -0.11767202615737915",
+              "right_branch": "s_4 > -0.11767202615737915"
             },
             "right": {
-              "type": "leaf",
-              "node_id": 44,
-              "prediction": "爬升2",
+              "type": "split",
+              "node_id": 30,
+              "feature": "s_2",
+              "threshold": 0.32017800211906433,
+              "n_samples": 7810,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 925,
+                "爬升2": 5834,
+                "斜切切线机动": 1378,
+                "稳定跟踪": 1037
               },
-              "n_samples": 1401
+              "left": {
+                "type": "leaf",
+                "node_id": 31,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 903,
+                  "爬升2": 3334,
+                  "斜切切线机动": 1195,
+                  "稳定跟踪": 1037
+                },
+                "n_samples": 5194
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 32,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 22,
+                  "爬升2": 2500,
+                  "斜切切线机动": 183,
+                  "稳定跟踪": 0
+                },
+                "n_samples": 2616
+              },
+              "left_branch": "s_2 <= 0.32017800211906433",
+              "right_branch": "s_2 > 0.32017800211906433"
             },
-            "left_branch": "s_3 <= 0.028052639216184616",
-            "right_branch": "s_3 > 0.028052639216184616"
+            "left_branch": "s_3 <= -0.11666451767086983",
+            "right_branch": "s_3 > -0.11666451767086983"
           },
-          "right": {
-            "type": "split",
-            "node_id": 45,
-            "feature": "s_5",
-            "threshold": 0.00039546852349303663,
-            "n_samples": 13191,
-            "left": {
-              "type": "leaf",
-              "node_id": 46,
-              "prediction": "稳定跟踪",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 8293
-            },
-            "right": {
-              "type": "leaf",
-              "node_id": 47,
-              "prediction": "稳定跟踪",
-              "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
-              },
-              "n_samples": 4898
-            },
-            "left_branch": "s_5 <= 0.00039546852349303663",
-            "right_branch": "s_5 > 0.00039546852349303663"
-          },
-          "left_branch": "s_4 <= 0.07163144648075104",
-          "right_branch": "s_4 > 0.07163144648075104"
+          "left_branch": "s_0 <= -0.0481296069920063",
+          "right_branch": "s_0 > -0.0481296069920063"
         },
-        "left_branch": "s_4 <= 0.033376069739460945",
-        "right_branch": "s_4 > 0.033376069739460945"
+        "left_branch": "s_2 <= -0.028732133097946644",
+        "right_branch": "s_2 > -0.028732133097946644"
       },
       "right": {
         "type": "split",
-        "node_id": 48,
-        "feature": "s_7",
-        "threshold": 0.5,
-        "n_samples": 125552,
+        "node_id": 33,
+        "feature": "s_2",
+        "threshold": 0.03845563344657421,
+        "n_samples": 190952,
+        "class_counts": {
+          "爬升1": 2661,
+          "爬升2": 5159,
+          "斜切切线机动": 142956,
+          "稳定跟踪": 24638
+        },
         "left": {
           "type": "split",
-          "node_id": 49,
-          "feature": "s_2",
-          "threshold": 0.07645045593380928,
-          "n_samples": 26355,
+          "node_id": 34,
+          "feature": "s_4",
+          "threshold": 0.11345754563808441,
+          "n_samples": 72043,
+          "class_counts": {
+            "爬升1": 1319,
+            "爬升2": 3092,
+            "斜切切线机动": 52488,
+            "稳定跟踪": 20244
+          },
           "left": {
             "type": "split",
-            "node_id": 50,
-            "feature": "s_2",
-            "threshold": -0.2158476784825325,
-            "n_samples": 18069,
+            "node_id": 35,
+            "feature": "s_3",
+            "threshold": -0.2004767209291458,
+            "n_samples": 57771,
+            "class_counts": {
+              "爬升1": 1102,
+              "爬升2": 2915,
+              "斜切切线机动": 41344,
+              "稳定跟踪": 9814
+            },
             "left": {
-              "type": "leaf",
-              "node_id": 51,
-              "prediction": "稳定跟踪",
+              "type": "split",
+              "node_id": 36,
+              "feature": "s_5",
+              "threshold": -0.19901751726865768,
+              "n_samples": 41933,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 2,
+                "爬升2": 37,
+                "斜切切线机动": 37705,
+                "稳定跟踪": 1923
               },
-              "n_samples": 4049
+              "left": {
+                "type": "leaf",
+                "node_id": 37,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 2,
+                  "爬升2": 37,
+                  "斜切切线机动": 2230,
+                  "稳定跟踪": 765
+                },
+                "n_samples": 2032
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 38,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 0,
+                  "斜切切线机动": 35475,
+                  "稳定跟踪": 1158
+                },
+                "n_samples": 39901
+              },
+              "left_branch": "s_5 <= -0.19901751726865768",
+              "right_branch": "s_5 > -0.19901751726865768"
             },
             "right": {
-              "type": "leaf",
-              "node_id": 52,
-              "prediction": "爬升1",
+              "type": "split",
+              "node_id": 39,
+              "feature": "s_7",
+              "threshold": 0.5,
+              "n_samples": 15838,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 1100,
+                "爬升2": 2878,
+                "斜切切线机动": 3639,
+                "稳定跟踪": 7891
               },
-              "n_samples": 14020
+              "left": {
+                "type": "leaf",
+                "node_id": 40,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 1033,
+                  "爬升2": 41,
+                  "斜切切线机动": 3561,
+                  "稳定跟踪": 7318
+                },
+                "n_samples": 13389
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 41,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 67,
+                  "爬升2": 2837,
+                  "斜切切线机动": 78,
+                  "稳定跟踪": 573
+                },
+                "n_samples": 2449
+              },
+              "left_branch": "s_7 <= 0.5",
+              "right_branch": "s_7 > 0.5"
             },
-            "left_branch": "s_2 <= -0.2158476784825325",
-            "right_branch": "s_2 > -0.2158476784825325"
+            "left_branch": "s_3 <= -0.2004767209291458",
+            "right_branch": "s_3 > -0.2004767209291458"
           },
           "right": {
             "type": "split",
-            "node_id": 53,
+            "node_id": 42,
             "feature": "s_1",
-            "threshold": 1.4085003733634949,
-            "n_samples": 8286,
+            "threshold": 0.8556545972824097,
+            "n_samples": 14272,
+            "class_counts": {
+              "爬升1": 217,
+              "爬升2": 177,
+              "斜切切线机动": 11144,
+              "稳定跟踪": 10430
+            },
             "left": {
-              "type": "leaf",
-              "node_id": 54,
-              "prediction": "斜切切线机动",
+              "type": "split",
+              "node_id": 43,
+              "feature": "s_4",
+              "threshold": 0.19334366917610168,
+              "n_samples": 10510,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 217,
+                "爬升2": 177,
+                "斜切切线机动": 6890,
+                "稳定跟踪": 9408
               },
-              "n_samples": 2976
+              "left": {
+                "type": "leaf",
+                "node_id": 44,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 104,
+                  "爬升2": 156,
+                  "斜切切线机动": 4634,
+                  "稳定跟踪": 2950
+                },
+                "n_samples": 3706
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 45,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 113,
+                  "爬升2": 21,
+                  "斜切切线机动": 2256,
+                  "稳定跟踪": 6458
+                },
+                "n_samples": 6804
+              },
+              "left_branch": "s_4 <= 0.19334366917610168",
+              "right_branch": "s_4 > 0.19334366917610168"
             },
             "right": {
-              "type": "leaf",
-              "node_id": 55,
-              "prediction": "爬升2",
+              "type": "split",
+              "node_id": 46,
+              "feature": "s_4",
+              "threshold": 0.35053233802318573,
+              "n_samples": 3762,
               "class_counts": {
                 "爬升1": 0,
                 "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "斜切切线机动": 4254,
+                "稳定跟踪": 1022
               },
-              "n_samples": 5310
+              "left": {
+                "type": "leaf",
+                "node_id": 47,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 0,
+                  "斜切切线机动": 3507,
+                  "稳定跟踪": 224
+                },
+                "n_samples": 3116
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 48,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 0,
+                  "斜切切线机动": 747,
+                  "稳定跟踪": 798
+                },
+                "n_samples": 646
+              },
+              "left_branch": "s_4 <= 0.35053233802318573",
+              "right_branch": "s_4 > 0.35053233802318573"
             },
-            "left_branch": "s_1 <= 1.4085003733634949",
-            "right_branch": "s_1 > 1.4085003733634949"
+            "left_branch": "s_1 <= 0.8556545972824097",
+            "right_branch": "s_1 > 0.8556545972824097"
           },
-          "left_branch": "s_2 <= 0.07645045593380928",
-          "right_branch": "s_2 > 0.07645045593380928"
+          "left_branch": "s_4 <= 0.11345754563808441",
+          "right_branch": "s_4 > 0.11345754563808441"
         },
         "right": {
           "type": "split",
-          "node_id": 56,
-          "feature": "s_3",
-          "threshold": 0.026226875372231007,
-          "n_samples": 99197,
+          "node_id": 49,
+          "feature": "s_1",
+          "threshold": 0.060696860775351524,
+          "n_samples": 118909,
+          "class_counts": {
+            "爬升1": 1342,
+            "爬升2": 2067,
+            "斜切切线机动": 90468,
+            "稳定跟踪": 4394
+          },
           "left": {
             "type": "split",
-            "node_id": 57,
-            "feature": "s_4",
-            "threshold": 0.06502831354737282,
-            "n_samples": 94666,
+            "node_id": 50,
+            "feature": "s_7",
+            "threshold": 0.5,
+            "n_samples": 5104,
+            "class_counts": {
+              "爬升1": 351,
+              "爬升2": 1689,
+              "斜切切线机动": 5535,
+              "稳定跟踪": 2623
+            },
             "left": {
-              "type": "leaf",
-              "node_id": 58,
-              "prediction": "爬升1",
+              "type": "split",
+              "node_id": 51,
+              "feature": "s_3",
+              "threshold": -0.14730621129274368,
+              "n_samples": 3294,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 338,
+                "爬升2": 253,
+                "斜切切线机动": 5194,
+                "稳定跟踪": 2522
               },
-              "n_samples": 92250
+              "left": {
+                "type": "leaf",
+                "node_id": 52,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 6,
+                  "斜切切线机动": 4079,
+                  "稳定跟踪": 495
+                },
+                "n_samples": 2089
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 53,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 338,
+                  "爬升2": 247,
+                  "斜切切线机动": 1115,
+                  "稳定跟踪": 2027
+                },
+                "n_samples": 1205
+              },
+              "left_branch": "s_3 <= -0.14730621129274368",
+              "right_branch": "s_3 > -0.14730621129274368"
             },
             "right": {
-              "type": "leaf",
-              "node_id": 59,
-              "prediction": "稳定跟踪",
+              "type": "split",
+              "node_id": 54,
+              "feature": "s_4",
+              "threshold": 0.19812113791704178,
+              "n_samples": 1810,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 13,
+                "爬升2": 1436,
+                "斜切切线机动": 341,
+                "稳定跟踪": 101
               },
-              "n_samples": 2416
+              "left": {
+                "type": "leaf",
+                "node_id": 55,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 10,
+                  "爬升2": 1400,
+                  "斜切切线机动": 281,
+                  "稳定跟踪": 32
+                },
+                "n_samples": 1682
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 56,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 3,
+                  "爬升2": 36,
+                  "斜切切线机动": 60,
+                  "稳定跟踪": 69
+                },
+                "n_samples": 128
+              },
+              "left_branch": "s_4 <= 0.19812113791704178",
+              "right_branch": "s_4 > 0.19812113791704178"
             },
-            "left_branch": "s_4 <= 0.06502831354737282",
-            "right_branch": "s_4 > 0.06502831354737282"
+            "left_branch": "s_7 <= 0.5",
+            "right_branch": "s_7 > 0.5"
           },
           "right": {
             "type": "split",
-            "node_id": 60,
-            "feature": "s_5",
-            "threshold": -0.004474231507629156,
-            "n_samples": 4531,
+            "node_id": 57,
+            "feature": "s_4",
+            "threshold": 0.4036233723163605,
+            "n_samples": 113805,
+            "class_counts": {
+              "爬升1": 991,
+              "爬升2": 378,
+              "斜切切线机动": 84933,
+              "稳定跟踪": 1771
+            },
             "left": {
-              "type": "leaf",
-              "node_id": 61,
-              "prediction": "爬升1",
+              "type": "split",
+              "node_id": 58,
+              "feature": "s_3",
+              "threshold": 0.09810155257582664,
+              "n_samples": 110099,
               "class_counts": {
-                "爬升1": 0,
-                "爬升2": 0,
-                "斜切切线机动": 0,
-                "稳定跟踪": 0
+                "爬升1": 976,
+                "爬升2": 378,
+                "斜切切线机动": 79614,
+                "稳定跟踪": 733
               },
-              "n_samples": 2060
+              "left": {
+                "type": "leaf",
+                "node_id": 59,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 504,
+                  "爬升2": 300,
+                  "斜切切线机动": 79564,
+                  "稳定跟踪": 703
+                },
+                "n_samples": 109805
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 60,
+                "prediction": "爬升1",
+                "class_counts": {
+                  "爬升1": 472,
+                  "爬升2": 78,
+                  "斜切切线机动": 50,
+                  "稳定跟踪": 30
+                },
+                "n_samples": 294
+              },
+              "left_branch": "s_3 <= 0.09810155257582664",
+              "right_branch": "s_3 > 0.09810155257582664"
+            },
+            "right": {
+              "type": "split",
+              "node_id": 61,
+              "feature": "s_2",
+              "threshold": 0.20000607520341873,
+              "n_samples": 3706,
+              "class_counts": {
+                "爬升1": 15,
+                "爬升2": 0,
+                "斜切切线机动": 5319,
+                "稳定跟踪": 1038
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 62,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 0,
+                  "斜切切线机动": 2495,
+                  "稳定跟踪": 981
+                },
+                "n_samples": 1258
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 63,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 15,
+                  "爬升2": 0,
+                  "斜切切线机动": 2824,
+                  "稳定跟踪": 57
+                },
+                "n_samples": 2448
+              },
+              "left_branch": "s_2 <= 0.20000607520341873",
+              "right_branch": "s_2 > 0.20000607520341873"
+            },
+            "left_branch": "s_4 <= 0.4036233723163605",
+            "right_branch": "s_4 > 0.4036233723163605"
+          },
+          "left_branch": "s_1 <= 0.060696860775351524",
+          "right_branch": "s_1 > 0.060696860775351524"
+        },
+        "left_branch": "s_2 <= 0.03845563344657421",
+        "right_branch": "s_2 > 0.03845563344657421"
+      },
+      "left_branch": "s_4 <= 0.0007691295759286731",
+      "right_branch": "s_4 > 0.0007691295759286731"
+    },
+    "right": {
+      "type": "split",
+      "node_id": 64,
+      "feature": "s_3",
+      "threshold": -0.0024121188325807452,
+      "n_samples": 81375,
+      "class_counts": {
+        "爬升1": 120976,
+        "爬升2": 3697,
+        "斜切切线机动": 287,
+        "稳定跟踪": 11861
+      },
+      "left": {
+        "type": "split",
+        "node_id": 65,
+        "feature": "s_2",
+        "threshold": 0.0272991256788373,
+        "n_samples": 7638,
+        "class_counts": {
+          "爬升1": 3421,
+          "爬升2": 2177,
+          "斜切切线机动": 278,
+          "稳定跟踪": 8088
+        },
+        "left": {
+          "type": "split",
+          "node_id": 66,
+          "feature": "s_3",
+          "threshold": -0.01375627238303423,
+          "n_samples": 6659,
+          "class_counts": {
+            "爬升1": 2765,
+            "爬升2": 1116,
+            "斜切切线机动": 249,
+            "稳定跟踪": 7530
+          },
+          "left": {
+            "type": "split",
+            "node_id": 67,
+            "feature": "s_4",
+            "threshold": -0.1674756333231926,
+            "n_samples": 5432,
+            "class_counts": {
+              "爬升1": 1112,
+              "爬升2": 1046,
+              "斜切切线机动": 243,
+              "稳定跟踪": 6382
+            },
+            "left": {
+              "type": "split",
+              "node_id": 68,
+              "feature": "s_2",
+              "threshold": -0.0734548307955265,
+              "n_samples": 159,
+              "class_counts": {
+                "爬升1": 3,
+                "爬升2": 195,
+                "斜切切线机动": 127,
+                "稳定跟踪": 76
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 69,
+                "prediction": "斜切切线机动",
+                "class_counts": {
+                  "爬升1": 1,
+                  "爬升2": 61,
+                  "斜切切线机动": 87,
+                  "稳定跟踪": 57
+                },
+                "n_samples": 73
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 70,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 2,
+                  "爬升2": 134,
+                  "斜切切线机动": 40,
+                  "稳定跟踪": 19
+                },
+                "n_samples": 86
+              },
+              "left_branch": "s_2 <= -0.0734548307955265",
+              "right_branch": "s_2 > -0.0734548307955265"
+            },
+            "right": {
+              "type": "split",
+              "node_id": 71,
+              "feature": "s_5",
+              "threshold": -0.40043605864048004,
+              "n_samples": 5273,
+              "class_counts": {
+                "爬升1": 1109,
+                "爬升2": 851,
+                "斜切切线机动": 116,
+                "稳定跟踪": 6306
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 72,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 170,
+                  "爬升2": 224,
+                  "斜切切线机动": 5,
+                  "稳定跟踪": 303
+                },
+                "n_samples": 272
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 73,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 939,
+                  "爬升2": 627,
+                  "斜切切线机动": 111,
+                  "稳定跟踪": 6003
+                },
+                "n_samples": 5001
+              },
+              "left_branch": "s_5 <= -0.40043605864048004",
+              "right_branch": "s_5 > -0.40043605864048004"
+            },
+            "left_branch": "s_4 <= -0.1674756333231926",
+            "right_branch": "s_4 > -0.1674756333231926"
+          },
+          "right": {
+            "type": "split",
+            "node_id": 74,
+            "feature": "s_2",
+            "threshold": -0.020446970127522945,
+            "n_samples": 1227,
+            "class_counts": {
+              "爬升1": 1653,
+              "爬升2": 70,
+              "斜切切线机动": 6,
+              "稳定跟踪": 1148
+            },
+            "left": {
+              "type": "split",
+              "node_id": 75,
+              "feature": "s_0",
+              "threshold": -0.10609030723571777,
+              "n_samples": 576,
+              "class_counts": {
+                "爬升1": 411,
+                "爬升2": 6,
+                "斜切切线机动": 6,
+                "稳定跟踪": 895
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 76,
+                "prediction": "爬升1",
+                "class_counts": {
+                  "爬升1": 133,
+                  "爬升2": 2,
+                  "斜切切线机动": 6,
+                  "稳定跟踪": 20
+                },
+                "n_samples": 77
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 77,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 278,
+                  "爬升2": 4,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 875
+                },
+                "n_samples": 499
+              },
+              "left_branch": "s_0 <= -0.10609030723571777",
+              "right_branch": "s_0 > -0.10609030723571777"
+            },
+            "right": {
+              "type": "split",
+              "node_id": 78,
+              "feature": "s_7",
+              "threshold": 0.5,
+              "n_samples": 651,
+              "class_counts": {
+                "爬升1": 1242,
+                "爬升2": 64,
+                "斜切切线机动": 0,
+                "稳定跟踪": 253
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 79,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 10,
+                  "爬升2": 9,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 236
+                },
+                "n_samples": 110
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 80,
+                "prediction": "爬升1",
+                "class_counts": {
+                  "爬升1": 1232,
+                  "爬升2": 55,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 17
+                },
+                "n_samples": 541
+              },
+              "left_branch": "s_7 <= 0.5",
+              "right_branch": "s_7 > 0.5"
+            },
+            "left_branch": "s_2 <= -0.020446970127522945",
+            "right_branch": "s_2 > -0.020446970127522945"
+          },
+          "left_branch": "s_3 <= -0.01375627238303423",
+          "right_branch": "s_3 > -0.01375627238303423"
+        },
+        "right": {
+          "type": "split",
+          "node_id": 81,
+          "feature": "s_5",
+          "threshold": -0.016649105586111546,
+          "n_samples": 979,
+          "class_counts": {
+            "爬升1": 656,
+            "爬升2": 1061,
+            "斜切切线机动": 29,
+            "稳定跟踪": 558
+          },
+          "left": {
+            "type": "split",
+            "node_id": 82,
+            "feature": "s_3",
+            "threshold": -0.04120258241891861,
+            "n_samples": 404,
+            "class_counts": {
+              "爬升1": 186,
+              "爬升2": 606,
+              "斜切切线机动": 2,
+              "稳定跟踪": 49
+            },
+            "left": {
+              "type": "split",
+              "node_id": 83,
+              "feature": "s_4",
+              "threshold": -0.21019936352968216,
+              "n_samples": 354,
+              "class_counts": {
+                "爬升1": 43,
+                "爬升2": 487,
+                "斜切切线机动": 2,
+                "稳定跟踪": 38
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 84,
+                "prediction": "爬升1",
+                "class_counts": {
+                  "爬升1": 23,
+                  "爬升2": 13,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 0
+                },
+                "n_samples": 50
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 85,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 20,
+                  "爬升2": 474,
+                  "斜切切线机动": 2,
+                  "稳定跟踪": 38
+                },
+                "n_samples": 304
+              },
+              "left_branch": "s_4 <= -0.21019936352968216",
+              "right_branch": "s_4 > -0.21019936352968216"
             },
             "right": {
               "type": "leaf",
-              "node_id": 62,
-              "prediction": "爬升2",
+              "node_id": 86,
+              "prediction": "爬升1",
               "class_counts": {
-                "爬升1": 0,
+                "爬升1": 143,
+                "爬升2": 119,
+                "斜切切线机动": 0,
+                "稳定跟踪": 11
+              },
+              "n_samples": 50
+            },
+            "left_branch": "s_3 <= -0.04120258241891861",
+            "right_branch": "s_3 > -0.04120258241891861"
+          },
+          "right": {
+            "type": "split",
+            "node_id": 87,
+            "feature": "s_4",
+            "threshold": -0.10424449667334557,
+            "n_samples": 575,
+            "class_counts": {
+              "爬升1": 470,
+              "爬升2": 455,
+              "斜切切线机动": 27,
+              "稳定跟踪": 509
+            },
+            "left": {
+              "type": "split",
+              "node_id": 88,
+              "feature": "s_0",
+              "threshold": -0.035958957858383656,
+              "n_samples": 117,
+              "class_counts": {
+                "爬升1": 2,
+                "爬升2": 113,
+                "斜切切线机动": 7,
+                "稳定跟踪": 5
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 89,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 2,
+                  "爬升2": 59,
+                  "斜切切线机动": 2,
+                  "稳定跟踪": 1
+                },
+                "n_samples": 67
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 90,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 0,
+                  "爬升2": 54,
+                  "斜切切线机动": 5,
+                  "稳定跟踪": 4
+                },
+                "n_samples": 50
+              },
+              "left_branch": "s_0 <= -0.035958957858383656",
+              "right_branch": "s_0 > -0.035958957858383656"
+            },
+            "right": {
+              "type": "split",
+              "node_id": 91,
+              "feature": "s_7",
+              "threshold": 0.5,
+              "n_samples": 458,
+              "class_counts": {
+                "爬升1": 468,
+                "爬升2": 342,
+                "斜切切线机动": 20,
+                "稳定跟踪": 504
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 92,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 31,
+                  "爬升2": 108,
+                  "斜切切线机动": 1,
+                  "稳定跟踪": 421
+                },
+                "n_samples": 179
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 93,
+                "prediction": "爬升1",
+                "class_counts": {
+                  "爬升1": 437,
+                  "爬升2": 234,
+                  "斜切切线机动": 19,
+                  "稳定跟踪": 83
+                },
+                "n_samples": 279
+              },
+              "left_branch": "s_7 <= 0.5",
+              "right_branch": "s_7 > 0.5"
+            },
+            "left_branch": "s_4 <= -0.10424449667334557",
+            "right_branch": "s_4 > -0.10424449667334557"
+          },
+          "left_branch": "s_5 <= -0.016649105586111546",
+          "right_branch": "s_5 > -0.016649105586111546"
+        },
+        "left_branch": "s_2 <= 0.0272991256788373",
+        "right_branch": "s_2 > 0.0272991256788373"
+      },
+      "right": {
+        "type": "split",
+        "node_id": 94,
+        "feature": "s_7",
+        "threshold": 0.5,
+        "n_samples": 73737,
+        "class_counts": {
+          "爬升1": 117555,
+          "爬升2": 1520,
+          "斜切切线机动": 9,
+          "稳定跟踪": 3773
+        },
+        "left": {
+          "type": "split",
+          "node_id": 95,
+          "feature": "s_0",
+          "threshold": -0.11249751970171928,
+          "n_samples": 1472,
+          "class_counts": {
+            "爬升1": 182,
+            "爬升2": 38,
+            "斜切切线机动": 9,
+            "稳定跟踪": 2378
+          },
+          "left": {
+            "type": "leaf",
+            "node_id": 96,
+            "prediction": "爬升1",
+            "class_counts": {
+              "爬升1": 115,
+              "爬升2": 38,
+              "斜切切线机动": 6,
+              "稳定跟踪": 55
+            },
+            "n_samples": 85
+          },
+          "right": {
+            "type": "split",
+            "node_id": 97,
+            "feature": "s_2",
+            "threshold": 0.008130534086376429,
+            "n_samples": 1387,
+            "class_counts": {
+              "爬升1": 67,
+              "爬升2": 0,
+              "斜切切线机动": 3,
+              "稳定跟踪": 2323
+            },
+            "left": {
+              "type": "leaf",
+              "node_id": 98,
+              "prediction": "稳定跟踪",
+              "class_counts": {
+                "爬升1": 9,
                 "爬升2": 0,
+                "斜切切线机动": 3,
+                "稳定跟踪": 2208
+              },
+              "n_samples": 1337
+            },
+            "right": {
+              "type": "leaf",
+              "node_id": 99,
+              "prediction": "稳定跟踪",
+              "class_counts": {
+                "爬升1": 58,
+                "爬升2": 0,
+                "斜切切线机动": 0,
+                "稳定跟踪": 115
+              },
+              "n_samples": 50
+            },
+            "left_branch": "s_2 <= 0.008130534086376429",
+            "right_branch": "s_2 > 0.008130534086376429"
+          },
+          "left_branch": "s_0 <= -0.11249751970171928",
+          "right_branch": "s_0 > -0.11249751970171928"
+        },
+        "right": {
+          "type": "split",
+          "node_id": 100,
+          "feature": "s_4",
+          "threshold": -0.13151952624320984,
+          "n_samples": 72265,
+          "class_counts": {
+            "爬升1": 117373,
+            "爬升2": 1482,
+            "斜切切线机动": 0,
+            "稳定跟踪": 1395
+          },
+          "left": {
+            "type": "split",
+            "node_id": 101,
+            "feature": "s_5",
+            "threshold": -0.0041123072151094675,
+            "n_samples": 537,
+            "class_counts": {
+              "爬升1": 206,
+              "爬升2": 1258,
+              "斜切切线机动": 0,
+              "稳定跟踪": 1
+            },
+            "left": {
+              "type": "leaf",
+              "node_id": 102,
+              "prediction": "爬升1",
+              "class_counts": {
+                "爬升1": 56,
+                "爬升2": 47,
                 "斜切切线机动": 0,
                 "稳定跟踪": 0
               },
-              "n_samples": 2471
+              "n_samples": 50
             },
-            "left_branch": "s_5 <= -0.004474231507629156",
-            "right_branch": "s_5 > -0.004474231507629156"
+            "right": {
+              "type": "split",
+              "node_id": 103,
+              "feature": "s_2",
+              "threshold": -0.006269932957366109,
+              "n_samples": 487,
+              "class_counts": {
+                "爬升1": 150,
+                "爬升2": 1211,
+                "斜切切线机动": 0,
+                "稳定跟踪": 1
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 104,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 136,
+                  "爬升2": 137,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 1
+                },
+                "n_samples": 55
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 105,
+                "prediction": "爬升2",
+                "class_counts": {
+                  "爬升1": 14,
+                  "爬升2": 1074,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 0
+                },
+                "n_samples": 432
+              },
+              "left_branch": "s_2 <= -0.006269932957366109",
+              "right_branch": "s_2 > -0.006269932957366109"
+            },
+            "left_branch": "s_5 <= -0.0041123072151094675",
+            "right_branch": "s_5 > -0.0041123072151094675"
           },
-          "left_branch": "s_3 <= 0.026226875372231007",
-          "right_branch": "s_3 > 0.026226875372231007"
+          "right": {
+            "type": "split",
+            "node_id": 106,
+            "feature": "s_1",
+            "threshold": 0.007012680638581514,
+            "n_samples": 71728,
+            "class_counts": {
+              "爬升1": 117167,
+              "爬升2": 224,
+              "斜切切线机动": 0,
+              "稳定跟踪": 1394
+            },
+            "left": {
+              "type": "split",
+              "node_id": 107,
+              "feature": "s_2",
+              "threshold": -0.08675074204802513,
+              "n_samples": 71438,
+              "class_counts": {
+                "爬升1": 116934,
+                "爬升2": 224,
+                "斜切切线机动": 0,
+                "稳定跟踪": 786
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 108,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 289,
+                  "爬升2": 0,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 389
+                },
+                "n_samples": 206
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 109,
+                "prediction": "爬升1",
+                "class_counts": {
+                  "爬升1": 116645,
+                  "爬升2": 224,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 397
+                },
+                "n_samples": 71232
+              },
+              "left_branch": "s_2 <= -0.08675074204802513",
+              "right_branch": "s_2 > -0.08675074204802513"
+            },
+            "right": {
+              "type": "split",
+              "node_id": 110,
+              "feature": "s_4",
+              "threshold": 0.07576346024870872,
+              "n_samples": 290,
+              "class_counts": {
+                "爬升1": 233,
+                "爬升2": 0,
+                "斜切切线机动": 0,
+                "稳定跟踪": 608
+              },
+              "left": {
+                "type": "leaf",
+                "node_id": 111,
+                "prediction": "爬升1",
+                "class_counts": {
+                  "爬升1": 231,
+                  "爬升2": 0,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 152
+                },
+                "n_samples": 50
+              },
+              "right": {
+                "type": "leaf",
+                "node_id": 112,
+                "prediction": "稳定跟踪",
+                "class_counts": {
+                  "爬升1": 2,
+                  "爬升2": 0,
+                  "斜切切线机动": 0,
+                  "稳定跟踪": 456
+                },
+                "n_samples": 240
+              },
+              "left_branch": "s_4 <= 0.07576346024870872",
+              "right_branch": "s_4 > 0.07576346024870872"
+            },
+            "left_branch": "s_1 <= 0.007012680638581514",
+            "right_branch": "s_1 > 0.007012680638581514"
+          },
+          "left_branch": "s_4 <= -0.13151952624320984",
+          "right_branch": "s_4 > -0.13151952624320984"
         },
         "left_branch": "s_7 <= 0.5",
         "right_branch": "s_7 > 0.5"
       },
-      "left_branch": "s_1 <= -0.004752846900373697",
-      "right_branch": "s_1 > -0.004752846900373697"
+      "left_branch": "s_3 <= -0.0024121188325807452",
+      "right_branch": "s_3 > -0.0024121188325807452"
     },
-    "left_branch": "s_3 <= -0.046642130240797997",
-    "right_branch": "s_3 > -0.046642130240797997"
+    "left_branch": "s_6 <= 0.5",
+    "right_branch": "s_6 > 0.5"
   },
   "feature_names": [
     "s_0",
@@ -672,7 +1533,8 @@
     "s_6",
     "s_7"
   ],
-  "n_nodes": 63,
-  "n_leaves": 32,
-  "max_depth": 5
+  "n_nodes": 113,
+  "n_leaves": 57,
+  "max_depth": 6,
+  "class_counts_note": "class_counts 为 apply(X) 后真实标签计数，非 class_weight 加权"
 }

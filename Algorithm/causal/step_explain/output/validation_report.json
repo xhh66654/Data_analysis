@@ -1,0 +1,72 @@
+{
+  "overall_score": 0.9776,
+  "overall_percent": 97.8,
+  "grade": "优",
+  "summary_zh": "整体可信度高，解释与模型、数据较为一致，可直接用于汇报。",
+  "n_pass": 6,
+  "n_warn": 0,
+  "n_fail": 0,
+  "checks": [
+    {
+      "name": "action_consistency",
+      "status": "pass",
+      "score": 1.0,
+      "message_zh": "模型认为当前动作是几种选择里最合适的一步。",
+      "detail": {
+        "is_optimal": true,
+        "margin": 0.0,
+        "chosen_rank": 1,
+        "n_actions": 4
+      }
+    },
+    {
+      "name": "action_discrimination",
+      "status": "pass",
+      "score": 1.0,
+      "message_zh": "各动作评分有一定差距（极差 0.393），备选对比较有意义。",
+      "detail": {
+        "q_spread": 0.393407,
+        "q_std": 0.150463
+      }
+    },
+    {
+      "name": "attribution_strength",
+      "status": "pass",
+      "score": 1.0,
+      "message_zh": "首要因素「本机位置」影响明显（|Δ|=0.553），归因较有依据。",
+      "detail": {
+        "top_block": "本机位置",
+        "top_abs_delta": 0.552873
+      }
+    },
+    {
+      "name": "attribution_separability",
+      "status": "pass",
+      "score": 0.8653,
+      "message_zh": "首要因素明显强于次要因素（强度比约 2.7 倍）。",
+      "detail": {
+        "top1_abs": 0.552873,
+        "top2_abs": 0.202473,
+        "ratio": 2.7306
+      }
+    },
+    {
+      "name": "reward_alignment",
+      "status": "pass",
+      "score": 1.0,
+      "message_zh": "即时奖励与模型判断方向一致。",
+      "detail": {
+        "reward": 0.57183
+      }
+    },
+    {
+      "name": "q_model_fit",
+      "status": "pass",
+      "score": 1.0,
+      "message_zh": "价值模型离线拟合损失为 0.6434，估计较可靠。",
+      "detail": {
+        "fqe_final_loss": 0.6433959262711662
+      }
+    }
+  ]
+}

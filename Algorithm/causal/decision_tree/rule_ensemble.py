@@ -11,8 +11,6 @@
   RuleEnsemble        — 规则集成器类
   RuleInfo            — 单条规则信息
   ensemble_rules_from_rounds() — 从多轮规则列表集成
-  prune_rules()       — 规则剪枝（按置信度、覆盖度等）
-  merge_similar_rules() — 合并相似规则
 """
 from __future__ import annotations
 
@@ -154,8 +152,9 @@ class RuleEnsemble:
 
         for cond_key, action_list in self.rules_by_condition.items():
             pattern_key = _conditions_to_pattern_key(cond_key)
+            # 无 s_i 特征条件（如 "IF TRUE THEN …"）：用字面条件键分组，避免被丢弃
             if not pattern_key:
-                continue
+                pattern_key = ("__literal__",) + cond_key
 
             for a in action_list:
                 if a['confidence'] < self.confidence_threshold:
@@ -186,11 +185,14 @@ class RuleEnsemble:
                         feature_thresholds[f'{f}{op}'].append(v)
                 all_source_rounds.add(entry['round_idx'])
 
-            # 取中位数阈值
+            # 取中位数阈值；字面规则（IF TRUE 等）直接保留原条件
             median_conditions = []
-            for feature_op, thresholds in sorted(feature_thresholds.items()):
-                median_val = np.median(thresholds)
-                median_conditions.append(f'{feature_op} {round(float(median_val), 4)}')
+            if pattern_key and pattern_key[0] == "__literal__":
+                median_conditions = list(group[0]["cond_key"]) if group[0]["cond_key"] else ["TRUE"]
+            else:
+                for feature_op, thresholds in sorted(feature_thresholds.items()):
+                    median_val = np.median(thresholds)
+                    median_conditions.append(f"{feature_op} {round(float(median_val), 4)}")
 
             # 计算置信度和支持数
             if self.voting_method == 'weighted':
@@ -380,88 +382,6 @@ def _conditions_to_pattern_key(conditions: tuple) -> tuple:
         for f, o, _ in (extract_condition_parts(c) for c in conditions)
         if f is not None
     )
-
-
-def prune_rules(
-    rules: list[RuleInfo],
-    max_rules: int = 100,
-    min_confidence: float = 0.7,
-    min_coverage: float = 0.0,
-) -> list[RuleInfo]:
-    """
-    规则剪枝：按多种条件筛选
-    
-    参数：
-        rules: 规则列表
-        max_rules: 规则数上限
-        min_confidence: 最小置信度
-        min_coverage: 最小覆盖度
-    
-    返回：
-        剪枝后的规则列表
-    """
-    # 按置信度筛选
-    filtered = [r for r in rules if r.confidence >= min_confidence]
-    
-    # 按覆盖度筛选
-    if min_coverage > 0:
-        filtered = [r for r in filtered if r.coverage >= min_coverage]
-    
-    # 按置信度×支持度排序
-    filtered.sort(key=lambda r: r.confidence * r.support_count, reverse=True)
-    
-    return filtered[:max_rules]
-
-
-def merge_similar_rules(rules: list[RuleInfo], similarity_threshold: float = 0.8) -> list[RuleInfo]:
-    """
-    合并相似规则（简化实现）
-    
-    参数：
-        rules: 规则列表
-        similarity_threshold: 相似度阈值
-    
-    返回：
-        合并后的规则列表
-    """
-    merged = []
-    used = set()
-    
-    for i, rule1 in enumerate(rules):
-        if i in used:
-            continue
-        
-        # 找相似规则
-        similar = [rule1]
-        used.add(i)
-        
-        for j, rule2 in enumerate(rules):
-            if j in used:
-                continue
-            
-            # 简单相似度计算：条件集合交集比例
-            conds1 = set(rule1.conditions)
-            conds2 = set(rule2.conditions)
-            if not conds1 or not conds2:
-                continue
-            
-            intersection = len(conds1 & conds2)
-            union = len(conds1 | conds2)
-            similarity = intersection / union if union > 0 else 0
-            
-            if similarity >= similarity_threshold and rule1.action == rule2.action:
-                similar.append(rule2)
-                used.add(j)
-        
-        # 合并相似规则
-        if len(similar) > 1:
-            # 保留置信度最高的规则作为代表
-            merged.append(max(similar, key=lambda r: r.confidence))
-            logger.debug(f"合并了 {len(similar)} 条相似规则")
-        else:
-            merged.append(rule1)
-    
-    return merged
 
 
 def rules_to_if_then_strings(rules: list[RuleInfo], class_mapping: dict | None = None) -> list[str]:
