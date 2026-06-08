@@ -81,13 +81,8 @@ RUN_CONFIG = {
     # 阶段 1：FQE —— 训练 Q_hat 神经网络（影响最大，见 调参文档.md）
     # 输出：fqe_out/q_hat.pt；下游 l_hat / weights / VIPER 均依赖此 Q 估计
     # -------------------------------------------------------------------------
-<<<<<<< HEAD
-    # 训练轮数；loss 仍下降时可加大（大表可试 50～100）
-    "fqe_epochs": 15,
-=======
-    # 训练轮数；loss 仍下降时可加大（大表可试 30～50）
+    # 训练轮数；loss 仍下降时可加大（大表可试 20～30）
     "fqe_epochs": 5,
->>>>>>> new_branch
     # 训练设备："cuda" | "cpu"（百万行建议 GPU）
     "fqe_device": "cuda",
     # Bootstrap 目标："sarsa"=用轨迹真实下一步动作 a'（默认，贴近行为策略）
@@ -132,20 +127,6 @@ RUN_CONFIG = {
     "viper_n_round": 20,
     # 在验证集上选最优轮（需 val_frac>0）
     "viper_pick_best_round": True,
-<<<<<<< HEAD
-    # acc_full 与规则条数不可兼得（S0_5 实测 VIPER 均匀抽样）：
-    #   depth=5  leaf=1  → acc≈67%  规则≈30
-    #   depth=10 leaf=1  → acc≈71%  规则≈900
-    #   depth=12 leaf=50 → acc≈72%  规则≈1400
-    #   depth=16 leaf=1  → acc≈75.5% 规则≈12000  ← 75%+ 且比 depth=18 少一半
-    #   depth=18 leaf=1  → acc≈77.5% 规则≈25000
-    "cart_max_depth": 6,
-    # 叶节点最少样本；增大可减规则，但 acc_full 会明显下降（leaf≥5 时 VIPER 难超 75%）
-    "cart_min_samples_leaf": 1,
-    # sklearn 默认 2；勿设 50（会压低 acc_full）
-    "cart_min_samples_split": 2,
-    # 每轮重采样条数 M；0 表示 M=轨迹行数 N（有放回）
-=======
     "cart_max_depth": 6,
     "cart_min_samples_leaf": 50,
     "cart_min_samples_split": 100,
@@ -171,7 +152,6 @@ RUN_CONFIG = {
     "refit_final_tree_on_full_data": False,
     # 每轮 bootstrap 样本数；0=与 train 池同规模有放回抽样（不缩小 m，但可重复同一条）
     # 若设为 120000 等，则每轮 CART.fit 仅用该数量的有放回样本（显式裁到 12 万）
->>>>>>> new_branch
     "resample_size": 0,
     "weight_noise": 0.02,
     # -------------------------------------------------------------------------
