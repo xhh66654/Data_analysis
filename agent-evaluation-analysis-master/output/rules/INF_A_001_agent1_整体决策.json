@@ -1,0 +1,367 @@
+{
+  "metadata": {
+    "inference_task_id": "INF_A_001",
+    "agent_id": 1,
+    "label_name": "整体决策",
+    "action_item": null,
+    "accuracy": 0.8182
+  },
+  "feature_names": [
+    "自身状态.血量",
+    "自身状态.速度_马赫",
+    "自身状态.高度_km",
+    "敌机距离.水平距离_km",
+    "敌机距离.高度差_km",
+    "敌机状态.威胁等级",
+    "敌机状态.存活",
+    "敌机状态.锁定中"
+  ],
+  "rules": [
+    {
+      "rule_index": 1,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": "<=",
+          "threshold_norm": 0.20158658921718597
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"追击\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 1.0
+    },
+    {
+      "rule_index": 2,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": ">",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.5676303505897522
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": -1.6201048493385315
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"追击\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 0.5221121297491771
+    },
+    {
+      "rule_index": 3,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": 0.20158658921718597
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.6950303316116333
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.9064303338527679
+        },
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": -0.37600739300251007
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": "<=",
+          "threshold_norm": 0.7016981244087219
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"保持\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 0.940276312689579
+    },
+    {
+      "rule_index": 4,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": 0.20158658921718597
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.6950303316116333
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": ">",
+          "threshold_norm": -0.9064303338527679
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"保持\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 0.9999981630546799
+    },
+    {
+      "rule_index": 5,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": 0.20158658921718597
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.6950303316116333
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.9064303338527679
+        },
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": -0.37600739300251007
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": 0.7016981244087219
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"追击\", \"武器控制\": \"发射导弹\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 0.5998406546623899
+    },
+    {
+      "rule_index": 6,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": 0.20158658921718597
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.6950303316116333
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.9064303338527679
+        },
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": ">",
+          "threshold_norm": -0.37600739300251007
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"追击\", \"武器控制\": \"发射导弹\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 1.0
+    },
+    {
+      "rule_index": 7,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": 0.20158658921718597
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": ">",
+          "threshold_norm": -0.6950303316116333
+        },
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": -0.5056489557027817
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"保持\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"关\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 0.5
+    },
+    {
+      "rule_index": 8,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": ">",
+          "threshold_norm": 0.20158658921718597
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": ">",
+          "threshold_norm": -0.6950303316116333
+        },
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": ">",
+          "threshold_norm": -0.5056489557027817
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"规避\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"正前方\"}}",
+      "support": 1,
+      "confidence": 1.0
+    },
+    {
+      "rule_index": 9,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": ">",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": "<=",
+          "threshold_norm": -0.5676303505897522
+        },
+        {
+          "feature": "敌机状态.威胁等级",
+          "feature_idx": 5,
+          "op": "<=",
+          "threshold_norm": -1.6201048493385315
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"追击\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"右扫\"}}",
+      "support": 1,
+      "confidence": 0.5094682527369386
+    },
+    {
+      "rule_index": 10,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": ">",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": ">",
+          "threshold_norm": -0.5676303505897522
+        },
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": "<=",
+          "threshold_norm": 1.4732725024223328
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"追击\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"左扫\"}}",
+      "support": 1,
+      "confidence": 1.0
+    },
+    {
+      "rule_index": 11,
+      "conditions": [
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": ">",
+          "threshold_norm": 1.0914334654808044
+        },
+        {
+          "feature": "自身状态.速度_马赫",
+          "feature_idx": 1,
+          "op": ">",
+          "threshold_norm": -0.5676303505897522
+        },
+        {
+          "feature": "敌机距离.水平距离_km",
+          "feature_idx": 3,
+          "op": ">",
+          "threshold_norm": 1.4732725024223328
+        }
+      ],
+      "action": "{\"__default__\": {\"机动控制\": \"追击\", \"武器控制\": \"不发射\", \"雷达开关控制\": \"开\", \"雷达方向控制\": \"左扫\"}}",
+      "support": 1,
+      "confidence": 1.0
+    }
+  ]
+}

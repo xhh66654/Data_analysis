@@ -1,0 +1,59 @@
+{
+  "baseline_samples": 33,
+  "steps": [
+    {
+      "step_id": "00",
+      "name": "加载推理记录",
+      "kind": "pool",
+      "count_in": 3,
+      "count_out": 33,
+      "pct_of_baseline": 100.0,
+      "note": "3 局仿真 → 33 训练步；agent_id=1"
+    },
+    {
+      "step_id": "01",
+      "name": "特征归一化+分箱标尺",
+      "kind": "pool",
+      "count_in": 33,
+      "count_out": 33,
+      "pct_of_baseline": 100.0,
+      "note": "8 维特征；行数不变"
+    },
+    {
+      "step_id": "02",
+      "name": "VIPER 训练池准备",
+      "kind": "pool",
+      "count_in": 33,
+      "count_out": 33,
+      "pct_of_baseline": 100.0,
+      "note": "n_iters=5 max_depth=12 n_classes=8"
+    },
+    {
+      "step_id": "03",
+      "name": "VIPER 重采样→CART.fit",
+      "kind": "pool",
+      "count_in": 33,
+      "count_out": 33,
+      "pct_of_baseline": 100.0,
+      "note": "共 5 轮；末轮 weighted_loss=0.0"
+    },
+    {
+      "step_id": "04",
+      "name": "决策树 DFS 提取规则",
+      "kind": "crop",
+      "count_in": 11,
+      "count_out": 11,
+      "pct_of_baseline": 33.3333,
+      "note": "叶节点数=原始规则数"
+    },
+    {
+      "step_id": "05",
+      "name": "规则合并",
+      "kind": "crop",
+      "count_in": 11,
+      "count_out": 11,
+      "pct_of_baseline": 33.3333,
+      "note": "覆盖率 0.8182→0.8182；采用=合并"
+    }
+  ]
+}

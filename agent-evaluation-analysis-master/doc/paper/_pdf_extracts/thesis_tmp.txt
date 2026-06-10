@@ -1,0 +1,218 @@
+FILE: thesis_tmp.pdf
+PAGES: 90
+META TITLE: None
+
+--- PAGE 1 ---
+ 
+学校代码： 10286   
+分类号：   TP181    
+密  级：    公开     
+UDC ：   004.8   
+学  号：    211923   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+基于规则演化的 
+多智能体博弈对抗策略 
+ 
+            研究生姓名：    李萱露        
+            导师姓名 ：   张亚 教授      
+                           崔鹏 高工      
+ 
+申请学位类别    电子信息硕士                    学位授予单位      东 南 大 学                    
+领域名称         控制工程                  论文答辩日期   2024 年 5 月 21 日        
+研究方向   多智能体博弈对抗策略                       学位授予日期   2024 年   月   日               
+答辩委员会主席    翟军勇 教授                   
+评   阅   人     YS008240107                            
+YS008240108            
+ 
+2024  年  5 月 
+基
+于
+规
+则
+演
+化
+的
+多
+智
+能
+体
+博
+弈
+对
+抗
+策
+略                 
+李
+萱
+露                 
+东
+南
+大
+学 
+电子信息 硕士学位论文  
+
+--- PAGE 2 ---
+ 
+ 
+ 
+硕士学位论文  
+ 
+ 
+ 
+ 
+基于规则演化的 
+多智能体博弈对抗策略 
+ 
+ 
+ 
+ 
+ 
+专业名 称：     电子信息          
+ 
+研究生姓 名：       李萱露           
+ 
+导师姓 名：      张亚 教授         
+ 
+ 
+                  
+本论文获科技创新2030新一代人工智能重大项目课题(2021ZD0112702)资助。
+
+
+--- PAGE 3 ---
+
+
+--- PAGE 4 ---
+ 
+MULTI-AGENT GAME ADVERSARIAL 
+STRATEGIES BASED ON  
+RULE EVOLUTION 
+A Thesis Submitted to 
+Southeast University 
+For the Academic Degree of Master of Engineering 
+ 
+ 
+ 
+BY 
+Li Xuanlu 
+ 
+Supervised by 
+Prof. Zhang Ya 
+ 
+ 
+School of Automation 
+Southeast University 
+May 2024 
+ 
+
+--- PAGE 5 ---
+
+
+--- PAGE 6 ---
+ 
+东南大学学位论文独创性声明  
+ 
+本人声明所呈交的学位论文是我个人在导师指导下进行的研究工作及取得的研究
+成果。尽我所知，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经
+发表或撰写过的研究成果，也不包含为获得东南大学或其它教育机构的学位或证书而
+使用过的材料。与我一同工作的同志对本研究所做的任何贡献均已在论文中作了明确
+的说明并表示了谢意。 
+ 
+研究生签名：               日期：
+                
+ 
+ 
+东南大学学位论文使用授权声明  
+ 
+东南大学、中国科学技术信息研究所、国家图书馆有权保留本人所送交学位论文
+的复印件和电子文档，可以采用影印、缩印或其他复制手段保存论文。本人电子文档
+的内容和纸质论文的内容相一致。除在保密期内的保密论文外，允许论文被查阅和借
+阅，可以公布（包括以电子信息形式刊登）论文的全部内容或中、英文摘要等部分内
+容。论文的公布（包括以电子信息形式刊登）授权东南大学研究生院办理。 
+ 
+研究生签名：         导师签名：         日期：
+            
+
+--- PAGE 7 ---
+
+
+--- PAGE 8 ---
+摘要 
+I 
+摘要 
+随着军事科技的发展和现代战争的复杂化， 人工智能技术的引入对军事决策具有重
+要意义。 然而， 深度神经网络的 “黑盒” 特性， 使得模型可解释性成为广泛研究的议题。
+因此本文以规则演化理论为基础， 结合军事博弈现实需求， 以知识和数据相结合的训练
+方法进行多智能体策略学习， 并应用于典型复杂博弈对抗场景中。 论文的主要研究工作
+如下： 
+一、 针对多智能体博弈对抗场景中智能体决策模型的解释性问题， 设计了一种基于
+学习分类器系统的智能体决策模型。 该模型由分类器子系统和规则发现子系统组成， 其
+中分类器子系统采用规则的方式实现智能体决策， 规则发现子系统提高规则库的多样性；
+同时设计了规则评估机制指导模型学习。 在空战博弈场景下， 该模型提高了智能体对抗
+性能，模型本身具有较强的解释性。 
+二、 针对深度强化学习模型生成的策略解释性差的问题， 提出一种基于规则的策略
+提取与解释深度强化学习模型策略的方法。 使用强化学习模型进行博弈对抗生成对抗数
+据， 基于对抗数据采用策略提取方法将强化学习模型策略提取成一个决策树策略， 通过
+决策树解释方法进行规则提取进而实现模型的可解释性。 在典型博弈对抗场景下， 提取
+出的决策树模型在对抗效能上 能完全替代强化学习模型，并在对抗 胜率上有一定提高。
+此外，针对两种对抗环境，提取决策树中的策略规则，构建策略规则库，建立博弈对抗
+策略决策树。 
+三、为了获得更多的博弈对抗策略，将提取出的决策树模型作为专家决策树，设计
+一种基于遗传算法的决策树演化方法， 利用遗传算法进行解空间的探索， 以增强决策的
+多样性，实现知识与数据协同驱动。在典型博弈对抗场景下，经演化后的决策树在对抗
+效能方面都有不同程度的提升， 通过对决策树的规则提取与分析， 获得新增的策略规则
+表，进一步充实博弈对抗策略。 
+关键词：多智能体，规则学习，决策树，遗传算法，博弈对抗 
+ 
+
+--- PAGE 9 ---
+
+
+--- PAGE 10 ---
+Abstract 
+III 
+Abstract 
+With the development of military technology and the increasing complexity of modern 
+warfare, the introduction of artificial intelligence  (AI) technology is of great significance to 
+military decision-making. However, the "black box" characteristic of deep neural networks has 
+made model interpretability an important issue. Therefore, the strategy learning problem in the 
+multi-intelligence game confrontation scenario is investigated in this paper. Based on the rule  
+evolution theory, combined with the real needs of military gaming, this paper uses a training 
+method that combines knowledge and data and applies it to complex game confrontation 
+scenarios to verify its effectiveness.  
+The main research contents of the thesis are as follows: 
+Firstly, a decision -making model for intelligent agents based on a learning classifier 
+system is designed  to a ddress the interpretability issue  of decision models in multi -agent 
+adversarial scenarios. This model consists of two subsystems: a classifier subsystem and a rule 
+discovery subsystem. The classifier subsystem employs rules to determine the decisions of the 
+intelligent agents, while the rule discovery subsystem enhances the diversity of the rule set . 
+Additionally, a rule evaluation mechanism has been designed to guide model learning. In the 
+context of aerial combat gaming scenarios, this model has demonstrated improvements in the 
+combat performance of intelligent agents while also possessing strong interpretability. 
+Secondly, a method based on rule-based policy extraction and interpretation for deep 
+reinforcement learning  (DRL) model policies is proposed to address the problem of poor 
+interpretability of DRL strategies. By utilizing reinforcement learning model policies in 
+adversarial gaming scenarios to generate adversarial data, a policy extraction method is 
+employed to extract the reinforcement learning model policy into a decision tree policy . This 
+decision tree policy is then interpreted using decision tree interpretation methods to extract rules, 
+thereby achieving model interpretability. In the context of dual-ship anti-air warfare scenarios, 
+the extracted decision tree model completely replaces the DRL model in terms of operational 
+efficacy, with a notable improvement in the win rate during battles. Additionally, tactical rules 
+are extracted from the decision tree to construct a tactical rule repository, facilitating the 
+establishment of adversarial gaming strategies in two combat environments. 
+Thirdly, in order to obtain a broader range of adversarial gaming strategies, the extracted 
+decision tree model is utilized as an expert decision tree, and a decision tree evolution method 
+based on genetic algorithm is designed to realize the collaborative driving of knowledge and  
+data. This approach utilizes genetic algorithms to explore solution spaces, thereby enhancing 
+the diversity of decision -making. In the context of dual -ship anti -air warfare scenarios, the 
+evolved decision trees exhibit varying degrees of improvement in operational efficacy. By 
+extracting and analyzing rules from the decision trees, a new set of tactical rule s is obtained, 
+further enriching the repertoire of adversarial gaming strategies. 
+Keywords: multi-agent, rule learning, decision tree, genetic algorithm, game confrontatio 
+ 

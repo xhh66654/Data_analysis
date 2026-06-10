@@ -1,0 +1,146 @@
+{
+  "generated_at": "2026-06-09T11:53:20",
+  "inference_task_id": "INF_A_001",
+  "agent_id": 1,
+  "label_name": "整体决策",
+  "n_samples": 33,
+  "n_records": 3,
+  "sim_ids": [
+    "SIM_A_000001",
+    "SIM_A_000002",
+    "SIM_A_000003"
+  ],
+  "n_rules_raw": 11,
+  "n_rules_final": 11,
+  "confidence_range": [
+    0.5,
+    1.0
+  ],
+  "accuracy": 0.8182,
+  "coverage": 0.8182,
+  "viper_metrics": {
+    "best_accuracy": 0.818182,
+    "best_loss": 0.181818,
+    "final_weighted_accuracy": 1.0,
+    "final_weighted_loss": 0.0,
+    "final_orig_accuracy": 0.69697,
+    "best_iter": 0,
+    "n_iters": 5,
+    "history": [
+      {
+        "iter": 0,
+        "weighted_accuracy": 0.877535,
+        "weighted_loss": 0.122465
+      },
+      {
+        "iter": 1,
+        "weighted_accuracy": 0.954307,
+        "weighted_loss": 0.045693
+      },
+      {
+        "iter": 2,
+        "weighted_accuracy": 0.976876,
+        "weighted_loss": 0.023124
+      },
+      {
+        "iter": 3,
+        "weighted_accuracy": 0.997513,
+        "weighted_loss": 0.002487
+      },
+      {
+        "iter": 4,
+        "weighted_accuracy": 1.0,
+        "weighted_loss": 0.0
+      }
+    ],
+    "acc_orig_history": [
+      {
+        "iter": 0,
+        "accuracy": 0.818182
+      },
+      {
+        "iter": 1,
+        "accuracy": 0.666667
+      },
+      {
+        "iter": 2,
+        "accuracy": 0.666667
+      },
+      {
+        "iter": 3,
+        "accuracy": 0.666667
+      },
+      {
+        "iter": 4,
+        "accuracy": 0.69697
+      }
+    ],
+    "augmentation_history": [
+      {
+        "iter": 0,
+        "n_before": 33,
+        "n_after": 50,
+        "n_errors": 6,
+        "augment_size_factor": 1.5
+      },
+      {
+        "iter": 1,
+        "n_before": 50,
+        "n_after": 75,
+        "n_errors": 4,
+        "augment_size_factor": 1.5
+      },
+      {
+        "iter": 2,
+        "n_before": 75,
+        "n_after": 112,
+        "n_errors": 2,
+        "augment_size_factor": 1.5
+      },
+      {
+        "iter": 3,
+        "n_before": 112,
+        "n_after": 168,
+        "n_errors": 1,
+        "augment_size_factor": 1.5
+      }
+    ]
+  },
+  "holdout_eval": {
+    "enabled": true,
+    "val_ratio": 0.2,
+    "n_train": 25,
+    "n_val": 8,
+    "n_val_sims": 2,
+    "train_tree_accuracy": 0.8,
+    "val_tree_accuracy": 0.875,
+    "train_rules_coverage": 0.8,
+    "val_rules_coverage": 0.875,
+    "train_loss": 0.2,
+    "val_loss": 0.125
+  },
+  "merge_check": {
+    "coverage_raw": 0.818182,
+    "coverage_merged": 0.818182,
+    "coverage_drop": 0.0,
+    "max_allowed_drop": 0.01,
+    "use_merged_rules": true
+  },
+  "train_params": {
+    "n_iters": 5,
+    "max_depth": 12,
+    "min_samples_leaf": 2,
+    "penalty_factor": 2.0,
+    "resample_augment": true,
+    "n_classes": 8,
+    "uniform_base_weights": false,
+    "adaptive": true
+  },
+  "artifacts": {
+    "rules_txt": "F:\\model\\agent-evaluation-analysis-master\\output\\viper_out\\INF_A_001_agent1_整体决策\\rules.txt",
+    "rules_json": "output\\rules\\INF_A_001_agent1_整体决策.json",
+    "pdf_path": "output\\rule_tree_INF_A_001_agent1_整体决策.pdf",
+    "rule_tree_pdf": "output\\rule_tree_merged_INF_A_001_agent1_整体决策.pdf",
+    "pipeline_log": "F:\\model\\agent-evaluation-analysis-master\\output\\viper_out\\INF_A_001_agent1_整体决策\\pipeline.log"
+  }
+}

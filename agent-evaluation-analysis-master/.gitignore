@@ -1,0 +1,32 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# 运行数据
+data/models/*
+data/trajectories/*
+!data/models/.gitkeep
+!data/trajectories/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+
+# 日志
+*.log
+runs/
+logs/
+
+# 系统
+.DS_Store
+Thumbs.db

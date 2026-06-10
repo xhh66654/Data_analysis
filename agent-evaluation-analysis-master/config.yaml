@@ -1,0 +1,59 @@
+# ================================================================
+# 项目全局配置
+# ================================================================
+
+# ---------- 环境 ----------
+env:
+  name: "AirCombatEnv"
+  n_blue: 3                # 蓝方飞机数量
+  n_red: 3                 # 红方飞机数量
+  map_size: 1000.0         # 战场边长 (km)
+  max_steps: 200           # 每局最大步数
+  radar_range: 300.0       # 雷达探测半径 (km)
+  missile_range: 150.0     # 导弹射程 (km)
+  ammo_init: 4             # 初始弹药数
+
+# ---------- 智能体训练 ----------
+agent:
+  algo: "dqn"              # dqn / ppo
+  lr: 1.0e-4
+  gamma: 0.99
+  batch_size: 64
+  buffer_size: 50000
+  total_steps: 100000
+  eps_start: 1.0
+  eps_end: 0.05
+  eps_decay_steps: 30000
+  hidden_sizes: [128, 128]
+
+# ---------- 模块 A：基于规则的策略提取 ----------
+module_a:
+  n_rollouts: 50           # 每轮采集轨迹数
+  viper_iters: 5           # VIPER 迭代轮数
+  max_depth: 6             # 决策树最大深度
+  min_samples_leaf: 20
+
+# ---------- 模块 B：博弈约简 ----------
+module_b:
+  n_neighbors: 5           # 每个中心体保留的最大邻居数
+  kl_eps: 1.0e-6
+  mfrl_steps: 200000
+
+# ---------- 模块 C：反事实推理 ----------
+module_c:
+  n_counterfactuals: 200   # 反事实世界数量
+  perturb_scale: 0.1       # 扰动幅度
+  top_k_factors: 3         # 返回前 K 个因素
+  # 解释润色（也可用环境变量，见 doc/LLM_EXPLAIN.md）
+  llm_explain:
+    enabled: false         # true 或环境变量 ANALYSIS_LLM_EXPLAIN=1
+    backend: transformers  # transformers | openai_compatible
+    model_path: data/models/Qwen2.5-1.5B-Instruct
+    hf_repo: Qwen/Qwen2.5-1.5B-Instruct
+    max_new_tokens: 512
+
+# ---------- 路径 ----------
+paths:
+  models_dir: "data/models"
+  trajectories_dir: "data/trajectories"
+  logs_dir: "logs"
